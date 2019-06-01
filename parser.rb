@@ -11,7 +11,7 @@ require 'racc/parser.rb'
 
 class Parser < Racc::Parser
 
-module_eval(<<'...end grammar.y/module_eval...', 'grammar.y', 41)
+module_eval(<<'...end grammar.y/module_eval...', 'grammar.y', 43)
   def parse(code)
     @tokens = Lexer.new.tokenize(code)
     do_parse # Kickoff the parsing process
@@ -24,16 +24,16 @@ module_eval(<<'...end grammar.y/module_eval...', 'grammar.y', 41)
 ##### State transition tables begin ###
 
 racc_action_table = [
-     4,     5,     6 ]
+     4,     5,     6,     7 ]
 
 racc_action_check = [
-     0,     1,     5 ]
+     0,     0,     1,     6 ]
 
 racc_action_pointer = [
-    -2,     1,   nil,   nil,   nil,     2,   nil ]
+    -2,     2,   nil,   nil,   nil,   nil,     3,   nil ]
 
 racc_action_default = [
-    -1,    -5,    -2,    -3,    -4,    -5,     7 ]
+    -1,    -6,    -2,    -3,    -4,    -5,    -6,     8 ]
 
 racc_goto_table = [
      1,     2,     3 ]
@@ -49,37 +49,39 @@ racc_goto_default = [
 
 racc_reduce_table = [
   0, 0, :racc_error,
-  0, 20, :_reduce_1,
-  1, 20, :_reduce_2,
-  1, 21, :_reduce_3,
-  1, 22, :_reduce_4 ]
+  0, 21, :_reduce_1,
+  1, 21, :_reduce_2,
+  1, 22, :_reduce_3,
+  1, 23, :_reduce_4,
+  1, 23, :_reduce_5 ]
 
-racc_reduce_n = 5
+racc_reduce_n = 6
 
-racc_shift_n = 7
+racc_shift_n = 8
 
 racc_token_table = {
   false => 0,
   :error => 1,
   :INTEGER => 2,
-  "." => 3,
-  "!" => 4,
-  "*" => 5,
-  "/" => 6,
-  "+" => 7,
-  "-" => 8,
-  ">" => 9,
-  ">=" => 10,
-  "<" => 11,
-  "<=" => 12,
-  "==" => 13,
-  "!=" => 14,
-  "&&" => 15,
-  "||" => 16,
-  "=" => 17,
-  "," => 18 }
+  :NEWLINE => 3,
+  "." => 4,
+  "!" => 5,
+  "*" => 6,
+  "/" => 7,
+  "+" => 8,
+  "-" => 9,
+  ">" => 10,
+  ">=" => 11,
+  "<" => 12,
+  "<=" => 13,
+  "==" => 14,
+  "!=" => 15,
+  "&&" => 16,
+  "||" => 17,
+  "=" => 18,
+  "," => 19 }
 
-racc_nt_base = 19
+racc_nt_base = 20
 
 racc_use_result_var = true
 
@@ -103,6 +105,7 @@ Racc_token_to_s_table = [
   "$end",
   "error",
   "INTEGER",
+  "NEWLINE",
   "\".\"",
   "\"!\"",
   "\"*\"",
@@ -130,30 +133,37 @@ Racc_debug_parser = false
 
 # reduce 0 omitted
 
-module_eval(<<'.,.,', 'grammar.y', 21)
+module_eval(<<'.,.,', 'grammar.y', 22)
   def _reduce_1(val, _values, result)
      result = Nodes.new([]) 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'grammar.y', 22)
+module_eval(<<'.,.,', 'grammar.y', 23)
   def _reduce_2(val, _values, result)
      result = val[0] 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'grammar.y', 25)
+module_eval(<<'.,.,', 'grammar.y', 26)
   def _reduce_3(val, _values, result)
-     result = Nodes.new(val) 
+     result = Nodes.new([]) << val.first 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'grammar.y', 30)
+module_eval(<<'.,.,', 'grammar.y', 31)
   def _reduce_4(val, _values, result)
      result = IntegerNode.new(val[0]) 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'grammar.y', 32)
+  def _reduce_5(val, _values, result)
+     result = nil 
     result
   end
 .,.,
