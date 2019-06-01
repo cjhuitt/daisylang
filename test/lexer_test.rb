@@ -74,7 +74,7 @@ class LexerTest < Test::Unit::TestCase
     assert_equal expected, Lexer.new.tokenize("    \n(")
   end
 
-  def xtest_function
+  def test_function
     code = <<-CODE
 Function Integer Summation(n: Integer)
     return n * (n - 1) / 2
