@@ -13,6 +13,11 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:STRING, "Greetings  fools"]], Lexer.new.tokenize('"Greetings  fools"')
   end
 
+  def test_string_with_linewraps
+    code = "\"Greetings\n\n    fools\""
+    assert_equal [[:STRING, "Greetings\n\n    fools"]], Lexer.new.tokenize(code)
+  end
+
   def test_empty_line
     assert_equal [[:NEWLINE, "\n"]], Lexer.new.tokenize("\n")
   end
