@@ -115,8 +115,9 @@ end
   require "nodes"
 
 ---- inner
-  def parse(code)
+  def parse(code, debug=false)
     @tokens = Lexer.new.tokenize(code)
+    puts @tokens.inspect if debug
     do_parse # Kickoff the parsing process
   end
 
