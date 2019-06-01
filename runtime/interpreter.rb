@@ -1,6 +1,9 @@
-$:.unshift File.expand_path("../../", __FILE__)
+root = File.expand_path("../../", __FILE__)
+$:.unshift(root)
+$:.unshift(root + "/runtime")
 
 require 'parser'
+require 'runtime'
 
 class Interpreter
   def initialize
