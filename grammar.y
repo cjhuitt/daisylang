@@ -51,6 +51,7 @@ rule
   Arguments:
     /* nothing */                       { result = [] }
   | Argument                            { result = [val[0]] }
+  | Arguments "," WHITESPACE Argument   { result = val[0] << val[3] }
   ;
 
   Argument:

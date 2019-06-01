@@ -48,4 +48,14 @@ class ParserTest < Test::Unit::TestCase
     assert_equal expected, Parser.new.parse("method(foo: 13)")
   end
 
+  def test_message_with_multiple_labeled_arguments
+    expected = Nodes.new([
+      MessageNode.new(nil, "method", [
+        ArgumentNode.new("foo", IntegerNode.new(13)),
+        ArgumentNode.new("bar", IntegerNode.new(42))
+      ])
+    ])
+    assert_equal expected, Parser.new.parse("method(foo: 13, bar: 42)")
+  end
+
 end
