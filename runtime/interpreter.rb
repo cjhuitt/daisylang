@@ -25,9 +25,11 @@ class Interpreter
   private
     def visit_Nodes(node)
       debug_print("Visiting Nodes")
+      return_val = nil
       node.nodes.each do |node|
-        node.accept(self)
+        return_val = node.accept(self)
       end
+      return_val
     end
 
     def visit_SendMessageNode(node)

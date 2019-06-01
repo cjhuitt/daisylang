@@ -8,6 +8,7 @@
 # on Windows run with: ruby -I. daisy [options]
 
 require 'runtime/interpreter'
+require 'readline'
 
 interpreter = Interpreter.new
 
@@ -15,6 +16,12 @@ interpreter = Interpreter.new
 if file = ARGV.first
   interpreter.eval(File.read(file))
 else
-  puts "If we were working properly, we'd have a console here"
+  puts "Daisy Console (CTRL+C to quit)"
+  loop do
+    line = Readline::readline(">> ")
+    Readline::HISTORY.push(line)
+    value = interpreter.eval(line)
+    puts "=> #{value.ruby_value}"
+  end
 end
 
