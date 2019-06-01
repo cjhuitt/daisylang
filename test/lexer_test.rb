@@ -20,11 +20,8 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:NEWLINE, "\n"]], Lexer.new.tokenize("    \t \n")
   end
 
-  def test_recognizes_function_keyword
+  def test_recognizes_keywords
     assert_equal [[:FUNCTION, "Function"]], Lexer.new.tokenize("Function")
-  end
-
-  def test_recognizes_return_keyword
     assert_equal [[:RETURN, "return"]], Lexer.new.tokenize("return")
   end
 
