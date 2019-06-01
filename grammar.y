@@ -46,7 +46,7 @@ rule
   ;
 
   Typename:
-  | IDENTIFIER                          { result = val[0] }
+    IDENTIFIER                          { result = val[0] }
   | NONE                                { result = NoneNode.new }
   ;
 
