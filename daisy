@@ -21,7 +21,9 @@ else
     line = Readline::readline(">> ")
     Readline::HISTORY.push(line)
     value = interpreter.eval(line)
-    puts "=> #{value.ruby_value}"
+    rvalue = value.ruby_value
+    puts "=> #{rvalue}" unless rvalue.nil?
+    puts "=> (none)" if rvalue.nil?
   end
 end
 
