@@ -20,17 +20,12 @@ class ParserTest < Test::Unit::TestCase
     assert_equal Nodes.new([IntegerNode.new(7)]), Parser.new.parse("7\n")
   end
 
-  def test_message_with_receiver
+  def test_message_no_arguments
     assert_equal Nodes.new([MessageNode.new("variable", "method", [])]),
       Parser.new.parse("variable.method()")
   end
 
-  def test_message_no_receiver
-    assert_equal Nodes.new([MessageNode.new(nil, "method", [])]),
-      Parser.new.parse("method()")
-  end
-
-  def test_message_with_single_argument
+  def test_message_with_single_unlabeled_argument
     expected = Nodes.new([
       MessageNode.new(nil, "method", [
         ArgumentNode.new(nil, IntegerNode.new(13))
@@ -56,6 +51,18 @@ class ParserTest < Test::Unit::TestCase
       ])
     ])
     assert_equal expected, Parser.new.parse("method(foo: 13, bar: 42)")
+  end
+
+  # Note: this is an error in the language, but the parser should make a
+  # representation of it and let the later analysis handle erroring
+  def test_message_with_multiple_unlabeled_arguments
+    expected = Nodes.new([
+      MessageNode.new("foo", "method", [
+        ArgumentNode.new(nil, IntegerNode.new(13)),
+        ArgumentNode.new(nil, IntegerNode.new(42))
+      ])
+    ])
+    assert_equal expected, Parser.new.parse("foo.method(13, 42)")
   end
 
   def test_return
