@@ -16,15 +16,26 @@ class Lexer
       return [] if line.strip.empty?
 
       tokens = []
-      if integer = line[/\A(\d+)/, 1]
+      line.split.each do |chunk|
+        tokens += tokenize_chunk(chunk)
+        tokens << [:WHITESPACE, " "]
+      end
+      tokens.pop
+
+      tokens
+    end
+
+    def tokenize_chunk(chunk)
+      tokens = []
+      if integer = chunk[/\A(\d+)/, 1]
         tokens << [:INTEGER, integer.to_i]
-      elsif identifier = line[/\A(\w+)/, 1]
+      elsif identifier = chunk[/\A(\w+)/, 1]
         if KEYWORDS.include? identifier
           tokens << [identifier.upcase.to_sym, identifier]
         else
           tokens << [:IDENTIFIER, identifier]
         end
-      elsif op = line[/\A([:()=+-\/^*])/, 1]
+      elsif op = chunk[/\A([:()=+-\/^*])/, 1]
           tokens << [op, op]
       end
 

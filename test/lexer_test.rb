@@ -41,6 +41,22 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [['^', "^"]], Lexer.new.tokenize("^")
   end
 
+  def test_finds_multiple_tokens_on_a_line
+    expected = [
+      [:IDENTIFIER, "a"], [:WHITESPACE, " "], ['+', "+"],
+      [:WHITESPACE, " "], [:IDENTIFIER, "b"]
+    ]
+    assert_equal expected, Lexer.new.tokenize("a + b ")
+  end
+
+  def xtest_function_decl_params
+    expected = [
+      ['(', "("], [:IDENTIFIER, "n"], [':', ":"],
+      [:WHITESPACE, " "], [:IDENTIFIER, "Integer"], [')',")"]
+    ]
+    assert_equal expected, Lexer.new.tokenize("(n: Integer)")
+  end
+
   def xtest_function
     code = <<-CODE
 Function Integer Summation(n: Integer)
