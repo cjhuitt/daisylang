@@ -45,6 +45,11 @@ rule
   Message:
     Expression "." IDENTIFIER "(" ")"   { result = MessageNode.new(val[0], val[2], []) }
   | IDENTIFIER "(" ")"                  { result = MessageNode.new(nil, val[0], []) }
+  | IDENTIFIER Arguments                { result = MessageNode.new(nil, val[0], [val[1]]) }
+  ;
+
+  Arguments:
+    "(" Literal ")"                     { result = val[1] }
   ;
 
   Terminator:
