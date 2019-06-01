@@ -4,6 +4,7 @@ token IDENTIFIER
 token INTEGER
 token NEWLINE
 token NONE
+token PASS
 token RETURN
 token WHITESPACE
 
@@ -47,6 +48,7 @@ rule
   Literal:
     INTEGER                             { result = IntegerNode.new(val[0]) }
   | NONE                                { result = NoneNode.new }
+  | PASS                                { result = PassNode.new }
   ;
 
   Message:
