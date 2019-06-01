@@ -8,6 +8,8 @@ class Lexer
     tokens
   end
 
+  KEYWORDS = ["Function"]
+
   private
     def tokenize_line(line)
       # Bail early on an empty line
@@ -17,7 +19,11 @@ class Lexer
       if integer = line[/\A(\d+)/, 1]
         tokens << [:INTEGER, integer.to_i]
       elsif identifier = line[/\A(\w+)/, 1]
-        tokens << [identifier.upcase.to_sym, identifier]
+        if KEYWORDS.include? identifier
+          tokens << [identifier.upcase.to_sym, identifier]
+        else
+          tokens << [:IDENTIFIER, identifier]
+        end
       end
 
       tokens
