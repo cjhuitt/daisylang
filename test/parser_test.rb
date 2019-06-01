@@ -87,4 +87,21 @@ class ParserTest < Test::Unit::TestCase
     assert_equal expected, Parser.new.parse("73 + 42")
   end
 
+  def test_define_method
+    code = <<-CODE
+Function None SayHi()
+    pass
+
+CODE
+    expected = Nodes.new([
+      DefineMessageNode.new(
+        "SayHi",
+        NoneNode.new,
+        [],
+        Nodes.new([PassNode.new])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end

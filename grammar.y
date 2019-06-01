@@ -1,5 +1,8 @@
 class Parser
 
+token BLOCKEND
+token BLOCKSTART
+token FUNCTION
 token IDENTIFIER
 token INTEGER
 token NEWLINE
@@ -40,6 +43,7 @@ rule
     Literal                             { result = val[0] }
   | Message                             { result = val[0] }
   | Operation                           { result = val[0] }
+  | Define                              { result = val[0] }
   | Return                              { result = val[0] }
   | Typename                            { result = val[0] }
   | Terminator                          { result = nil }
@@ -86,6 +90,14 @@ rule
   | Expression WHITESPACE ">=" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
   | Expression WHITESPACE "==" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
   | Expression WHITESPACE "!=" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  ;
+
+  Define:
+    FUNCTION WHITESPACE Typename WHITESPACE IDENTIFIER "(" ")" NEWLINE Block { result = DefineMessageNode.new(val[4], val[2], [], val[8]) }
+  ;
+
+  Block:
+    BLOCKSTART Expressions BLOCKEND     { result = val[1] }
   ;
 
   Return:
