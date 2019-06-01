@@ -9,21 +9,26 @@ class Lexer
     tokens = []
     code.lines.each do |line|
       debug_out("Tokenizing line >>#{line}<<")
-      indent = line[/\A */].size
-      blocks = indent / 4
-      if blocks == blocklevel + 1
-        tokens << [:BLOCKSTART, blocks]
-        blocklevel = blocks
-      else blocks < blocklevel
-        while blocks < blocklevel
-          tokens << [:BLOCKEND, blocklevel]
-          blocklevel -= 1
+      if indent = line[/\A( +)/, 1]
+        blocks = indent.size / 4
+        if blocks == blocklevel + 1
+          tokens << [:BLOCKSTART, blocks]
+          blocklevel = blocks
+        else blocks < blocklevel
+          while blocks < blocklevel
+            tokens << [:BLOCKEND, blocklevel]
+            blocklevel -= 1
+          end
         end
+        line.delete_prefix!(indent)
+      elsif 0 < blocklevel
+          while 0 < blocklevel
+            tokens << [:BLOCKEND, blocklevel]
+            blocklevel -= 1
+          end
       end
       tokens += tokenize_line(line)
-      tokens << [:NEWLINE, "\n"]
     end
-    tokens.pop unless code.end_with? "\n"
     tokens
   end
 
@@ -31,9 +36,7 @@ class Lexer
     KEYWORDS = ["Function", "None", "pass", "return"]
 
     def tokenize_line(line)
-      # Bail early on an empty line
-      return [] if line.strip.empty?
-
+      return tokenize_chunk(line)
       tokens = []
       line.split.each do |chunk|
         debug_out("Tokenizing chunk >>#{chunk}<<")
@@ -89,6 +92,14 @@ class Lexer
             debug_out("Extracted #{identifier} (Identifier)")
           end
           i += identifier.size
+        elsif space = sub[/\A(\s*\n)/m, 1]
+          tokens << [:NEWLINE, "\n"]
+          i += space.size
+          debug_out("Extracted newline")
+        elsif space = sub[/\A(\s+)/, 1]
+          tokens << [:WHITESPACE, " "]
+          i += space.size
+          debug_out("Extracted whitespace")
         elsif op = sub[/\A([:()=+-\/^*])/, 1]
           tokens << [op, op]
           i += 1
