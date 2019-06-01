@@ -1,13 +1,18 @@
 # The base object everything inherits from
 class DaisyObject
-  attr_accessor :runtime_class
+  attr_accessor :runtime_class, :runtime_methods
 
   def initialize(runtime_class)
     @runtime_class = runtime_class
+    @runtime_methods = {}
   end
 
   def call(message, args)
-    unknown_message(message, args)
+    if method = runtime_methods[message]
+      method
+    else
+      unknown_message(message, args)
+    end
   end
 
   def unknown_message(message, args)
