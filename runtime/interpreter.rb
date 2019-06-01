@@ -29,7 +29,7 @@ class Interpreter
       node.nodes.each do |node|
         return_val = node.accept(self)
       end
-      return_val
+      return_val || Constants["none"]
     end
 
     def visit_SendMessageNode(node)
