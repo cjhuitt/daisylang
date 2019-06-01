@@ -49,7 +49,11 @@ rule
 
   Arguments:
     /* nothing */                       { result = [] }
-  | Literal                             { result = [ArgumentNode.new(nil, val[0])] }
+  | Argument                            { result = [val[0]] }
+  ;
+
+  Argument:
+    Literal                             { result = ArgumentNode.new(nil, val[0]) }
   ;
 
   Terminator:
