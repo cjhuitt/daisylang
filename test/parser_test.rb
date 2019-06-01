@@ -65,6 +65,10 @@ class ParserTest < Test::Unit::TestCase
     assert_equal expected, Parser.new.parse("foo.method(13, 42)")
   end
 
+  def test_none
+    assert_equal Nodes.new([NoneNode.new]), Parser.new.parse("None")
+  end
+
   def test_return
     assert_equal Nodes.new([ReturnNode.new(IntegerNode.new(9))]),
       Parser.new.parse("return 9")

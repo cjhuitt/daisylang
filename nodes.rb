@@ -9,6 +9,12 @@ end
 class IntegerNode < Struct.new(:value)
 end
 
+class NoneNode < Struct.new(:value)
+  def initialize
+    super(nil)
+  end
+end
+
 class ReturnNode < Struct.new(:value)
 end
 
