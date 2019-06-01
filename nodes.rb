@@ -8,3 +8,6 @@ end
 
 class IntegerNode < Struct.new(:value)
 end
+
+class MessageNode < Struct.new(:receiver, :message, :arguments)
+end
