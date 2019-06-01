@@ -43,13 +43,13 @@ rule
   ;
 
   Message:
-    Expression "." IDENTIFIER Arguments { result = MessageNode.new(val[0], val[2], []) }
-  | IDENTIFIER Arguments                { result = MessageNode.new(nil, val[0], val[1]) }
+    Expression "." IDENTIFIER "(" Arguments ")" { result = MessageNode.new(val[0], val[2], val[4]) }
+  | IDENTIFIER "(" Arguments ")"        { result = MessageNode.new(nil, val[0], val[2]) }
   ;
 
   Arguments:
-    "(" ")"                             { result = [] }
-  | "(" Literal ")"                     { result = [ArgumentNode.new(nil, val[1])] }
+    /* nothing */                       { result = [] }
+  | Literal                             { result = [ArgumentNode.new(nil, val[0])] }
   ;
 
   Terminator:
