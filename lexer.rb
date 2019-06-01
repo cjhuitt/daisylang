@@ -26,7 +26,7 @@ class Lexer
             tokens << [:BLOCKEND, blocklevel]
             blocklevel -= 1
           end
-      end
+      end if @string_accumulator.nil?
       tokens += tokenize_line(line)
     end
     tokens
@@ -64,8 +64,8 @@ class Lexer
           tokens << [:STRING, @string_accumulator]
           @string_accumulator = nil
         else
-          @string_accumulator += chunk
-          return
+          @string_accumulator += chunk + "\n"
+          return tokens
         end
       end
 
@@ -80,7 +80,7 @@ class Lexer
           tokens << [:STRING, str]
           i += str.size + 2
           debug_out("Extracted \"#{str}\" (String)")
-        elsif str = sub[/\A"(.*)\z/, 1]
+        elsif str = sub[/\A"(.*)/, 1]
           @string_accumulator = str
           i += str.size + 2
         elsif identifier = sub[/\A(\w+)/, 1]
