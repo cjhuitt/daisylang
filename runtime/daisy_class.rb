@@ -1,11 +1,12 @@
 require 'daisy_object'
 
 class DaisyClass < DaisyObject
-  attr_accessor :runtime_methods
+  attr_accessor :runtime_methods, :runtime_superclass
 
-  def initialize()
+  def initialize(superclass=nil)
     super(Constants["Class"])
     @runtime_methods = {}
+    @runtime_superclass = superclass
   end
 
   def lookup(message)
@@ -21,7 +22,7 @@ class DaisyClass < DaisyObject
     @runtime_methods[name.to_s] = block
   end
 
-  def new
-    DaisyObject.new(self)
+  def new(value=nil)
+    DaisyObject.new(self, value)
   end
 end

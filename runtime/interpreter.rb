@@ -43,7 +43,7 @@ class Interpreter
     end
 
     def visit_StringNode(node)
-      node.value
+      Constants["String"].new(node.value)
     end
 
     def debug_print(message)
