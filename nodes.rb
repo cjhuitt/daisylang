@@ -11,3 +11,6 @@ end
 
 class MessageNode < Struct.new(:receiver, :message, :arguments)
 end
+
+class ArgumentNode < Struct.new(:label, :value)
+end

@@ -49,7 +49,7 @@ rule
 
   Arguments:
     "(" ")"                             { result = [] }
-  | "(" Literal ")"                     { result = [val[1]] }
+  | "(" Literal ")"                     { result = [ArgumentNode.new(nil, val[1])] }
   ;
 
   Terminator:
