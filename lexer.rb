@@ -7,10 +7,17 @@ class Lexer
       blocks = indent / 4
       if blocks == blocklevel + 1
         tokens << [:BLOCKSTART, blocks]
+        blocklevel = blocks
+      else blocks < blocklevel
+        while blocks < blocklevel
+          tokens << [:BLOCKEND, blocklevel]
+          blocklevel -= 1
+        end
       end
       tokens += tokenize_line(line)
+      tokens << [:NEWLINE, "\n"]
     end
-    tokens << [:NEWLINE, "\n"] if code.end_with? "\n"
+    tokens.pop unless code.end_with? "\n"
     tokens
   end
 

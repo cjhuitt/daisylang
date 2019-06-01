@@ -66,6 +66,14 @@ class LexerTest < Test::Unit::TestCase
     assert_equal expected, Lexer.new.tokenize("    ")
   end
 
+  def test_parses_block_closing
+    expected = [
+      [:BLOCKSTART, 1], [:NEWLINE, "\n"],
+      [:BLOCKEND, 1], ['(', "("]
+    ]
+    assert_equal expected, Lexer.new.tokenize("    \n(")
+  end
+
   def xtest_function
     code = <<-CODE
 Function Integer Summation(n: Integer)
