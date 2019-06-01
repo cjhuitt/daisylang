@@ -31,7 +31,7 @@ class ParserTest < Test::Unit::TestCase
         ArgumentNode.new(nil, IntegerNode.new(13))
       ])
     ])
-    assert_equal expected, Parser.new.parse("method(13)")
+    assert_equal expected, Parser.new.parse("method( 13 )")
   end
 
   def test_message_with_single_labeled_argument
@@ -40,7 +40,7 @@ class ParserTest < Test::Unit::TestCase
         ArgumentNode.new("foo", IntegerNode.new(13))
       ])
     ])
-    assert_equal expected, Parser.new.parse("method(foo: 13)")
+    assert_equal expected, Parser.new.parse("method( foo: 13 )")
   end
 
   def test_message_with_multiple_labeled_arguments
@@ -50,7 +50,7 @@ class ParserTest < Test::Unit::TestCase
         ArgumentNode.new("bar", IntegerNode.new(42))
       ])
     ])
-    assert_equal expected, Parser.new.parse("method(foo: 13, bar: 42)")
+    assert_equal expected, Parser.new.parse("method( foo: 13, bar: 42 )")
   end
 
   # Note: this is an error in the language, but the parser should make a
@@ -62,7 +62,7 @@ class ParserTest < Test::Unit::TestCase
         ArgumentNode.new(nil, IntegerNode.new(42))
       ])
     ])
-    assert_equal expected, Parser.new.parse("foo.method(13, 42)")
+    assert_equal expected, Parser.new.parse("foo.method( 13, 42 )")
   end
 
   def test_none

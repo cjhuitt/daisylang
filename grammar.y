@@ -60,13 +60,17 @@ rule
   ;
 
   Message:
-    Expression "." IDENTIFIER "(" Arguments ")" { result = SendMessageNode.new(val[0], val[2], val[4]) }
-  | IDENTIFIER "(" Arguments ")"        { result = SendMessageNode.new(nil, val[0], val[2]) }
+    Expression "." IDENTIFIER ArgumentList { result = SendMessageNode.new(val[0], val[2], val[3]) }
+  | IDENTIFIER ArgumentList             { result = SendMessageNode.new(nil, val[0], val[1]) }
+  ;
+
+  ArgumentList:
+    "(" ")" { result = [] }
+  | "(" WHITESPACE Arguments WHITESPACE ")" { result = val[2] }
   ;
 
   Arguments:
-    /* nothing */                       { result = [] }
-  | Argument                            { result = [val[0]] }
+    Argument                            { result = [val[0]] }
   | Arguments "," WHITESPACE Argument   { result = val[0] << val[3] }
   ;
 
