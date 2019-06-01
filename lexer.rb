@@ -22,7 +22,7 @@ class Lexer
   end
 
   private
-    KEYWORDS = ["Function", "return"]
+    KEYWORDS = ["Function", "None", "pass", "return"]
 
     def tokenize_line(line)
       # Bail early on an empty line
