@@ -16,10 +16,8 @@ interpreter = Interpreter.new
 if file = ARGV.first
   interpreter.eval(File.read(file))
 else
-  puts "Daisy Console (CTRL+C to quit)"
-  loop do
-    line = Readline::readline(">> ")
-    Readline::HISTORY.push(line)
+  puts "Daisy Console (CTRL+D to quit)"
+  while line = Readline::readline(">> ", true)
     value = interpreter.eval(line)
     rvalue = value.ruby_value
     puts "=> #{rvalue}" unless rvalue.nil?
