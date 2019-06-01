@@ -21,9 +21,10 @@ preclow
 rule
   Program:
     /* nothing */                       { result = Nodes.new([]) }
-  | Everything                          { result = val[0] }
+  | Expressions                         { result = val[0] }
   ;
-  Everything:
+
+  Expressions:
     Expression                          { result = Nodes.new([]) << val.first }
   ;
 
