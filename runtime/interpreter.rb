@@ -35,7 +35,7 @@ class Interpreter
       evaluated_args = node.arguments.map { |arg| arg.accept(self) }
       debug_print("Dispatching #{node.message} on #{receiver}")
       debug_print("Arguments: #{evaluated_args}")
-      receiver.call(node.message, evaluated_args)
+      receiver.dispatch(node.message, evaluated_args)
     end
 
     def visit_ArgumentNode(node)
