@@ -41,13 +41,17 @@ rule
   | Message                             { result = val.first }
   | Operation                           { result = val.first }
   | Return                              { result = val.first }
-  | IDENTIFIER                          { result = val[0] }
+  | Typename                            { result = val[0] }
   | Terminator                          { result = nil }
+  ;
+
+  Typename:
+  | IDENTIFIER                          { result = val[0] }
+  | NONE                                { result = NoneNode.new }
   ;
 
   Literal:
     INTEGER                             { result = IntegerNode.new(val[0]) }
-  | NONE                                { result = NoneNode.new }
   | PASS                                { result = PassNode.new }
   ;
 
