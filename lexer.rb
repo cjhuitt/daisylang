@@ -1,5 +1,16 @@
 class Lexer
   def tokenize(code)
-    return [[:INTEGER, 1]]
+    tokens = []
+    code.lines.each do |line|
+      tokens += tokenize_line(line)
+    end
+    tokens
   end
+
+  private
+    def tokenize_line(line)
+      tokens = []
+      tokens << [:INTEGER, 1]
+      tokens
+    end
 end
