@@ -65,7 +65,19 @@ rule
 
   # Need to be defined individually for the precedence table to take effect:
   Operation:
-    Expression WHITESPACE "+" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+    Expression WHITESPACE "+"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "-"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "*"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "/"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "^"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "<"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE ">"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "||" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "&&" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "<=" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE ">=" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "==" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "!=" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
   ;
 
   Return:
