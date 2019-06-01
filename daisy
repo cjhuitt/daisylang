@@ -7,9 +7,13 @@
 #
 # on Windows run with: ruby -I. daisy [options]
 
+require 'runtime/interpreter'
+
+interpreter = Interpreter.new
+
 # If a file is given we should run it.
 if file = ARGV.first
-  puts "We really should be running #{file}"
+  interpreter.eval(File.read(file))
 else
   puts "If we were working properly, we'd have a console here"
 end
