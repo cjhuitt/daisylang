@@ -4,15 +4,16 @@ class Lexer
     code.lines.each do |line|
       tokens += tokenize_line(line)
     end
+    tokens << [:NEWLINE, "\n"] if code.end_with? "\n"
     tokens
   end
 
   private
     def tokenize_line(line)
       # Bail early on an empty line
-      return [[:NEWLINE, "\n"]] if line.strip.empty?
+      return [] if line.strip.empty?
       tokens = []
-      tokens << [:INTEGER, 1]
+      tokens << [:INTEGER, line.to_i]
       tokens
     end
 end
