@@ -3,6 +3,7 @@ class Parser
 token IDENTIFIER
 token INTEGER
 token NEWLINE
+token WHITESPACE
 
 # Based on the C and C++ Operator Precedence Table:
 # http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Operator_precedence
@@ -54,7 +55,7 @@ rule
 
   Argument:
     Literal                             { result = ArgumentNode.new(nil, val[0]) }
-  | IDENTIFIER ":" Literal              { result = ArgumentNode.new(val[0], val[2]) }
+  | IDENTIFIER ":" WHITESPACE Literal   { result = ArgumentNode.new(val[0], val[3]) }
   ;
 
   Terminator:
