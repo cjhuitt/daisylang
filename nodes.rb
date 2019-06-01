@@ -12,7 +12,7 @@ end
 class ReturnNode < Struct.new(:value)
 end
 
-class MessageNode < Struct.new(:receiver, :message, :arguments)
+class SendMessageNode < Struct.new(:receiver, :message, :arguments)
 end
 
 class ArgumentNode < Struct.new(:label, :value)

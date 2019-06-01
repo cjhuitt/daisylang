@@ -9,7 +9,7 @@ class ParserTest < Test::Unit::TestCase
   def test_integer
     assert_equal Nodes.new([IntegerNode.new(7)]), Parser.new.parse("7")
   end
-  
+
   # Newlines are required for certain parses but don't need to be nodes
   # (yet, at least)
   def test_newline
@@ -21,13 +21,13 @@ class ParserTest < Test::Unit::TestCase
   end
 
   def test_message_no_arguments
-    assert_equal Nodes.new([MessageNode.new("variable", "method", [])]),
+    assert_equal Nodes.new([SendMessageNode.new("variable", "method", [])]),
       Parser.new.parse("variable.method()")
   end
 
   def test_message_with_single_unlabeled_argument
     expected = Nodes.new([
-      MessageNode.new(nil, "method", [
+      SendMessageNode.new(nil, "method", [
         ArgumentNode.new(nil, IntegerNode.new(13))
       ])
     ])
@@ -36,7 +36,7 @@ class ParserTest < Test::Unit::TestCase
 
   def test_message_with_single_labeled_argument
     expected = Nodes.new([
-      MessageNode.new(nil, "method", [
+      SendMessageNode.new(nil, "method", [
         ArgumentNode.new("foo", IntegerNode.new(13))
       ])
     ])
@@ -45,7 +45,7 @@ class ParserTest < Test::Unit::TestCase
 
   def test_message_with_multiple_labeled_arguments
     expected = Nodes.new([
-      MessageNode.new(nil, "method", [
+      SendMessageNode.new(nil, "method", [
         ArgumentNode.new("foo", IntegerNode.new(13)),
         ArgumentNode.new("bar", IntegerNode.new(42))
       ])
@@ -57,7 +57,7 @@ class ParserTest < Test::Unit::TestCase
   # representation of it and let the later analysis handle erroring
   def test_message_with_multiple_unlabeled_arguments
     expected = Nodes.new([
-      MessageNode.new("foo", "method", [
+      SendMessageNode.new("foo", "method", [
         ArgumentNode.new(nil, IntegerNode.new(13)),
         ArgumentNode.new(nil, IntegerNode.new(42))
       ])
@@ -72,7 +72,7 @@ class ParserTest < Test::Unit::TestCase
 
   def test_operators_are_messages
     expected = Nodes.new([
-      MessageNode.new(IntegerNode.new(73), "+", [
+      SendMessageNode.new(IntegerNode.new(73), "+", [
         ArgumentNode.new(nil, IntegerNode.new(42))
       ])
     ])

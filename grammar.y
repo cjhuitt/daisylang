@@ -48,8 +48,8 @@ rule
   ;
 
   Message:
-    Expression "." IDENTIFIER "(" Arguments ")" { result = MessageNode.new(val[0], val[2], val[4]) }
-  | IDENTIFIER "(" Arguments ")"        { result = MessageNode.new(nil, val[0], val[2]) }
+    Expression "." IDENTIFIER "(" Arguments ")" { result = SendMessageNode.new(val[0], val[2], val[4]) }
+  | IDENTIFIER "(" Arguments ")"        { result = SendMessageNode.new(nil, val[0], val[2]) }
   ;
 
   Arguments:
@@ -65,19 +65,19 @@ rule
 
   # Need to be defined individually for the precedence table to take effect:
   Operation:
-    Expression WHITESPACE "+"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "-"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "*"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "/"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "^"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "<"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE ">"  WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "||" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "&&" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "<=" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE ">=" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "==" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "!=" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+    Expression WHITESPACE "+"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "-"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "*"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "/"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "^"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "<"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE ">"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "||" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "&&" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "<=" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE ">=" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "==" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+  | Expression WHITESPACE "!=" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
   ;
 
   Return:
@@ -99,7 +99,7 @@ end
     @tokens = Lexer.new.tokenize(code)
     do_parse # Kickoff the parsing process
   end
-  
+
   def next_token
     @tokens.shift
   end
