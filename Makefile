@@ -8,9 +8,14 @@ tests:
 parser.rb: grammar.y
 	racc -o parser.rb grammar.y
 
-samples: hello
+samples: hello calc
 
 hello: samples/hello.daisy
 
+calc: samples/calc.daisy
+
 samples/hello.daisy: all
 	./daisy samples/hello.daisy
+
+samples/calc.daisy: all
+	./daisy samples/calc.daisy
