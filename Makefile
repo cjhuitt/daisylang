@@ -7,3 +7,10 @@ tests:
 
 parser.rb: grammar.y
 	racc -o parser.rb grammar.y
+
+samples: hello
+
+hello: samples/hello.daisy
+
+samples/hello.daisy: all
+	./daisy samples/hello.daisy
