@@ -11,7 +11,12 @@ class Interpreter
   end
 
   def eval(code)
-    puts @parser.parse(code)
+    nodes = @parser.parse(code)
+    nodes.accept(self)
+  end
+
+  def visit(node)
+    print "Visiting #{node}"
   end
 end
 

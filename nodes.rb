@@ -1,12 +1,22 @@
 
+module Visitable
+  def accept(visitor)
+    visitor.visit self
+  end
+end
+
 class Nodes < Struct.new(:nodes)
+  include Visitable
+
   def <<(node)
     nodes << node unless node.nil?
     self
   end
 end
 
-class LiteralNode < Struct.new(:value); end
+class LiteralNode < Struct.new(:value);
+  include Visitable
+end
 
 class IntegerNode < LiteralNode; end
 class StringNode < LiteralNode; end
@@ -24,10 +34,16 @@ class PassNode < LiteralNode
   end
 end
 
-class SendMessageNode < Struct.new(:receiver, :message, :arguments); end
+class SendMessageNode < Struct.new(:receiver, :message, :arguments);
+  include Visitable
+end
 
 class DefineMessageNode < Struct.new(:name, :return_type,
-                                     :argument_types, :body); end
+                                     :argument_types, :body);
+  include Visitable
+end
 
 
-class ArgumentNode < Struct.new(:label, :value); end
+class ArgumentNode < Struct.new(:label, :value);
+  include Visitable
+end
