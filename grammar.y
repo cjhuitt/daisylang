@@ -37,6 +37,7 @@ rule
   Expression:
     Literal                             { result = val.first }
   | Message                             { result = val.first }
+  | Operation                           { result = val.first }
   | Return                              { result = val.first }
   | IDENTIFIER                          { result = val[0] }
   | Terminator                          { result = nil }
@@ -60,6 +61,11 @@ rule
   Argument:
     Literal                             { result = ArgumentNode.new(nil, val[0]) }
   | IDENTIFIER ":" WHITESPACE Literal   { result = ArgumentNode.new(val[0], val[3]) }
+  ;
+
+  # Need to be defined individually for the precedence table to take effect:
+  Operation:
+    Expression WHITESPACE "+" WHITESPACE Expression { result = MessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
   ;
 
   Return:

@@ -63,4 +63,13 @@ class ParserTest < Test::Unit::TestCase
       Parser.new.parse("return 9")
   end
 
+  def test_operators_are_messages
+    expected = Nodes.new([
+      MessageNode.new(IntegerNode.new(73), "+", [
+        ArgumentNode.new(nil, IntegerNode.new(42))
+      ])
+    ])
+    assert_equal expected, Parser.new.parse("73 + 42")
+  end
+
 end
