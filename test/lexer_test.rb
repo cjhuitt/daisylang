@@ -10,7 +10,7 @@ class LexerTest < Test::Unit::TestCase
   end
 
   def test_string
-    assert_equal [[:STRING, "Hello"]], Lexer.new.tokenize('"Hello"')
+    assert_equal [[:STRING, "Greetings  fools"]], Lexer.new.tokenize('"Greetings  fools"')
   end
 
   def test_empty_line
@@ -57,7 +57,7 @@ class LexerTest < Test::Unit::TestCase
   def test_finds_multiple_tokens_on_a_line
     expected = [
       [:IDENTIFIER, "a"], [:WHITESPACE, " "], ['+', "+"],
-      [:WHITESPACE, " "], [:IDENTIFIER, "b"]
+      [:WHITESPACE, " "], [:IDENTIFIER, "b"], [:WHITESPACE, " "]
     ]
     assert_equal expected, Lexer.new.tokenize("a + b ")
   end
@@ -116,7 +116,7 @@ CODE
       [:STRING, "Hello World"], [:WHITESPACE, " "], [')', ")"],
       [:NEWLINE, "\n"]
     ]
-    assert_equal expected, Lexer.new(true).tokenize(code)
+    assert_equal expected, Lexer.new.tokenize(code)
   end
 
   # To Test
