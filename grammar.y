@@ -31,8 +31,16 @@ rule
 
   # Every type of expression supported by our language is defined here.
   Expression:
+    Literal                             { result = val.first }
+  | Terminator                          { result = nil }
+  ;
+
+  Literal:
     INTEGER                             { result = IntegerNode.new(val[0]) }
-  | NEWLINE                             { result = nil }
+  ;
+
+  Terminator:
+    NEWLINE
   ;
 
 end
