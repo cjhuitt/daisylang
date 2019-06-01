@@ -21,9 +21,9 @@ class Lexer
     tokens
   end
 
-  KEYWORDS = ["Function", "return"]
-
   private
+    KEYWORDS = ["Function", "return"]
+
     def tokenize_line(line)
       # Bail early on an empty line
       return [] if line.strip.empty?
@@ -41,8 +41,7 @@ class Lexer
     def tokenize_chunk(chunk)
       tokens = []
 
-      # Go through char by char until we match something, and jump forward at
-      # that point
+      # Go through by matched somethings
       i = 0
       while i < chunk.size
         sub = chunk[i..-1]
