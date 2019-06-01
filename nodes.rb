@@ -5,3 +5,6 @@ class Nodes < Struct.new(:nodes)
     self
   end
 end
+
+class IntegerNode < Struct.new(:value)
+end
