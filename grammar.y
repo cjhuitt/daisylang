@@ -54,6 +54,7 @@ rule
 
   Argument:
     Literal                             { result = ArgumentNode.new(nil, val[0]) }
+  | IDENTIFIER ":" Literal              { result = ArgumentNode.new(val[0], val[2]) }
   ;
 
   Terminator:
