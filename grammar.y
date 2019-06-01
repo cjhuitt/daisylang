@@ -11,6 +11,7 @@ token WHITESPACE
 prechigh
   left  '.'
   right '!'
+  left  '^'
   left  '*' '/'
   left  '+' '-'
   left  '>' '>=' '<' '<='
