@@ -1,5 +1,6 @@
 class Lexer
   def initialize(debug=false)
+    @string_accumulator = nil
     @debug = debug
   end
 
@@ -37,7 +38,11 @@ class Lexer
       line.split.each do |chunk|
         debug_out("Tokenizing chunk >>#{chunk}<<")
         tokens += tokenize_chunk(chunk)
-        tokens << [:WHITESPACE, " "]
+        if @string_accumulator.nil?
+          tokens << [:WHITESPACE, " "]
+        else
+          @string_accumulator += " "
+        end
       end
       tokens.pop
 
@@ -46,9 +51,21 @@ class Lexer
 
     def tokenize_chunk(chunk)
       tokens = []
-
-      # Go through by matched somethings
       i = 0
+
+      unless @string_accumulator.nil?
+        if str = chunk[/\A(.*)"/, 1]
+          i += str.size + 1
+          @string_accumulator += str;
+          debug_out("Extracted \"#{@string_accumulator}\" (String)")
+          tokens << [:STRING, @string_accumulator]
+          @string_accumulator = nil
+        else
+          @string_accumulator += chunk
+          return
+        end
+      end
+
       while i < chunk.size
         sub = chunk[i..-1]
         debug_out("Checking partial >>#{sub}<<")
@@ -60,6 +77,9 @@ class Lexer
           tokens << [:STRING, str]
           i += str.size + 2
           debug_out("Extracted \"#{str}\" (String)")
+        elsif str = sub[/\A"(.*)\z/, 1]
+          @string_accumulator = str
+          i += str.size + 2
         elsif identifier = sub[/\A(\w+)/, 1]
           if KEYWORDS.include? identifier
             tokens << [identifier.upcase.to_sym, identifier]

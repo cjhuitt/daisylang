@@ -113,7 +113,8 @@ print( "Hello World" )
 CODE
     expected = [
       [:IDENTIFIER, "print"], ['(', "("], [:WHITESPACE, " "],
-      [:STRING, "Hello World"], [:WHITESPACE, " "], [')', ")"]
+      [:STRING, "Hello World"], [:WHITESPACE, " "], [')', ")"],
+      [:NEWLINE, "\n"]
     ]
     assert_equal expected, Lexer.new(true).tokenize(code)
   end
