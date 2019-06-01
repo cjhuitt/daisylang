@@ -1,4 +1,4 @@
-default: all tests
+default: all tests hello
 
 all: parser.rb
 
