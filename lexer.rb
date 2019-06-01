@@ -9,6 +9,8 @@ class Lexer
 
   private
     def tokenize_line(line)
+      # Bail early on an empty line
+      return [[:NEWLINE, "\n"]] if line.chomp.empty?
       tokens = []
       tokens << [:INTEGER, 1]
       tokens

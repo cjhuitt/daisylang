@@ -5,6 +5,10 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:INTEGER, 1]], Lexer.new.tokenize("1")
   end
 
+  def test_newlines
+    assert_equal [[:NEWLINE, "\n"]], Lexer.new.tokenize("\n")
+  end
+
   def xtest_function
     code = <<-CODE
 Function Integer Summation(n: Integer)
