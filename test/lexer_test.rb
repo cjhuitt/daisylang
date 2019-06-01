@@ -49,12 +49,11 @@ class LexerTest < Test::Unit::TestCase
     assert_equal expected, Lexer.new.tokenize("a + b ")
   end
 
-  def xtest_function_decl_params
+  def test_finds_multiple_tokens_without_whitespace
     expected = [
-      ['(', "("], [:IDENTIFIER, "n"], [':', ":"],
-      [:WHITESPACE, " "], [:IDENTIFIER, "Integer"], [')',")"]
+      ['(', "("], [:IDENTIFIER, "b"], [')', ")"]
     ]
-    assert_equal expected, Lexer.new.tokenize("(n: Integer)")
+    assert_equal expected, Lexer.new.tokenize("(b)")
   end
 
   def xtest_function
