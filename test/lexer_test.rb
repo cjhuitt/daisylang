@@ -17,7 +17,10 @@ class LexerTest < Test::Unit::TestCase
   end
 
   def test_ignores_whitespace_before_newlines
-    assert_equal [[:NEWLINE, "\n"]], Lexer.new.tokenize("    \t \n")
+    expected = [
+      ['=', "="], [:NEWLINE, "\n"]
+    ]
+    assert_equal expected, Lexer.new.tokenize("=    \t \n")
   end
 
   def test_recognizes_keywords
@@ -56,6 +59,13 @@ class LexerTest < Test::Unit::TestCase
     assert_equal expected, Lexer.new.tokenize("(b)")
   end
 
+  def test_parses_block_opening
+    expected = [
+      [:BLOCKSTART, 1]
+    ]
+    assert_equal expected, Lexer.new.tokenize("    ")
+  end
+
   def xtest_function
     code = <<-CODE
 Function Integer Summation(n: Integer)
@@ -78,4 +88,11 @@ CODE
     ]
 
   end
+
+  # To Test
+  # Unindentation
+  # Illegal Indentation (too much indentation)
+  # More Keywords
+  # Multi-char operators
+  # Comments
 end

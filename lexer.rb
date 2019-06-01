@@ -1,7 +1,13 @@
 class Lexer
   def tokenize(code)
+    blocklevel = 0
     tokens = []
     code.lines.each do |line|
+      indent = line[/\A */].size
+      blocks = indent / 4
+      if blocks == blocklevel + 1
+        tokens << [:BLOCKSTART, blocks]
+      end
       tokens += tokenize_line(line)
     end
     tokens << [:NEWLINE, "\n"] if code.end_with? "\n"
