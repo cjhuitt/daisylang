@@ -36,7 +36,11 @@ class Interpreter
     end
 
     def visit_ArgumentNode(node)
-      puts "Visiting ArgumentNode"
+      [node.label, node.value.accept(self)]
+    end
+
+    def visit_StringNode(node)
+      node.value
     end
 end
 
