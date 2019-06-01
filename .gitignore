@@ -51,3 +51,6 @@ build-iPhoneSimulator/
 
 # Backup/swap/editing files created by editors
 *.swp
+
+# Generated files shouldn't be included:
+parser.rb
