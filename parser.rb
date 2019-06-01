@@ -11,7 +11,7 @@ require 'racc/parser.rb'
 
 class Parser < Racc::Parser
 
-module_eval(<<'...end grammar.y/module_eval...', 'grammar.y', 30)
+module_eval(<<'...end grammar.y/module_eval...', 'grammar.y', 41)
   def parse(code)
     @tokens = Lexer.new.tokenize(code)
     do_parse # Kickoff the parsing process
@@ -24,58 +24,62 @@ module_eval(<<'...end grammar.y/module_eval...', 'grammar.y', 30)
 ##### State transition tables begin ###
 
 racc_action_table = [
-     2,     3 ]
+     4,     5,     6 ]
 
 racc_action_check = [
-     1,     2 ]
+     0,     1,     5 ]
 
 racc_action_pointer = [
-   nil,     0,     1,   nil ]
+    -2,     1,   nil,   nil,   nil,     2,   nil ]
 
 racc_action_default = [
-    -1,    -2,    -2,     4 ]
+    -1,    -5,    -2,    -3,    -4,    -5,     7 ]
 
 racc_goto_table = [
-     1 ]
+     1,     2,     3 ]
 
 racc_goto_check = [
-     1 ]
+     1,     2,     3 ]
 
 racc_goto_pointer = [
-   nil,     0 ]
+   nil,     0,     1,     2 ]
 
 racc_goto_default = [
-   nil,   nil ]
+   nil,   nil,   nil,   nil ]
 
 racc_reduce_table = [
   0, 0, :racc_error,
-  0, 19, :_reduce_1 ]
+  0, 20, :_reduce_1,
+  1, 20, :_reduce_2,
+  1, 21, :_reduce_3,
+  1, 22, :_reduce_4 ]
 
-racc_reduce_n = 2
+racc_reduce_n = 5
 
-racc_shift_n = 4
+racc_shift_n = 7
 
 racc_token_table = {
   false => 0,
   :error => 1,
-  "." => 2,
-  "!" => 3,
-  "*" => 4,
-  "/" => 5,
-  "+" => 6,
-  "-" => 7,
-  ">" => 8,
-  ">=" => 9,
-  "<" => 10,
-  "<=" => 11,
-  "==" => 12,
-  "!=" => 13,
-  "&&" => 14,
-  "||" => 15,
-  "=" => 16,
-  "," => 17 }
+  :INTEGER => 2,
+  "." => 3,
+  "!" => 4,
+  "*" => 5,
+  "/" => 6,
+  "+" => 7,
+  "-" => 8,
+  ">" => 9,
+  ">=" => 10,
+  "<" => 11,
+  "<=" => 12,
+  "==" => 13,
+  "!=" => 14,
+  "&&" => 15,
+  "||" => 16,
+  "=" => 17,
+  "," => 18 }
 
-racc_nt_base = 18
+racc_nt_base = 19
 
 racc_use_result_var = true
 
@@ -98,6 +102,7 @@ Racc_arg = [
 Racc_token_to_s_table = [
   "$end",
   "error",
+  "INTEGER",
   "\".\"",
   "\"!\"",
   "\"*\"",
@@ -115,7 +120,9 @@ Racc_token_to_s_table = [
   "\"=\"",
   "\",\"",
   "$start",
-  "Program" ]
+  "Program",
+  "Everything",
+  "Expression" ]
 
 Racc_debug_parser = false
 
@@ -123,9 +130,30 @@ Racc_debug_parser = false
 
 # reduce 0 omitted
 
-module_eval(<<'.,.,', 'grammar.y', 19)
+module_eval(<<'.,.,', 'grammar.y', 21)
   def _reduce_1(val, _values, result)
      result = Nodes.new([]) 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'grammar.y', 22)
+  def _reduce_2(val, _values, result)
+     result = val[0] 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'grammar.y', 25)
+  def _reduce_3(val, _values, result)
+     result = Nodes.new(val) 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'grammar.y', 30)
+  def _reduce_4(val, _values, result)
+     result = IntegerNode.new(val[0]) 
     result
   end
 .,.,
