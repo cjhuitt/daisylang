@@ -9,5 +9,6 @@ root_self = Constants["Object"].new
 RootContext = Context.new(root_self)
 
 Constants["Object"].def :print do |receiver, args|
-  puts "#{args}"
+  message = args.map { |arg| arg[1].ruby_value }
+  puts message
 end
