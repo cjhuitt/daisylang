@@ -9,6 +9,10 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:NEWLINE, "\n"]], Lexer.new.tokenize("\n")
   end
 
+  def test_ignores_whitespace_before_newlines
+    assert_equal [[:NEWLINE, "\n"]], Lexer.new.tokenize("    \t \n")
+  end
+
   def xtest_function
     code = <<-CODE
 Function Integer Summation(n: Integer)
