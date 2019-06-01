@@ -48,6 +48,9 @@ class Lexer
         if integer = sub[/\A(\d+)/, 1]
           tokens << [:INTEGER, integer.to_i]
           i += integer.size
+        elsif str = sub[/\A"(.*)"/, 1]
+          tokens << [:STRING, str]
+          i += str.size + 2
         elsif identifier = sub[/\A(\w+)/, 1]
           if KEYWORDS.include? identifier
             tokens << [identifier.upcase.to_sym, identifier]
