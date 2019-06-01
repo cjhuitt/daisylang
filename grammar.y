@@ -3,6 +3,7 @@ class Parser
 token IDENTIFIER
 token INTEGER
 token NEWLINE
+token NONE
 token RETURN
 token WHITESPACE
 
@@ -45,6 +46,7 @@ rule
 
   Literal:
     INTEGER                             { result = IntegerNode.new(val[0]) }
+  | NONE                                { result = NoneNode.new }
   ;
 
   Message:
