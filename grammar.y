@@ -9,6 +9,7 @@ token NEWLINE
 token NONE
 token PASS
 token RETURN
+token STRING
 token WHITESPACE
 
 # Based on the C and C++ Operator Precedence Table:
@@ -56,6 +57,7 @@ rule
 
   Literal:
     INTEGER                             { result = IntegerNode.new(val[0]) }
+  | STRING                              { result = StringNode.new(val[0]) }
   | PASS                                { result = PassNode.new }
   ;
 
