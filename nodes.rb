@@ -6,30 +6,27 @@ class Nodes < Struct.new(:nodes)
   end
 end
 
-class IntegerNode < Struct.new(:value)
-end
+class LiteralNode < Struct.new(:value); end
 
-class NoneNode < Struct.new(:value)
+class IntegerNode < LiteralNode; end
+class ReturnNode < LiteralNode; end
+
+class NoneNode < LiteralNode
   def initialize
     super(nil)
   end
 end
 
-class PassNode < Struct.new(:value)
+class PassNode < LiteralNode
   def initialize
     super(nil)
   end
 end
 
-class ReturnNode < Struct.new(:value)
-end
+class SendMessageNode < Struct.new(:receiver, :message, :arguments); end
 
-class SendMessageNode < Struct.new(:receiver, :message, :arguments)
-end
-
-class DefineMessageNode < Struct.new(:name, :return_type, :argument_types, :body)
-end
+class DefineMessageNode < Struct.new(:name, :return_type,
+                                     :argument_types, :body); end
 
 
-class ArgumentNode < Struct.new(:label, :value)
-end
+class ArgumentNode < Struct.new(:label, :value); end
