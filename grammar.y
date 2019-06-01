@@ -1,5 +1,6 @@
 class Parser
 
+token IDENTIFIER
 token INTEGER
 token NEWLINE
 
@@ -32,11 +33,17 @@ rule
   # Every type of expression supported by our language is defined here.
   Expression:
     Literal                             { result = val.first }
+  | Message                             { result = val.first }
+  | IDENTIFIER                          { result = val[0] }
   | Terminator                          { result = nil }
   ;
 
   Literal:
     INTEGER                             { result = IntegerNode.new(val[0]) }
+  ;
+
+  Message:
+    Expression "." IDENTIFIER "(" ")"   { result = MessageNode.new(val[0], val[2], []) }
   ;
 
   Terminator:
