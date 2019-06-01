@@ -1,3 +1,3 @@
-require 'daisy_object'
+require 'daisy_class'
 require 'context'
 require 'bootstrap'
