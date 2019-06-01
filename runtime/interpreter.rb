@@ -42,6 +42,10 @@ class Interpreter
       [node.label, node.value.accept(self)]
     end
 
+    def visit_IntegerNode(node)
+      Constants["Integer"].new(node.value)
+    end
+
     def visit_StringNode(node)
       Constants["String"].new(node.value)
     end
