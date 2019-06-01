@@ -12,8 +12,14 @@ class Lexer
     def tokenize_line(line)
       # Bail early on an empty line
       return [] if line.strip.empty?
+
       tokens = []
-      tokens << [:INTEGER, line.to_i]
+      if integer = line[/\A(\d+)/, 1]
+        tokens << [:INTEGER, integer.to_i]
+      elsif identifier = line[/\A(\w+)/, 1]
+        tokens << [identifier.upcase.to_sym, identifier]
+      end
+
       tokens
     end
 end

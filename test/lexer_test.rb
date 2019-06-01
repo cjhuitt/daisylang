@@ -20,6 +20,10 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:NEWLINE, "\n"]], Lexer.new.tokenize("    \t \n")
   end
 
+  def test_recognizes_function_keyword
+    assert_equal [[:FUNCTION, "Function"]], Lexer.new.tokenize("Function")
+  end
+
   def xtest_function
     code = <<-CODE
 Function Integer Summation(n: Integer)
