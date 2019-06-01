@@ -6,3 +6,7 @@ Constants["Object"] = DaisyClass.new
 
 root_self = Constants["Object"].new
 RootContext = Context.new(root_self)
+
+Constants["Object"].def :print do |receiver, args|
+  puts "#{args}"
+end
