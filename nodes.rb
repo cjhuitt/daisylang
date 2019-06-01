@@ -9,6 +9,7 @@ end
 class LiteralNode < Struct.new(:value); end
 
 class IntegerNode < LiteralNode; end
+class StringNode < LiteralNode; end
 class ReturnNode < LiteralNode; end
 
 class NoneNode < LiteralNode

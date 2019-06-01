@@ -65,6 +65,18 @@ class ParserTest < Test::Unit::TestCase
     assert_equal expected, Parser.new.parse("foo.method( 13, 42 )")
   end
 
+  def test_call_print_of_string
+    code = <<-CODE
+print( "Hello World" )
+CODE
+    expected = Nodes.new([
+      SendMessageNode.new(nil, "print", [
+        ArgumentNode.new(nil, StringNode.new("Hello World"))
+      ])
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
   def test_none
     assert_equal Nodes.new([NoneNode.new]), Parser.new.parse("None")
   end
