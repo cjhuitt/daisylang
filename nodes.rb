@@ -15,6 +15,12 @@ class NoneNode < Struct.new(:value)
   end
 end
 
+class PassNode < Struct.new(:value)
+  def initialize
+    super(nil)
+  end
+end
+
 class ReturnNode < Struct.new(:value)
 end
 

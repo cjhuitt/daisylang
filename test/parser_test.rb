@@ -69,6 +69,10 @@ class ParserTest < Test::Unit::TestCase
     assert_equal Nodes.new([NoneNode.new]), Parser.new.parse("None")
   end
 
+  def test_pass
+    assert_equal Nodes.new([PassNode.new]), Parser.new.parse("pass")
+  end
+
   def test_return
     assert_equal Nodes.new([ReturnNode.new(IntegerNode.new(9))]),
       Parser.new.parse("return 9")
