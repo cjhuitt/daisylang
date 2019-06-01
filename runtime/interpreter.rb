@@ -6,9 +6,10 @@ require 'parser'
 require 'runtime'
 
 class Interpreter
-  def initialize
+  def initialize(debug=false)
     @parser = Parser.new
     @context = RootContext
+    @debug = debug
   end
 
   def eval(code)
@@ -23,7 +24,7 @@ class Interpreter
 
   private
     def visit_Nodes(node)
-      puts "Visiting Nodes"
+      debug_print("Visiting Nodes")
       node.nodes.each do |node|
         node.accept(self)
       end
@@ -32,7 +33,9 @@ class Interpreter
     def visit_SendMessageNode(node)
       receiver = node.receiver.nil? ? @context.current_self : node.receiver.accept(self)
       evaluated_args = node.arguments.map { |arg| arg.accept(self) }
-      puts "Visiting SendMessageNode"
+      debug_print("Dispatching #{node.message} on #{receiver}")
+      debug_print("Arguments: #{evaluated_args}")
+      receiver.call(node.message, evaluated_args)
     end
 
     def visit_ArgumentNode(node)
@@ -41,6 +44,10 @@ class Interpreter
 
     def visit_StringNode(node)
       node.value
+    end
+
+    def debug_print(message)
+      puts message if @debug
     end
 end
 
