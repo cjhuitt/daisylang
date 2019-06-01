@@ -44,6 +44,7 @@ rule
 
   Message:
     Expression "." IDENTIFIER "(" ")"   { result = MessageNode.new(val[0], val[2], []) }
+  | IDENTIFIER "(" ")"                  { result = MessageNode.new(nil, val[0], []) }
   ;
 
   Terminator:

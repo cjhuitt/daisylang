@@ -20,9 +20,14 @@ class ParserTest < Test::Unit::TestCase
     assert_equal Nodes.new([IntegerNode.new(7)]), Parser.new.parse("7\n")
   end
 
-  def test_call_function
+  def test_message_with_receiver
     assert_equal Nodes.new([MessageNode.new("variable", "method", [])]),
       Parser.new.parse("variable.method()")
+  end
+
+  def test_message_no_receiver
+    assert_equal Nodes.new([MessageNode.new(nil, "method", [])]),
+      Parser.new.parse("method()")
   end
 
 end
