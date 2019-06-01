@@ -9,6 +9,10 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:INTEGER, 1]], Lexer.new.tokenize("1")
   end
 
+  def test_string
+    assert_equal [[:STRING, "Hello"]], Lexer.new.tokenize('"Hello"')
+  end
+
   def test_empty_line
     assert_equal [[:NEWLINE, "\n"]], Lexer.new.tokenize("\n")
   end
