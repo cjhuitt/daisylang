@@ -24,6 +24,8 @@ class Lexer
         else
           tokens << [:IDENTIFIER, identifier]
         end
+      elsif op = line[/\A([:()*-\/])/, 1]
+          tokens << [op, op]
       end
 
       tokens

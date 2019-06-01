@@ -29,6 +29,15 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:IDENTIFIER, "Integer"]], Lexer.new.tokenize("Integer")
   end
 
+  def test_recognizes_operators
+    assert_equal [[':', ":"]], Lexer.new.tokenize(":")
+    assert_equal [['(', "("]], Lexer.new.tokenize("(")
+    assert_equal [[')', ")"]], Lexer.new.tokenize(")")
+    assert_equal [['*', "*"]], Lexer.new.tokenize("*")
+    assert_equal [['-', "-"]], Lexer.new.tokenize("-")
+    assert_equal [['/', "/"]], Lexer.new.tokenize("/")
+  end
+
   def xtest_function
     code = <<-CODE
 Function Integer Summation(n: Integer)
