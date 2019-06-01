@@ -33,7 +33,7 @@ class ParserTest < Test::Unit::TestCase
   def test_message_with_single_argument
     expected = Nodes.new([
       MessageNode.new(nil, "method", [
-        IntegerNode.new(13)
+        ArgumentNode.new(nil, IntegerNode.new(13))
       ])
     ])
     assert_equal expected, Parser.new.parse("method(13)")
