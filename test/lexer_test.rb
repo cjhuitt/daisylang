@@ -107,6 +107,17 @@ CODE
 
   end
 
+  def test_call_print_of_string
+    code = <<-CODE
+print( "Hello World" )
+CODE
+    expected = [
+      [:IDENTIFIER, "print"], ['(', "("], [:WHITESPACE, " "],
+      [:STRING, "Hello World"], [:WHITESPACE, " "], [')', ")"]
+    ]
+    assert_equal expected, Lexer.new(true).tokenize(code)
+  end
+
   # To Test
   # Illegal Indentation (too much indentation)
   # More Keywords

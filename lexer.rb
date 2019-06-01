@@ -73,6 +73,8 @@ class Lexer
           tokens << [op, op]
           i += 1
           debug_out("Extracted #{op} (Operator)")
+        else
+          raise "Unlexable chunk: >>#{sub}<<"
         end
       end
 
