@@ -26,6 +26,7 @@ rule
 
   Expressions:
     Expression                          { result = Nodes.new([]) << val.first }
+  | Expression Expression               { result = Nodes.new([]) << val[0] << val[1] }
   ;
 
   # Every type of expression supported by our language is defined here.

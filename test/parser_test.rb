@@ -16,4 +16,8 @@ class ParserTest < Test::Unit::TestCase
     assert_equal Nodes.new([]), Parser.new.parse("\n")
   end
 
+  def test_integer_with_newline
+    assert_equal Nodes.new([IntegerNode.new(7)]), Parser.new.parse("7\n")
+  end
+
 end
