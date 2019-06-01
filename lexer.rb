@@ -36,41 +36,24 @@ class Lexer
     KEYWORDS = ["Function", "None", "pass", "return"]
 
     def tokenize_line(line)
-      return tokenize_chunk(line)
-      tokens = []
-      line.split.each do |chunk|
-        debug_out("Tokenizing chunk >>#{chunk}<<")
-        tokens += tokenize_chunk(chunk)
-        if @string_accumulator.nil?
-          tokens << [:WHITESPACE, " "]
-        else
-          @string_accumulator += " "
-        end
-      end
-      tokens.pop
-
-      tokens
-    end
-
-    def tokenize_chunk(chunk)
       tokens = []
       i = 0
 
       unless @string_accumulator.nil?
-        if str = chunk[/\A(.*)"/, 1]
+        if str = line[/\A(.*)"/, 1]
           i += str.size + 1
           @string_accumulator += str;
           debug_out("Extracted \"#{@string_accumulator}\" (String)")
           tokens << [:STRING, @string_accumulator]
           @string_accumulator = nil
         else
-          @string_accumulator += chunk + "\n"
+          @string_accumulator += line + "\n"
           return tokens
         end
       end
 
-      while i < chunk.size
-        sub = chunk[i..-1]
+      while i < line.size
+        sub = line[i..-1]
         debug_out("Checking partial >>#{sub}<<")
         if integer = sub[/\A(\d+)/, 1]
           tokens << [:INTEGER, integer.to_i]
