@@ -8,7 +8,7 @@ class Lexer
     tokens
   end
 
-  KEYWORDS = ["Function"]
+  KEYWORDS = ["Function", "return"]
 
   private
     def tokenize_line(line)

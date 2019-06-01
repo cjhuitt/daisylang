@@ -24,6 +24,10 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:FUNCTION, "Function"]], Lexer.new.tokenize("Function")
   end
 
+  def test_recognizes_return_keyword
+    assert_equal [[:RETURN, "return"]], Lexer.new.tokenize("return")
+  end
+
   def test_recognizes_identifiers
     assert_equal [[:IDENTIFIER, "Integer"]], Lexer.new.tokenize("Integer")
   end
