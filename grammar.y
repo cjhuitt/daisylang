@@ -1,6 +1,7 @@
 class Parser
 
 token INTEGER
+token NEWLINE
 
 # Based on the C and C++ Operator Precedence Table:
 # http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Operator_precedence
@@ -23,12 +24,13 @@ rule
   | Everything                          { result = val[0] }
   ;
   Everything:
-    Expression                          { result = Nodes.new(val) }
+    Expression                          { result = Nodes.new([]) << val.first }
   ;
 
   # Every type of expression supported by our language is defined here.
   Expression:
     INTEGER                             { result = IntegerNode.new(val[0]) }
+  | NEWLINE                             { result = nil }
   ;
 
 end
