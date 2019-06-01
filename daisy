@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby -I.
+# A daisy executor
+#
+# usage:
+#   ./daisy example.daisy # to run a file
+#   ./daisy               # to start an interactive console
+#
+# on Windows run with: ruby -I. daisy [options]
+
+# If a file is given we should run it.
+if file = ARGV.first
+  puts "We really should be running #{file}"
+else
+  puts "If we were working properly, we'd have a console here"
+end
+
