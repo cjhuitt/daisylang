@@ -3,6 +3,7 @@ class Parser
 token IDENTIFIER
 token INTEGER
 token NEWLINE
+token RETURN
 token WHITESPACE
 
 # Based on the C and C++ Operator Precedence Table:
@@ -35,6 +36,7 @@ rule
   Expression:
     Literal                             { result = val.first }
   | Message                             { result = val.first }
+  | Return                              { result = val.first }
   | IDENTIFIER                          { result = val[0] }
   | Terminator                          { result = nil }
   ;
@@ -57,6 +59,10 @@ rule
   Argument:
     Literal                             { result = ArgumentNode.new(nil, val[0]) }
   | IDENTIFIER ":" WHITESPACE Literal   { result = ArgumentNode.new(val[0], val[3]) }
+  ;
+
+  Return:
+    RETURN WHITESPACE Expression        { result = ReturnNode.new(val[2]) }
   ;
 
   Terminator:
