@@ -31,16 +31,16 @@ rule
   ;
 
   Expressions:
-    Expression                          { result = Nodes.new([]) << val.first }
+    Expression                          { result = Nodes.new([]) << val[0] }
   | Expressions Expression              { result = val[0] << val[1] }
   ;
 
   # Every type of expression supported by our language is defined here.
   Expression:
-    Literal                             { result = val.first }
-  | Message                             { result = val.first }
-  | Operation                           { result = val.first }
-  | Return                              { result = val.first }
+    Literal                             { result = val[0] }
+  | Message                             { result = val[0] }
+  | Operation                           { result = val[0] }
+  | Return                              { result = val[0] }
   | Typename                            { result = val[0] }
   | Terminator                          { result = nil }
   ;
