@@ -37,7 +37,6 @@ rule
   Expressions:
     Expression                          { result = Nodes.new([]) << val[0] }
   | Expressions Expression              { result = val[0] << val[1] }
-  | Expressions Terminator Expression   { result = val[0] << val[2] }
   | Expressions Terminator              { result = val[0] }
   | Terminator                          { result = Nodes.new([]) }
   ;
