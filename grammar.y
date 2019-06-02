@@ -39,6 +39,7 @@ rule
   | Expressions Expression              { result = val[0] << val[1] }
   | Expressions Terminator Expression   { result = val[0] << val[2] }
   | Expressions Terminator              { result = val[0] }
+  | Terminator                          { result = Nodes.new([]) }
   ;
 
   # Every type of expression supported by our language is defined here.
@@ -50,7 +51,6 @@ rule
   | Define                              { result = val[0] }
   | Return                              { result = val[0] }
   | GetVariable                         { result = val[0] }
-  | Terminator                          { result = nil }
   | "(" Expression ")"                  { result = val[1] }
   ;
 
