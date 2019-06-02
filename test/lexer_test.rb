@@ -57,8 +57,8 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [['^', " ^ "]], Lexer.new.tokenize(" ^ ")
     assert_equal [[':', ": "]], Lexer.new.tokenize(": ")
     assert_equal [[',', ", "]], Lexer.new.tokenize(", ")
-    assert_equal [['(', "( "]], Lexer.new.tokenize("( ")
-    assert_equal [[')', " )"]], Lexer.new.tokenize(" )")
+    assert_equal [['( ', "( "]], Lexer.new.tokenize("( ")
+    assert_equal [[' )', " )"]], Lexer.new.tokenize(" )")
     assert_equal [['(', "("]], Lexer.new.tokenize("(")
     assert_equal [[')', ")"]], Lexer.new.tokenize(")")
   end
@@ -118,9 +118,9 @@ Function Integer Summation( n: Integer )
 CODE
     expected = [
       [:FUNCTION, "Function"], [:IDENTIFIER, "Integer"],
-          [:IDENTIFIER, "Summation"], ['(', "( "],
+          [:IDENTIFIER, "Summation"], ['( ', "( "],
           [:IDENTIFIER, "n"], [':', ": "],
-          [:IDENTIFIER, "Integer"], [')', " )"], [:NEWLINE, "\n"],
+          [:IDENTIFIER, "Integer"], [' )', " )"], [:NEWLINE, "\n"],
       [:BLOCKSTART, 1],
         [:RETURN, "return"], [:IDENTIFIER, "n"],
           ['*', " * "], ['(', "("], [:IDENTIFIER, "n"],
@@ -136,8 +136,8 @@ CODE
 print( "Hello World" )
 CODE
     expected = [
-      [:IDENTIFIER, "print"], ['(', "( "],
-      [:STRING, "Hello World"], [')', " )"],
+      [:IDENTIFIER, "print"], ['( ', "( "],
+      [:STRING, "Hello World"], [' )', " )"],
       [:NEWLINE, "\n"]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
@@ -156,10 +156,10 @@ CODE
 Greet( name: "Caleb", greeting: "Hey" )
 CODE
     expected = [
-      [:IDENTIFIER, "Greet"], ['(', "( "],
+      [:IDENTIFIER, "Greet"], ['( ', "( "],
       [:IDENTIFIER, "name"], [':', ": "], [:STRING, "Caleb"], [',', ", "],
       [:IDENTIFIER, "greeting"], [':', ": "], [:STRING, "Hey"],
-      [')', " )"], [:NEWLINE, "\n"]
+      [' )', " )"], [:NEWLINE, "\n"]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
   end
