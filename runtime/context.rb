@@ -1,6 +1,7 @@
 class Context
   attr_reader :previous_context, :current_self, :current_class
   attr_accessor :interpreter, :defined_types, :locals
+  attr_accessor :return_type, :return_value, :should_return
 
   def initialize(prev_context, current_self, current_class=current_self.runtime_class)
     @previous_context = prev_context
@@ -9,6 +10,9 @@ class Context
     @interpreter = interpreter
     @defined_types = {}
     @locals = {}
+    @return_type = Constants["None"]
+    @return_value = Constants["none"]
+    @should_return = false
   end
 
   def interpreter()

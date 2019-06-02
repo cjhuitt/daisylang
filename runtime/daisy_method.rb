@@ -17,10 +17,11 @@ class DaisyMethod < DaisyObject
     arglist(args).each do |name, value|
       context.locals[name] = value
     end
+    context.return_type = @return_type
 
-    result = @body.accept(interpreter)
+    @body.accept(interpreter)
     interpreter.pop_context
-    result
+    context.return_value
   end
 
   private

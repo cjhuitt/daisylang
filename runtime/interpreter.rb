@@ -40,6 +40,9 @@ class Interpreter
       return_val = nil
       node.nodes.each do |node|
         return_val = node.accept(self)
+        if @context.should_return
+          return return_val || Constants["none"]
+        end
       end
       return_val || Constants["none"]
     end
@@ -107,6 +110,8 @@ class Interpreter
     def visit_ReturnNode(node)
       val = node.expression.accept(self)
       debug_print("Return node #{val}")
+      @context.return_value = val
+      @context.should_return = true
       val
     end
 
