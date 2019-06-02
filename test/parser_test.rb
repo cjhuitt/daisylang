@@ -102,13 +102,16 @@ CODE
     assert_equal expected, Parser.new.parse("(a + b) + c")
   end
 
-  def test_operators_are_messages
+  def test_addition_operator_ordering
     expected = Nodes.new([
-      SendMessageNode.new(IntegerNode.new(73), "+", [
-        ArgumentNode.new(nil, IntegerNode.new(42))
-      ])
+      SendMessageNode.new(
+        SendMessageNode.new(GetVariableNode.new("a"), "+", [
+          ArgumentNode.new(nil, GetVariableNode.new("b"))
+        ]), "+",
+        [ArgumentNode.new(nil, GetVariableNode.new("c"))]
+      )
     ])
-    assert_equal expected, Parser.new.parse("73 + 42")
+    assert_equal expected, Parser.new.parse("a + b + c")
   end
 
   def test_if_expression
