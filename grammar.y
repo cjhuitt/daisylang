@@ -36,7 +36,8 @@ rule
 
   Expressions:
     Expression                          { result = Nodes.new([]) << val[0] }
-  | Expressions Expression              { result = val[0] << val[1] }
+  | Expressions Terminator Expression   { result = val[0] << val[2] }
+  | Expressions Terminator              { result = val[0] }
   ;
 
   # Every type of expression supported by our language is defined here.
@@ -47,12 +48,12 @@ rule
   | Define                              { result = val[0] }
   | Return                              { result = val[0] }
   | Typename                            { result = val[0] }
+  | GetVariable                         { result = val[0] }
   | Terminator                          { result = nil }
   ;
 
   Typename:
-    IDENTIFIER                          { result = val[0] }
-  | NONE                                { result = NoneNode.new }
+    NONE                                { result = NoneNode.new }
   ;
 
   Literal:
@@ -108,6 +109,10 @@ rule
 
   Return:
     RETURN WHITESPACE Expression        { result = ReturnNode.new(val[2]) }
+  ;
+
+  GetVariable:
+    IDENTIFIER                          { result = GetVariableNode.new(val[0]) }
   ;
 
   Terminator:

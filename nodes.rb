@@ -47,3 +47,7 @@ end
 class ArgumentNode < Struct.new(:label, :value);
   include Visitable
 end
+
+class GetVariableNode < Struct.new(:id)
+  include Visitable
+end

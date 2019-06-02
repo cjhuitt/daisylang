@@ -20,8 +20,12 @@ class ParserTest < Test::Unit::TestCase
     assert_equal Nodes.new([IntegerNode.new(7)]), Parser.new.parse("7\n")
   end
 
+  def test_variable
+    assert_equal Nodes.new([GetVariableNode.new("q")]), Parser.new.parse("q")
+  end
+
   def test_message_no_arguments
-    assert_equal Nodes.new([SendMessageNode.new("variable", "method", [])]),
+    assert_equal Nodes.new([SendMessageNode.new(GetVariableNode.new("variable"), "method", [])]),
       Parser.new.parse("variable.method()")
   end
 
@@ -57,7 +61,7 @@ class ParserTest < Test::Unit::TestCase
   # representation of it and let the later analysis handle erroring
   def test_message_with_multiple_unlabeled_arguments
     expected = Nodes.new([
-      SendMessageNode.new("foo", "method", [
+      SendMessageNode.new(GetVariableNode.new("foo"), "method", [
         ArgumentNode.new(nil, IntegerNode.new(13)),
         ArgumentNode.new(nil, IntegerNode.new(42))
       ])
