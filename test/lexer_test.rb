@@ -137,7 +137,7 @@ CODE
       [:IDENTIFIER, "a"], ['.', "."], [:IDENTIFIER, "b"],
       ['()', "()"]
     ]
-    assert_equal expected, Lexer.new(true).tokenize("a.b()")
+    assert_equal expected, Lexer.new.tokenize("a.b()")
   end
 
   def test_call_method_with_multiple_parameters
