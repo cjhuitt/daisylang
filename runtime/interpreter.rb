@@ -44,6 +44,12 @@ class Interpreter
       [node.label, node.value.accept(self)]
     end
 
+    def visit_DefineMessageNode(node)
+      returning = @context.defined_types[node.return_type]
+      method = DaisyMethod.new(node.name, returning, node.parameters, node.body)
+      @context.current_class.runtime_methods[method.name] = method
+    end
+
     def visit_IntegerNode(node)
       Constants["Integer"].new(node.value)
     end
