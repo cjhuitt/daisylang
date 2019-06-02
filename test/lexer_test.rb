@@ -96,14 +96,15 @@ class LexerTest < Test::Unit::TestCase
 
   def test_lexes_block_opening
     expected = [
+      [:IDENTIFIER, "a"],
       [:BLOCKSTART, 1]
     ]
-    assert_equal expected, Lexer.new.tokenize("    ")
+    assert_equal expected, Lexer.new.tokenize("a\n    ")
   end
 
   def test_lexes_block_closing
     expected = [
-      [:BLOCKSTART, 1], [:NEWLINE, "\n"],
+      [:BLOCKSTART, 1],
       [:BLOCKEND, 1], ['(', "("]
     ]
     assert_equal expected, Lexer.new.tokenize("    \n(")

@@ -124,7 +124,7 @@ rule
   ;
 
   Block:
-    NEWLINE BLOCKSTART Expressions BLOCKEND { result = val[2] }
+    BLOCKSTART Expressions BLOCKEND { result = val[1] }
   ;
 
   Return:
