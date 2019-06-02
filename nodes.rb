@@ -20,7 +20,6 @@ end
 
 class IntegerNode < LiteralNode; end
 class StringNode < LiteralNode; end
-class ReturnNode < LiteralNode; end
 
 class NoneNode < LiteralNode
   def initialize
@@ -34,20 +33,23 @@ class PassNode < LiteralNode
   end
 end
 
-class SendMessageNode < Struct.new(:receiver, :message, :arguments);
+class SendMessageNode < Struct.new(:receiver, :message, :arguments)
   include Visitable
 end
 
 class DefineMessageNode < Struct.new(:name, :return_type,
-                                     :parameters, :body);
+                                     :parameters, :body)
+  include Visitable
+end
+class ReturnNode < Struct.new(:expression)
   include Visitable
 end
 
-class ArgumentNode < Struct.new(:label, :value);
+class ArgumentNode < Struct.new(:label, :value)
   include Visitable
 end
 
-class VariableNode < Struct.new(:label, :type, :value);
+class VariableNode < Struct.new(:label, :type, :value)
   include Visitable
 end
 class ParameterNode < VariableNode; end
