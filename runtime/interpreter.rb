@@ -28,8 +28,9 @@ class Interpreter
 
   def visit(node)
     dispatch = "visit_#{node.class}".to_sym
+    debug_print("visiting #{node.class}")
     retval = send(dispatch, node)
-    debug_print("visit #{node.class} #{retval}")
+    debug_print("after visit #{node.class} got #{retval}")
     retval
   end
 
@@ -52,7 +53,7 @@ class Interpreter
     end
 
     def visit_ArgumentNode(node)
-      debug_print("Argument node: #{node.label}")
+      debug_print("Argument node: #{node.label} (#{node.value})")
       [node.label, node.value.accept(self)]
     end
 
@@ -94,16 +95,19 @@ class Interpreter
     end
 
     def visit_IfNode(node)
-      puts "Need to implement if"
       if node.condition.accept(self).ruby_value
+        debug_print("If node: triggered")
         node.body.accept(self)
       else
+        debug_print("If node: nogo")
         Constants["none"]
       end
     end
 
     def visit_ReturnNode(node)
-      node.expression.accept(self)
+      val = node.expression.accept(self)
+      debug_print("Return node #{val}")
+      val
     end
 
     def visit_GetVariableNode(node)
