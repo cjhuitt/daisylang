@@ -10,7 +10,6 @@ token NONE
 token PASS
 token RETURN
 token STRING
-token WHITESPACE
 
 # Based on the C and C++ Operator Precedence Table:
 # http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Operator_precedence
@@ -99,7 +98,7 @@ rule
   ;
 
   Define:
-    FUNCTION WHITESPACE Typename WHITESPACE IDENTIFIER "()" NEWLINE Block { result = DefineMessageNode.new(val[4], val[2], [], val[7]) }
+    FUNCTION Typename IDENTIFIER "()" NEWLINE Block { result = DefineMessageNode.new(val[2], val[1], [], val[5]) }
   ;
 
   Block:
@@ -107,7 +106,7 @@ rule
   ;
 
   Return:
-    RETURN WHITESPACE Expression        { result = ReturnNode.new(val[2]) }
+    RETURN Expression        { result = ReturnNode.new(val[1]) }
   ;
 
   Terminator:

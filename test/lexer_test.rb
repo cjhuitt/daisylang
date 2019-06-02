@@ -65,7 +65,7 @@ class LexerTest < Test::Unit::TestCase
   def test_finds_multiple_tokens_on_a_line
     expected = [
       [:IDENTIFIER, "a"], ['+', " + "],
-      [:IDENTIFIER, "b"], [:WHITESPACE, " "]
+      [:IDENTIFIER, "b"]
     ]
     assert_equal expected, Lexer.new.tokenize("a + b ")
   end
@@ -106,12 +106,12 @@ Function Integer Summation( n: Integer )
 
 CODE
     expected = [
-      [:FUNCTION, "Function"], [:WHITESPACE, " "], [:IDENTIFIER, "Integer"],
-          [:WHITESPACE, " "], [:IDENTIFIER, "Summation"], ['(', "( "],
+      [:FUNCTION, "Function"], [:IDENTIFIER, "Integer"],
+          [:IDENTIFIER, "Summation"], ['(', "( "],
           [:IDENTIFIER, "n"], [':', ": "],
           [:IDENTIFIER, "Integer"], [')', " )"], [:NEWLINE, "\n"],
       [:BLOCKSTART, 1],
-        [:RETURN, "return"], [:WHITESPACE, " "], [:IDENTIFIER, "n"],
+        [:RETURN, "return"], [:IDENTIFIER, "n"],
           ['*', " * "], ['(', "("], [:IDENTIFIER, "n"],
           ['-', " - "], [:INTEGER, 1], [')', ")"],
           ['/', " / "], [:INTEGER, 2],
