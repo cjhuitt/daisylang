@@ -54,7 +54,8 @@ rule
   ;
 
   Typename:
-    NONETYPE                            { result = NoneNode.new }
+    IDENTIFIER                          { result = val[0] }
+  | NONETYPE                            { result = NoneNode.new }
   ;
 
   Literal:
