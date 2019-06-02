@@ -9,6 +9,7 @@ class Interpreter
   def initialize(debug=false)
     @parser = Parser.new
     @context = RootContext
+    @context.interpreter = self
     @debug = debug
   end
 
@@ -37,7 +38,7 @@ class Interpreter
       evaluated_args = node.arguments.map { |arg| arg.accept(self) }
       debug_print("Dispatching #{node.message} on #{receiver}")
       debug_print("Arguments: #{evaluated_args}")
-      receiver.dispatch(node.message, evaluated_args)
+      receiver.dispatch(@context, node.message, evaluated_args)
     end
 
     def visit_ArgumentNode(node)
@@ -56,6 +57,18 @@ class Interpreter
 
     def visit_StringNode(node)
       Constants["String"].new(node.value)
+    end
+
+    def visit_IfNode(node)
+      puts "Need to implement if"
+      return Constants["none"]
+      if node.condition.accept(self).ruby_value
+        node.body.accept(self)
+      end
+    end
+
+    def visit_ReturnNode(node)
+      puts "Need to implement return"
     end
 
     def debug_print(message)

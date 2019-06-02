@@ -7,9 +7,9 @@ class DaisyObject
     @ruby_value = ruby_value
   end
 
-  def dispatch(message, args)
+  def dispatch(context, message, args)
     method = @runtime_class.lookup(message)
-    return method.call(self, args) unless method.nil?
+    return method.call(context.interpreter, self, args) unless method.nil?
 
     method = @runtime_class.lookup_dispatch() if method.nil?
     method.call(self, message, args) unless method.nil?

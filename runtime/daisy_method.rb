@@ -10,9 +10,9 @@ class DaisyMethod < DaisyObject
     @body = body
   end
 
-  def call(receiver, args)
-    puts "Need to implement calling #{@name}"
-    @return_type.new
+  def call(interpreter, receiver, args)
+    puts "Need to appropriately implement calling #{@name}"
+    @body.accept(interpreter)
   end
 end
 
