@@ -67,8 +67,8 @@ rule
   ;
 
   ArgumentList:
-    "(" ")" { result = [] }
-  | "(" WHITESPACE Arguments WHITESPACE ")" { result = val[2] }
+    "()"                                { result = [] }
+  | "(" Arguments ")"                   { result = val[1] }
   ;
 
   Arguments:
@@ -99,7 +99,7 @@ rule
   ;
 
   Define:
-    FUNCTION WHITESPACE Typename WHITESPACE IDENTIFIER "(" ")" NEWLINE Block { result = DefineMessageNode.new(val[4], val[2], [], val[8]) }
+    FUNCTION WHITESPACE Typename WHITESPACE IDENTIFIER "()" NEWLINE Block { result = DefineMessageNode.new(val[4], val[2], [], val[7]) }
   ;
 
   Block:
