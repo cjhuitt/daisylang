@@ -31,9 +31,9 @@ class LexerTest < Test::Unit::TestCase
 
   def test_ignores_whitespace_before_newlines
     expected = [
-      ['=', "="], [:NEWLINE, "\n"]
+      [:IDENTIFIER, "a"], [:NEWLINE, "\n"]
     ]
-    assert_equal expected, Lexer.new.tokenize("=    \t \n")
+    assert_equal expected, Lexer.new.tokenize("a    \t \n")
   end
 
   def test_recognizes_keywords
@@ -49,15 +49,18 @@ class LexerTest < Test::Unit::TestCase
   end
 
   def test_recognizes_simple_operators
-    assert_equal [[':', ":"]], Lexer.new.tokenize(":")
+    assert_equal [['=', " = "]], Lexer.new.tokenize(" = ")
+    assert_equal [['+', " + "]], Lexer.new.tokenize(" + ")
+    assert_equal [['-', " - "]], Lexer.new.tokenize(" - ")
+    assert_equal [['*', " * "]], Lexer.new.tokenize(" * ")
+    assert_equal [['/', " / "]], Lexer.new.tokenize(" / ")
+    assert_equal [['^', " ^ "]], Lexer.new.tokenize(" ^ ")
+    assert_equal [[':', ": "]], Lexer.new.tokenize(": ")
+    assert_equal [[',', ", "]], Lexer.new.tokenize(", ")
+    assert_equal [['(', "( "]], Lexer.new.tokenize("( ")
+    assert_equal [[')', " )"]], Lexer.new.tokenize(" )")
     assert_equal [['(', "("]], Lexer.new.tokenize("(")
     assert_equal [[')', ")"]], Lexer.new.tokenize(")")
-    assert_equal [['=', "="]], Lexer.new.tokenize("=")
-    assert_equal [['+', "+"]], Lexer.new.tokenize("+")
-    assert_equal [['-', "-"]], Lexer.new.tokenize("-")
-    assert_equal [['*', "*"]], Lexer.new.tokenize("*")
-    assert_equal [['/', "/"]], Lexer.new.tokenize("/")
-    assert_equal [['^', "^"]], Lexer.new.tokenize("^")
   end
 
   def test_recognizes_multichar_operators
@@ -71,10 +74,17 @@ class LexerTest < Test::Unit::TestCase
 
   def test_finds_multiple_tokens_on_a_line
     expected = [
-      [:IDENTIFIER, "a"], [:WHITESPACE, " "], ['+', "+"],
-      [:WHITESPACE, " "], [:IDENTIFIER, "b"], [:WHITESPACE, " "]
+      [:IDENTIFIER, "a"], ['+', " + "],
+      [:IDENTIFIER, "b"]
     ]
     assert_equal expected, Lexer.new.tokenize("a + b ")
+  end
+
+  def test_finds_multiple_strings_on_a_line
+    expected = [
+      [:STRING, "a"], ['+', " + "], [:STRING, "b"]
+    ]
+    assert_equal expected, Lexer.new.tokenize('"a" + "b"')
   end
 
   def test_finds_multiple_tokens_without_whitespace
@@ -101,25 +111,23 @@ class LexerTest < Test::Unit::TestCase
 
   def test_function
     code = <<-CODE
-Function Integer Summation(n: Integer)
+Function Integer Summation( n: Integer )
     return n * (n - 1) / 2
 
 CODE
     expected = [
-      [:FUNCTION, "Function"], [:WHITESPACE, " "], [:IDENTIFIER, "Integer"],
-          [:WHITESPACE, " "], [:IDENTIFIER, "Summation"], ['(', "("],
-          [:IDENTIFIER, "n"], [':', ":"], [:WHITESPACE, " "],
-          [:IDENTIFIER, "Integer"], [')', ")"], [:NEWLINE, "\n"],
+      [:FUNCTION, "Function"], [:IDENTIFIER, "Integer"],
+          [:IDENTIFIER, "Summation"], ['(', "( "],
+          [:IDENTIFIER, "n"], [':', ": "],
+          [:IDENTIFIER, "Integer"], [')', " )"], [:NEWLINE, "\n"],
       [:BLOCKSTART, 1],
-        [:RETURN, "return"], [:WHITESPACE, " "], [:IDENTIFIER, "n"],
-          [:WHITESPACE, " "], ['*', "*"], [:WHITESPACE, " "],
-          ['(', "("], [:IDENTIFIER, "n"], [:WHITESPACE, " "],
-          ['-', "-"], [:INTEGER, 1], [')', ")"], [:WHITESPACE, " "],
-          ['/', "/"], [:WHITESPACE, " "], [:INTEGER, 2],
+        [:RETURN, "return"], [:IDENTIFIER, "n"],
+          ['*', " * "], ['(', "("], [:IDENTIFIER, "n"],
+          ['-', " - "], [:INTEGER, 1], [')', ")"],
+          ['/', " / "], [:INTEGER, 2],
           [:NEWLINE, "\n"],
       [:BLOCKEND, 1], [:NEWLINE, "\n"]
     ]
-
   end
 
   def test_call_print_of_string
@@ -127,9 +135,30 @@ CODE
 print( "Hello World" )
 CODE
     expected = [
-      [:IDENTIFIER, "print"], ['(', "("], [:WHITESPACE, " "],
-      [:STRING, "Hello World"], [:WHITESPACE, " "], [')', ")"],
+      [:IDENTIFIER, "print"], ['(', "( "],
+      [:STRING, "Hello World"], [')', " )"],
       [:NEWLINE, "\n"]
+    ]
+    assert_equal expected, Lexer.new.tokenize(code)
+  end
+
+  def test_call_method_on_variable
+    expected = [
+      [:IDENTIFIER, "a"], ['.', "."], [:IDENTIFIER, "b"],
+      ['()', "()"]
+    ]
+    assert_equal expected, Lexer.new.tokenize("a.b()")
+  end
+
+  def test_call_method_with_multiple_parameters
+    code = <<-CODE
+Greet( name: "Caleb", greeting: "Hey" )
+CODE
+    expected = [
+      [:IDENTIFIER, "Greet"], ['(', "( "],
+      [:IDENTIFIER, "name"], [':', ": "], [:STRING, "Caleb"], [',', ", "],
+      [:IDENTIFIER, "greeting"], [':', ": "], [:STRING, "Hey"],
+      [')', " )"], [:NEWLINE, "\n"]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
   end

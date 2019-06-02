@@ -20,7 +20,7 @@ class Lexer
             blocklevel -= 1
           end
         end
-        line.delete_prefix!(indent)
+        line.delete_prefix!("    " * blocklevel)
       elsif 0 < blocklevel
           while 0 < blocklevel
             tokens << [:BLOCKEND, blocklevel]
@@ -40,14 +40,14 @@ class Lexer
       i = 0
 
       unless @string_accumulator.nil?
-        if str = line[/\A(.*)"/, 1]
+        if str = line[/\A([^"]*)"/, 1]
           i += str.size + 1
           @string_accumulator += str;
           debug_out("Extracted \"#{@string_accumulator}\" (String)")
           tokens << [:STRING, @string_accumulator]
           @string_accumulator = nil
         else
-          @string_accumulator += line + "\n"
+          @string_accumulator += line
           return tokens
         end
       end
@@ -59,11 +59,11 @@ class Lexer
           tokens << [:INTEGER, integer.to_i]
           i += integer.size
           debug_out("Extracted #{integer} (Integer)")
-        elsif str = sub[/\A"(.*)"/, 1]
+        elsif str = sub[/\A"([^"]*)"/, 1]
           tokens << [:STRING, str]
           i += str.size + 2
           debug_out("Extracted \"#{str}\" (String)")
-        elsif str = sub[/\A"(.*)/, 1]
+        elsif str = sub[/\A"([^"]*)/, 1]
           @string_accumulator = str
           i += str.size + 2
         elsif identifier = sub[/\A(\w+)/, 1]
@@ -79,14 +79,32 @@ class Lexer
             debug_out("Extracted #{identifier} (Identifier)")
           end
           i += identifier.size
-        elsif space = sub[/\A(\s*\n)/m, 1]
-          tokens << [:NEWLINE, "\n"]
-          i += space.size
-          debug_out("Extracted newline")
-        elsif space = sub[/\A(\s+)/, 1]
-          tokens << [:WHITESPACE, " "]
-          i += space.size
-          debug_out("Extracted whitespace")
+        elsif "()" == sub[0..1]
+          tokens << ["()", "()"]
+          i += 2
+          debug_out("Extracted () (Operator)")
+        elsif "( " == sub[0..1]
+          tokens << ["(", "( "]
+          i += 2
+          debug_out("Extracted ( (Operator)")
+        elsif " )" == sub[0..1]
+          tokens << [")", " )"]
+          i += 2
+          debug_out("Extracted ) (Operator)")
+        elsif op = sub[/\A( [=+-\/^*] )/, 1]
+          tok = op.strip
+          tokens << [tok, op]
+          i += op.size
+          debug_out("Extracted #{tok} (Operator)")
+        elsif op = sub[/\A([:,] )/, 1]
+          tok = op.strip
+          tokens << [tok, op]
+          i += op.size
+          debug_out("Extracted #{tok} (Operator)")
+        elsif op = sub[/\A([().])/, 1]
+          tokens << [op, op]
+          i += op.size
+          debug_out("Extracted #{op} (Operator)")
         elsif op = sub[/\A(&&|\|\|)/, 1]
           tokens << [op, op]
           i += 2
@@ -95,10 +113,13 @@ class Lexer
           tokens << [op, op]
           i += 2
           debug_out("Extracted #{op} (Operator)")
-        elsif op = sub[/\A([:()=+-\/^*])/, 1]
-          tokens << [op, op]
-          i += 1
-          debug_out("Extracted #{op} (Operator)")
+        elsif space = sub[/\A(\s*\n)/m, 1]
+          tokens << [:NEWLINE, "\n"]
+          i += space.size
+          debug_out("Extracted newline")
+        elsif space = sub[/\A(\s+)/, 1]
+          i += space.size
+          debug_out("Extracted whitespace")
         else
           raise "Unlexable chunk: >>#{sub}<<"
         end

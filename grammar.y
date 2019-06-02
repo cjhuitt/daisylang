@@ -11,7 +11,6 @@ token NONETYPE
 token PASS
 token RETURN
 token STRING
-token WHITESPACE
 
 # Based on the C and C++ Operator Precedence Table:
 # http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Operator_precedence
@@ -71,44 +70,44 @@ rule
   ;
 
   ArgumentList:
-    "(" ")" { result = [] }
-  | "(" WHITESPACE Arguments WHITESPACE ")" { result = val[2] }
+    "()"                                { result = [] }
+  | "(" Arguments ")"                   { result = val[1] }
   ;
 
   Arguments:
     Argument                            { result = [val[0]] }
-  | Arguments "," WHITESPACE Argument   { result = val[0] << val[3] }
+  | Arguments "," Argument              { result = val[0] << val[2] }
   ;
 
   Argument:
     Literal                             { result = ArgumentNode.new(nil, val[0]) }
-  | IDENTIFIER ":" WHITESPACE Literal   { result = ArgumentNode.new(val[0], val[3]) }
+  | IDENTIFIER ":" Literal              { result = ArgumentNode.new(val[0], val[2]) }
   ;
 
   # Need to be defined individually for the precedence table to take effect:
   Operation:
-    Expression WHITESPACE "+"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "-"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "*"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "/"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "^"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "<"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE ">"  WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "||" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "&&" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "<=" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE ">=" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "==" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
-  | Expression WHITESPACE "!=" WHITESPACE Expression { result = SendMessageNode.new(val[0], val[2], [ArgumentNode.new(nil, val[4])]) }
+    Expression  "+" Expression { result = SendMessageNode.new(val[0],  "+", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "-" Expression { result = SendMessageNode.new(val[0],  "-", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "*" Expression { result = SendMessageNode.new(val[0],  "*", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "/" Expression { result = SendMessageNode.new(val[0],  "/", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "^" Expression { result = SendMessageNode.new(val[0],  "^", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "<" Expression { result = SendMessageNode.new(val[0],  "<", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  ">" Expression { result = SendMessageNode.new(val[0],  ">", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "||" Expression { result = SendMessageNode.new(val[0], "||", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "&&" Expression { result = SendMessageNode.new(val[0], "&&", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "<=" Expression { result = SendMessageNode.new(val[0], "<=", [ArgumentNode.new(nil, val[2])]) }
+  | Expression ">=" Expression { result = SendMessageNode.new(val[0], ">=", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "==" Expression { result = SendMessageNode.new(val[0], "==", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "!=" Expression { result = SendMessageNode.new(val[0], "!=", [ArgumentNode.new(nil, val[2])]) }
   ;
 
   Define:
-    FUNCTION WHITESPACE Typename WHITESPACE IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[4], val[2], val[5], val[6]) }
-  | FUNCTION WHITESPACE IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[2], NoneNode.new, val[3], val[4]) }
+    FUNCTION Typename IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[2], val[1], val[3], val[4]) }
+  | FUNCTION IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[1], NoneNode.new, val[2], val[3]) }
   ;
 
   ParameterList:
-    "(" ")"                             { result = [] }
+    "()"                                { result = [] }
   ;
 
   Block:
@@ -116,7 +115,7 @@ rule
   ;
 
   Return:
-    RETURN WHITESPACE Expression        { result = ReturnNode.new(val[2]) }
+    RETURN Expression                   { result = ReturnNode.new(val[1]) }
   ;
 
   If:
