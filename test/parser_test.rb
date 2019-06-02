@@ -38,6 +38,27 @@ class ParserTest < Test::Unit::TestCase
     assert_equal expected, Parser.new.parse("method( 13 )")
   end
 
+  def test_message_with_single_unlabeled_expression
+    expected = Nodes.new(
+      [
+        SendMessageNode.new(
+          nil, "method", [
+            ArgumentNode.new(
+              nil, SendMessageNode.new(
+                IntegerNode.new( 2 ), "*", [
+                  ArgumentNode.new(
+                    nil, IntegerNode.new( 3 )
+                  )
+                ]
+              )
+            )
+          ]
+        )
+      ]
+    )
+    assert_equal expected, Parser.new.parse("method( 2 * 3 )")
+  end
+
   def test_message_with_single_labeled_argument
     expected = Nodes.new([
       SendMessageNode.new(nil, "method", [

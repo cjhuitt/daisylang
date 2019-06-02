@@ -81,8 +81,8 @@ rule
   ;
 
   Argument:
-    Literal                             { result = ArgumentNode.new(nil, val[0]) }
-  | IDENTIFIER ":" Literal              { result = ArgumentNode.new(val[0], val[2]) }
+    Expression                          { result = ArgumentNode.new(nil, val[0]) }
+  | IDENTIFIER ":" Expression           { result = ArgumentNode.new(val[0], val[2]) }
   ;
 
   # Need to be defined individually for the precedence table to take effect:
