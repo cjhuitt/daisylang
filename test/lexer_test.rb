@@ -123,6 +123,14 @@ CODE
     assert_equal expected, Lexer.new.tokenize(code)
   end
 
+  def test_call_method_on_variable
+    expected = [
+      [:IDENTIFIER, "a"], ['.', "."], [:IDENTIFIER, "b"],
+      ['(', "("], [')', ")"]
+    ]
+    assert_equal expected, Lexer.new.tokenize("a.b()")
+  end
+
   # To Test
   # Illegal Indentation (too much indentation)
   # More Keywords
