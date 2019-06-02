@@ -106,7 +106,7 @@ rule
   ;
 
   Return:
-    RETURN Expression        { result = ReturnNode.new(val[1]) }
+    RETURN Expression                   { result = ReturnNode.new(val[1]) }
   ;
 
   Terminator:
