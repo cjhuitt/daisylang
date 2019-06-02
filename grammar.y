@@ -50,7 +50,6 @@ rule
   | Define                              { result = val[0] }
   | Return                              { result = val[0] }
   | GetVariable                         { result = val[0] }
-  | Typename                            { result = val[0] }
   | Terminator                          { result = nil }
   ;
 

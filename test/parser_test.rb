@@ -81,10 +81,6 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
-  def test_none
-    assert_equal Nodes.new([NoneNode.new]), Parser.new.parse("None")
-  end
-
   def test_pass
     assert_equal Nodes.new([PassNode.new]), Parser.new.parse("pass")
   end
