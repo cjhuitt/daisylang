@@ -106,7 +106,6 @@ class Lexer
           i += space.size
           debug_out("Extracted newline")
         elsif space = sub[/\A(\s+)/, 1]
-          tokens << [:WHITESPACE, " "]
           i += space.size
           debug_out("Extracted whitespace")
         else
