@@ -3,3 +3,4 @@ Function Integer fibonacci( n: Integer )
         return 1
     return fibonacci( n - 1 ) + fibonacci( n - 2 )
 
+print( fibonacci( 4 ) )
