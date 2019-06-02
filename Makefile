@@ -1,21 +1,25 @@
-default: all tests hello
+default: all
 
-all: parser.rb
+all: daisy tests hello
 
-tests:
+daisy: parser.rb
+
+tests: parser.rb
 	echo "Dir.glob('./test/*_test.rb').each { |file| require file}" | ruby -Itest
+
+check: tests
 
 parser.rb: grammar.y
 	racc -o parser.rb grammar.y
 
-samples: hello calc
+samples: hello calc fibo
 
-hello: samples/hello.daisy
-
-calc: samples/calc.daisy
-
-samples/hello.daisy: all
+hello: daisy samples/hello.daisy
 	./daisy samples/hello.daisy
 
-samples/calc.daisy: all
+calc: daisy samples/calc.daisy
 	./daisy samples/calc.daisy
+
+fibo: daisy samples/fibo.daisy
+	./daisy samples/fibo.daisy
+
