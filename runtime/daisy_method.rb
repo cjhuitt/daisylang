@@ -38,10 +38,10 @@ class DaisyMethod < DaisyObject
     def one_param_arglist(args)
       raise "Too many arguments to method #{@name}" if args.count > 1
       if args.count == 1
-        { params.first.label => args.first[1] }
+        { params.first[0] => args.first[1] }
       else
         raise "Parameter to method #{@name} required" if params.first.value.nil?
-        { params.first.label => params.first.value }
+        { params.first[0] => params.first[1] }
       end
     end
 
@@ -52,12 +52,12 @@ class DaisyMethod < DaisyObject
       end
 
       args_dict = {}
-      @params.each do |param|
-        if val = given_dict.delete(param.label)
-          context.locals[param.label] = val
+      @params.each do |label, value|
+        if val = given_dict.delete(label)
+          context.locals[label] = val
         else
-          raise "Parameter #{param.label} to method #{@name} required" if param.value.nil?
-          context.locals[param.label] = param.value
+          raise "Parameter #{label} to method #{@name} required" if value.nil?
+          context.locals[label] = value
         end
       end
       raise "Too many parameters passed to method #{@name}" unless given_dict.empty

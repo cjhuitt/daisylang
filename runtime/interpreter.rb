@@ -22,7 +22,7 @@ class Interpreter
   end
 
   def eval(code)
-    nodes = @parser.parse(code)
+    nodes = @parser.parse(code, @debug)
     nodes.accept(self)
   end
 
@@ -56,10 +56,17 @@ class Interpreter
       [node.label, node.value.accept(self)]
     end
 
+    def visit_ParameterNode(node)
+      puts "Unimplemented: ParameterNode"
+      Constants["none"]
+    end
+
     def visit_DefineMessageNode(node)
       debug_print("Define message #{node.name} with #{node.parameters}")
       returning = @context.definition_of(node.return_type)
-      method = DaisyMethod.new(node.name, returning, node.parameters, node.body)
+      params = {}
+      node.parameters.each { |param| params[param.label] = param.accept(self) }
+      method = DaisyMethod.new(node.name, returning, params, node.body)
       @context.current_class.runtime_methods[method.name] = method
     end
 
@@ -75,9 +82,10 @@ class Interpreter
 
     def visit_IfNode(node)
       puts "Need to implement if"
-      return Constants["none"]
       if node.condition.accept(self).ruby_value
         node.body.accept(self)
+      else
+        Constants["none"]
       end
     end
 
