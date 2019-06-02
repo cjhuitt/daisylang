@@ -27,4 +27,13 @@ class Context
       @previous_context.definition_of(def_type)
     end
   end
+
+  def value_for(name)
+    value = @locals[name]
+    if !value.nil? || @previous_context.nil?
+      value
+    else
+      @previous_context.value_for(name)
+    end
+  end
 end

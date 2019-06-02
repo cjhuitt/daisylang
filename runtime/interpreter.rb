@@ -87,8 +87,10 @@ class Interpreter
     end
 
     def visit_GetVariableNode(node)
-      puts "Need to implement getting a variable"
-      Constants["Integer"].new( 1 )
+      debug_print("Getting value for #{node.id}")
+      var = @context.value_for(node.id)
+      raise "Referenced unknown variable #{node.id}" if var.nil?
+      var
     end
 
     def debug_print(message)
