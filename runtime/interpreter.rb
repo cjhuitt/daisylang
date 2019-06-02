@@ -82,8 +82,7 @@ class Interpreter
     end
 
     def visit_ReturnNode(node)
-      puts "Need to implement return"
-      Constants["none"]
+      node.expression.accept(self)
     end
 
     def visit_GetVariableNode(node)
