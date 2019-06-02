@@ -20,7 +20,7 @@ class Lexer
             blocklevel -= 1
           end
         end
-        line.delete_prefix!(indent)
+        line.delete_prefix!("    " * blocklevel)
       elsif 0 < blocklevel
           while 0 < blocklevel
             tokens << [:BLOCKEND, blocklevel]
@@ -75,6 +75,15 @@ class Lexer
             debug_out("Extracted #{identifier} (Identifier)")
           end
           i += identifier.size
+        elsif op = sub[/\A( [=+-\/^*] )/, 1]
+          tok = op.strip
+          tokens << [tok, op]
+          i += op.size
+          debug_out("Extracted #{tok} (Operator)")
+        elsif op = sub[/\A([:()])/, 1]
+          tokens << [op, op]
+          i += op.size
+          debug_out("Extracted #{op} (Operator)")
         elsif space = sub[/\A(\s*\n)/m, 1]
           tokens << [:NEWLINE, "\n"]
           i += space.size
@@ -83,10 +92,6 @@ class Lexer
           tokens << [:WHITESPACE, " "]
           i += space.size
           debug_out("Extracted whitespace")
-        elsif op = sub[/\A([:()=+-\/^*])/, 1]
-          tokens << [op, op]
-          i += 1
-          debug_out("Extracted #{op} (Operator)")
         else
           raise "Unlexable chunk: >>#{sub}<<"
         end

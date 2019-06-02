@@ -31,9 +31,9 @@ class LexerTest < Test::Unit::TestCase
 
   def test_ignores_whitespace_before_newlines
     expected = [
-      ['=', "="], [:NEWLINE, "\n"]
+      [:IDENTIFIER, "a"], [:NEWLINE, "\n"]
     ]
-    assert_equal expected, Lexer.new.tokenize("=    \t \n")
+    assert_equal expected, Lexer.new.tokenize("a    \t \n")
   end
 
   def test_recognizes_keywords
@@ -51,18 +51,18 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[':', ":"]], Lexer.new.tokenize(":")
     assert_equal [['(', "("]], Lexer.new.tokenize("(")
     assert_equal [[')', ")"]], Lexer.new.tokenize(")")
-    assert_equal [['=', "="]], Lexer.new.tokenize("=")
-    assert_equal [['+', "+"]], Lexer.new.tokenize("+")
-    assert_equal [['-', "-"]], Lexer.new.tokenize("-")
-    assert_equal [['*', "*"]], Lexer.new.tokenize("*")
-    assert_equal [['/', "/"]], Lexer.new.tokenize("/")
-    assert_equal [['^', "^"]], Lexer.new.tokenize("^")
+    assert_equal [['=', " = "]], Lexer.new.tokenize(" = ")
+    assert_equal [['+', " + "]], Lexer.new.tokenize(" + ")
+    assert_equal [['-', " - "]], Lexer.new.tokenize(" - ")
+    assert_equal [['*', " * "]], Lexer.new.tokenize(" * ")
+    assert_equal [['/', " / "]], Lexer.new.tokenize(" / ")
+    assert_equal [['^', " ^ "]], Lexer.new.tokenize(" ^ ")
   end
 
   def test_finds_multiple_tokens_on_a_line
     expected = [
-      [:IDENTIFIER, "a"], [:WHITESPACE, " "], ['+', "+"],
-      [:WHITESPACE, " "], [:IDENTIFIER, "b"], [:WHITESPACE, " "]
+      [:IDENTIFIER, "a"], ['+', " + "],
+      [:IDENTIFIER, "b"], [:WHITESPACE, " "]
     ]
     assert_equal expected, Lexer.new.tokenize("a + b ")
   end
@@ -91,21 +91,20 @@ class LexerTest < Test::Unit::TestCase
 
   def test_function
     code = <<-CODE
-Function Integer Summation(n: Integer)
+Function Integer Summation( n: Integer )
     return n * (n - 1) / 2
 
 CODE
     expected = [
       [:FUNCTION, "Function"], [:WHITESPACE, " "], [:IDENTIFIER, "Integer"],
-          [:WHITESPACE, " "], [:IDENTIFIER, "Summation"], ['(', "("],
-          [:IDENTIFIER, "n"], [':', ":"], [:WHITESPACE, " "],
-          [:IDENTIFIER, "Integer"], [')', ")"], [:NEWLINE, "\n"],
+          [:WHITESPACE, " "], [:IDENTIFIER, "Summation"], ['(', "( "],
+          [:IDENTIFIER, "n"], [':', ": "],
+          [:IDENTIFIER, "Integer"], [')', " )"], [:NEWLINE, "\n"],
       [:BLOCKSTART, 1],
         [:RETURN, "return"], [:WHITESPACE, " "], [:IDENTIFIER, "n"],
-          [:WHITESPACE, " "], ['*', "*"], [:WHITESPACE, " "],
-          ['(', "("], [:IDENTIFIER, "n"], [:WHITESPACE, " "],
-          ['-', "-"], [:INTEGER, 1], [')', ")"], [:WHITESPACE, " "],
-          ['/', "/"], [:WHITESPACE, " "], [:INTEGER, 2],
+          ['*', " * "], ['(', "("], [:IDENTIFIER, "n"],
+          ['-', " - "], [:INTEGER, 1], [')', ")"],
+          ['/', " / "], [:INTEGER, 2],
           [:NEWLINE, "\n"],
       [:BLOCKEND, 1], [:NEWLINE, "\n"]
     ]
