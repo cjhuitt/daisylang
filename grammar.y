@@ -51,6 +51,7 @@ rule
   | Return                              { result = val[0] }
   | GetVariable                         { result = val[0] }
   | Terminator                          { result = nil }
+  | "(" Expression ")"                  { result = val[1] }
   ;
 
   Typename:

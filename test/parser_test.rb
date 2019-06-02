@@ -90,6 +90,18 @@ CODE
       Parser.new.parse("return 9")
   end
 
+  def test_parenthesis_expression_ordering
+    expected = Nodes.new([
+      SendMessageNode.new(
+        SendMessageNode.new(GetVariableNode.new("a"), "+", [
+          ArgumentNode.new(nil, GetVariableNode.new("b"))
+        ]), "+",
+        [ArgumentNode.new(nil, GetVariableNode.new("c"))]
+      )
+    ])
+    assert_equal expected, Parser.new.parse("(a + b) + c")
+  end
+
   def test_operators_are_messages
     expected = Nodes.new([
       SendMessageNode.new(IntegerNode.new(73), "+", [
