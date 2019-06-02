@@ -71,6 +71,11 @@ class Interpreter
       puts "Need to implement return"
     end
 
+    def visit_GetVariableNode(node)
+      puts "Need to implement getting a variable"
+      Constants["none"]
+    end
+
     def debug_print(message)
       puts message if @debug
     end
