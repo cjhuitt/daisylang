@@ -108,7 +108,7 @@ rule
 
   ParameterList:
     "()"                                { result = [] }
-  | "(" Parameters ")"                  { result = val[1] }
+  | "( " Parameters " )"                { result = val[1] }
   ;
 
   Parameters:
