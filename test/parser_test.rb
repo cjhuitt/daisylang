@@ -245,7 +245,7 @@ CODE
       DefineMessageNode.new(
         "Greet",
         "String",
-        [ ParameterNode.new("name", nil, GetVariableNode.new("String")),
+        [ ParameterNode.new("name", nil, "String"),
           ParameterNode.new("greeting", "String", StringNode.new("Hello"))
         ],
         Nodes.new(

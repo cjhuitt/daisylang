@@ -57,15 +57,28 @@ class Interpreter
     end
 
     def visit_ParameterNode(node)
-      puts "Unimplemented: ParameterNode"
-      Constants["none"]
+      value = node.value
+      unless value.nil?
+        if value.is_a? String
+          value = @context.value_for(value)
+        end
+        if value.nil?
+          node.type = node.value
+          node.value = nil
+        end
+      end
+      type = @context.definition_of(node.type)
+      raise "Unknown parameter type" if type.nil? && value.nil?
+      if type.nil?
+        type = value.runtime_class unless value.nil?
+      end
+      DaisyParameter.new(node.label, type, value)
     end
 
     def visit_DefineMessageNode(node)
       debug_print("Define message #{node.name} with #{node.parameters}")
       returning = @context.definition_of(node.return_type)
-      params = {}
-      node.parameters.each { |param| params[param.label] = param.accept(self) }
+      params = node.parameters.each { |param| param.accept(self) }
       method = DaisyMethod.new(node.name, returning, params, node.body)
       @context.current_class.runtime_methods[method.name] = method
     end
