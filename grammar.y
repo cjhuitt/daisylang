@@ -102,7 +102,11 @@ rule
   ;
 
   Define:
-    FUNCTION WHITESPACE Typename WHITESPACE IDENTIFIER "(" ")" Block { result = DefineMessageNode.new(val[4], val[2], [], val[7]) }
+    FUNCTION WHITESPACE Typename WHITESPACE IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[4], val[2], val[5], val[6]) }
+  ;
+
+  ParameterList:
+    "(" ")"                             { result = [] }
   ;
 
   Block:

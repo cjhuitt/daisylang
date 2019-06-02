@@ -39,7 +39,7 @@ class SendMessageNode < Struct.new(:receiver, :message, :arguments);
 end
 
 class DefineMessageNode < Struct.new(:name, :return_type,
-                                     :argument_types, :body);
+                                     :parameters, :body);
   include Visitable
 end
 
