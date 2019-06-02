@@ -85,9 +85,19 @@ CODE
     assert_equal Nodes.new([PassNode.new]), Parser.new.parse("pass")
   end
 
-  def test_return
-    assert_equal Nodes.new([ReturnNode.new(IntegerNode.new(9))]),
-      Parser.new.parse("return 9")
+  def test_return_expression
+    expected = Nodes.new(
+      [
+        ReturnNode.new(
+          SendMessageNode.new(
+            StringNode.new("A"),
+            "*",
+            [ArgumentNode.new(nil, IntegerNode.new(5))]
+          )
+        )
+      ]
+    )
+    assert_equal expected, Parser.new.parse('return "A" * 5')
   end
 
   def test_parenthesis_expression_ordering
