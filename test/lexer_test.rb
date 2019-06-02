@@ -48,15 +48,18 @@ class LexerTest < Test::Unit::TestCase
   end
 
   def test_recognizes_operators
-    assert_equal [[':', ":"]], Lexer.new.tokenize(":")
-    assert_equal [['(', "("]], Lexer.new.tokenize("(")
-    assert_equal [[')', ")"]], Lexer.new.tokenize(")")
     assert_equal [['=', " = "]], Lexer.new.tokenize(" = ")
     assert_equal [['+', " + "]], Lexer.new.tokenize(" + ")
     assert_equal [['-', " - "]], Lexer.new.tokenize(" - ")
     assert_equal [['*', " * "]], Lexer.new.tokenize(" * ")
     assert_equal [['/', " / "]], Lexer.new.tokenize(" / ")
     assert_equal [['^', " ^ "]], Lexer.new.tokenize(" ^ ")
+    assert_equal [[':', ": "]], Lexer.new.tokenize(": ")
+    assert_equal [[',', ", "]], Lexer.new.tokenize(", ")
+    assert_equal [['(', "( "]], Lexer.new.tokenize("( ")
+    assert_equal [[')', " )"]], Lexer.new.tokenize(" )")
+    assert_equal [['(', "("]], Lexer.new.tokenize("(")
+    assert_equal [[')', ")"]], Lexer.new.tokenize(")")
   end
 
   def test_finds_multiple_tokens_on_a_line
@@ -143,10 +146,8 @@ Greet( name: "Caleb", greeting: "Hey" )
 CODE
     expected = [
       [:IDENTIFIER, "Greet"], ['(', "( "],
-      [:IDENTIFIER, "name"], [':', ":"],
-      [:WHITESPACE, " "], [:STRING, "Caleb"], [',', ","],
-      [:WHITESPACE, " "], [:IDENTIFIER, "greeting"], [':', ":"],
-      [:WHITESPACE, " "], [:STRING, "Hey"],
+      [:IDENTIFIER, "name"], [':', ": "], [:STRING, "Caleb"], [',', ", "],
+      [:IDENTIFIER, "greeting"], [':', ": "], [:STRING, "Hey"],
       [')', " )"], [:NEWLINE, "\n"]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
