@@ -1,6 +1,6 @@
 class Context
   attr_reader :previous_context, :current_self, :current_class
-  attr_accessor :interpreter, :defined_types
+  attr_accessor :interpreter, :defined_types, :locals
 
   def initialize(prev_context, current_self, current_class=current_self.runtime_class)
     @previous_context = prev_context
@@ -8,6 +8,7 @@ class Context
     @current_class = current_class
     @interpreter = interpreter
     @defined_types = {}
+    @locals = {}
   end
 
   def interpreter()
@@ -20,7 +21,10 @@ class Context
 
   def definition_of(def_type)
     type = @defined_types[def_type]
-    return type if !type.nil? || @previous_context.nil?
-    @previous_context.definition_of(def_type)
+    if !type.nil? || @previous_context.nil?
+      type
+    else
+      @previous_context.definition_of(def_type)
+    end
   end
 end
