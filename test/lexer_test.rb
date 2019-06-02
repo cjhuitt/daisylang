@@ -133,6 +133,17 @@ CODE
     assert_equal expected, Lexer.new.tokenize(code)
   end
 
+  def x_test_print_tokens
+    code = <<-CODE
+Function Integer fibonacci( n: Integer )
+    if n <= 2
+        return 1
+    return fibonacci( n - 1 ) + fibonacci( n - 2 )
+
+CODE
+    puts "#{Lexer.new.tokenize(code)}"
+  end
+
   # To Test
   # Illegal Indentation (too much indentation)
   # More Keywords
