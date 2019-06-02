@@ -108,6 +108,19 @@ rule
 
   ParameterList:
     "()"                                { result = [] }
+  | "(" Parameters ")"                  { result = val[1] }
+  ;
+
+  Parameters:
+    Parameter                           { result = [val[0]] }
+  | Parameters "," Parameter            { result = val[0] << val[2] }
+  ;
+
+  Parameter:
+    IDENTIFIER ":" INTEGER              { result = ParameterNode.new(val[0], "Integer", IntegerNode.new(val[2])) }
+  | IDENTIFIER ":" STRING               { result = ParameterNode.new(val[0], "String", StringNode.new(val[2])) }
+  | IDENTIFIER ":" GetVariable          { result = ParameterNode.new(val[0], nil, val[2]) }
+  | IDENTIFIER ":" IDENTIFIER           { result = ParameterNode.new(val[0], val[2], nil) }
   ;
 
   Block:

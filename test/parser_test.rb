@@ -194,4 +194,37 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_define_method_with_arguments
+    code = <<-CODE
+Function String Greet( name: String, greeting: "Hello" )
+    return greeting + " " + name
+
+CODE
+    expected = Nodes.new([
+      DefineMessageNode.new(
+        "Greet",
+        "String",
+        [ ParameterNode.new("name", "String", nil),
+          ParameterNode.new("greeting", "String", StringNode.new("Hello"))
+        ],
+        Nodes.new(
+          [
+            ReturnNode.new(
+              SendMessageNode.new(
+                SendMessageNode.new(
+                  GetVariableNode.new("greeting"),
+                  "+",
+                  [ArgumentNode.new(nil, StringNode.new(" "))]
+                ),
+                "+",
+                [ArgumentNode.new(nil, GetVariableNode.new("name"))]
+              )
+            )
+          ]
+        ),
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end
