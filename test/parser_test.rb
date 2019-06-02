@@ -100,6 +100,28 @@ CODE
     assert_equal expected, Parser.new.parse('return "A" * 5')
   end
 
+  def test_multiple_returns
+    code = <<-CODE
+if true
+    return 1
+return 2
+CODE
+
+    expected = Nodes.new(
+      [
+        IfNode.new(
+          GetVariableNode.new("true"), Nodes.new(
+            [
+              ReturnNode.new(IntegerNode.new(1))
+            ]
+          )
+        ),
+        ReturnNode.new(IntegerNode.new(2))
+      ]
+    )
+    assert_equal expected, Parser.new.parse(code)
+  end
+
   def test_parenthesis_expression_ordering
     expected = Nodes.new([
       SendMessageNode.new(
