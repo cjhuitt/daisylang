@@ -67,6 +67,13 @@ class LexerTest < Test::Unit::TestCase
     assert_equal expected, Lexer.new.tokenize("a + b ")
   end
 
+  def test_finds_multiple_strings_on_a_line
+    expected = [
+      [:STRING, "a"], ['+', " + "], [:STRING, "b"]
+    ]
+    assert_equal expected, Lexer.new.tokenize('"a" + "b"')
+  end
+
   def test_finds_multiple_tokens_without_whitespace
     expected = [
       ['(', "("], [:IDENTIFIER, "b"], [')', ")"]

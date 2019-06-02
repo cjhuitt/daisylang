@@ -40,14 +40,14 @@ class Lexer
       i = 0
 
       unless @string_accumulator.nil?
-        if str = line[/\A(.*)"/, 1]
+        if str = line[/\A([^"]*)"/, 1]
           i += str.size + 1
           @string_accumulator += str;
           debug_out("Extracted \"#{@string_accumulator}\" (String)")
           tokens << [:STRING, @string_accumulator]
           @string_accumulator = nil
         else
-          @string_accumulator += line + "\n"
+          @string_accumulator += line
           return tokens
         end
       end
@@ -59,11 +59,11 @@ class Lexer
           tokens << [:INTEGER, integer.to_i]
           i += integer.size
           debug_out("Extracted #{integer} (Integer)")
-        elsif str = sub[/\A"(.*)"/, 1]
+        elsif str = sub[/\A"([^"]*)"/, 1]
           tokens << [:STRING, str]
           i += str.size + 2
           debug_out("Extracted \"#{str}\" (String)")
-        elsif str = sub[/\A"(.*)/, 1]
+        elsif str = sub[/\A"([^"]*)/, 1]
           @string_accumulator = str
           i += str.size + 2
         elsif identifier = sub[/\A(\w+)/, 1]
