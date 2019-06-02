@@ -47,7 +47,7 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:IDENTIFIER, "Integer"]], Lexer.new.tokenize("Integer")
   end
 
-  def test_recognizes_operators
+  def test_recognizes_simple_operators
     assert_equal [[':', ":"]], Lexer.new.tokenize(":")
     assert_equal [['(', "("]], Lexer.new.tokenize("(")
     assert_equal [[')', ")"]], Lexer.new.tokenize(")")
@@ -57,6 +57,15 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [['*', "*"]], Lexer.new.tokenize("*")
     assert_equal [['/', "/"]], Lexer.new.tokenize("/")
     assert_equal [['^', "^"]], Lexer.new.tokenize("^")
+  end
+
+  def test_recognizes_multichar_operators
+    assert_equal [['&&', "&&"]], Lexer.new.tokenize("&&")
+    assert_equal [['||', "||"]], Lexer.new.tokenize("||")
+    assert_equal [['==', "=="]], Lexer.new.tokenize("==")
+    assert_equal [['!=', "!="]], Lexer.new.tokenize("!=")
+    assert_equal [['>=', ">="]], Lexer.new.tokenize(">=")
+    assert_equal [['<=', "<="]], Lexer.new.tokenize("<=")
   end
 
   def test_finds_multiple_tokens_on_a_line

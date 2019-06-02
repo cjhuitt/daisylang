@@ -83,6 +83,14 @@ class Lexer
           tokens << [:WHITESPACE, " "]
           i += space.size
           debug_out("Extracted whitespace")
+        elsif op = sub[/\A(&&|\|\|)/, 1]
+          tokens << [op, op]
+          i += 2
+          debug_out("Extracted #{op} (Operator)")
+        elsif op = sub[/\A(==|!=|<=|>=)/, 1]
+          tokens << [op, op]
+          i += 2
+          debug_out("Extracted #{op} (Operator)")
         elsif op = sub[/\A([:()=+-\/^*])/, 1]
           tokens << [op, op]
           i += 1
