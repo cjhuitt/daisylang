@@ -13,8 +13,6 @@ class DaisyMethod < DaisyObject
   end
 
   def call(interpreter, receiver, args)
-    puts "Need to appropriately implement calling #{@name}"
-
     context = interpreter.push_context(receiver)
     arglist(args).each do |name, value|
       context.locals[name] = value
