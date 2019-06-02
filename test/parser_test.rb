@@ -133,6 +133,23 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_define_simple_method_no_return_type
+    code = <<-CODE
+Function SayHi()
+    pass
+
+CODE
+    expected = Nodes.new([
+      DefineMessageNode.new(
+        "SayHi",
+        NoneNode.new,
+        [],
+        Nodes.new([PassNode.new])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
   def test_define_simple_method
     code = <<-CODE
 Function None SayHi()

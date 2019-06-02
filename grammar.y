@@ -103,6 +103,7 @@ rule
 
   Define:
     FUNCTION WHITESPACE Typename WHITESPACE IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[4], val[2], val[5], val[6]) }
+  | FUNCTION WHITESPACE IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[2], NoneNode.new, val[3], val[4]) }
   ;
 
   ParameterList:
