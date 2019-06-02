@@ -43,7 +43,6 @@ class DefineMessageNode < Struct.new(:name, :return_type,
   include Visitable
 end
 
-
 class ArgumentNode < Struct.new(:label, :value);
   include Visitable
 end
