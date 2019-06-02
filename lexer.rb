@@ -75,6 +75,18 @@ class Lexer
             debug_out("Extracted #{identifier} (Identifier)")
           end
           i += identifier.size
+        elsif "()" == sub[0..1]
+          tokens << ["()", "()"]
+          i += 2
+          debug_out("Extracted () (Operator)")
+        elsif "( " == sub[0..1]
+          tokens << ["(", "( "]
+          i += 2
+          debug_out("Extracted ( (Operator)")
+        elsif " )" == sub[0..1]
+          tokens << [")", " )"]
+          i += 2
+          debug_out("Extracted ) (Operator)")
         elsif op = sub[/\A( [=+-\/^*] )/, 1]
           tok = op.strip
           tokens << [tok, op]

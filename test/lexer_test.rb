@@ -115,7 +115,6 @@ CODE
           [:NEWLINE, "\n"],
       [:BLOCKEND, 1], [:NEWLINE, "\n"]
     ]
-
   end
 
   def test_call_print_of_string
@@ -123,8 +122,8 @@ CODE
 print( "Hello World" )
 CODE
     expected = [
-      [:IDENTIFIER, "print"], ['(', "("], [:WHITESPACE, " "],
-      [:STRING, "Hello World"], [:WHITESPACE, " "], [')', ")"],
+      [:IDENTIFIER, "print"], ['(', "( "],
+      [:STRING, "Hello World"], [')', " )"],
       [:NEWLINE, "\n"]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
@@ -133,9 +132,9 @@ CODE
   def test_call_method_on_variable
     expected = [
       [:IDENTIFIER, "a"], ['.', "."], [:IDENTIFIER, "b"],
-      ['(', "("], [')', ")"]
+      ['()', "()"]
     ]
-    assert_equal expected, Lexer.new.tokenize("a.b()")
+    assert_equal expected, Lexer.new(true).tokenize("a.b()")
   end
 
   def test_call_method_with_multiple_parameters
@@ -143,12 +142,12 @@ CODE
 Greet( name: "Caleb", greeting: "Hey" )
 CODE
     expected = [
-      [:IDENTIFIER, "Greet"], ['(', "("],
-      [:WHITESPACE, " "], [:IDENTIFIER, "name"], [':', ":"],
+      [:IDENTIFIER, "Greet"], ['(', "( "],
+      [:IDENTIFIER, "name"], [':', ":"],
       [:WHITESPACE, " "], [:STRING, "Caleb"], [',', ","],
       [:WHITESPACE, " "], [:IDENTIFIER, "greeting"], [':', ":"],
-      [:WHITESPACE, " "], [:STRING, "Hey"], [:WHITESPACE, " "],
-      [')', ")"], [:NEWLINE, "\n"]
+      [:WHITESPACE, " "], [:STRING, "Hey"],
+      [')', " )"], [:NEWLINE, "\n"]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
   end
