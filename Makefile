@@ -10,7 +10,7 @@ tests: parser.rb
 check: tests
 
 parser.rb: grammar.y
-	racc -o parser.rb grammar.y
+	racc -g -o parser.rb grammar.y
 
 samples: hello calc fibo
 

@@ -103,6 +103,23 @@ CODE
     assert_equal expected, Parser.new.parse("73 + 42")
   end
 
+  def test_if_expression
+    code = <<-CODE
+if n <= 2
+    pass
+
+CODE
+    expected = Nodes.new([
+      IfNode.new(
+        SendMessageNode.new(GetVariableNode.new("n"), "<=", [
+          ArgumentNode.new(nil, IntegerNode.new(2))
+        ]),
+        Nodes.new([PassNode.new])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
   def test_define_method
     code = <<-CODE
 Function None SayHi()

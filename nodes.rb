@@ -48,6 +48,11 @@ class ArgumentNode < Struct.new(:label, :value);
   include Visitable
 end
 
+class ConditionalNode < Struct.new(:condition, :body); end
+class IfNode < ConditionalNode
+  include Visitable
+end
+
 class GetVariableNode < Struct.new(:id)
   include Visitable
 end

@@ -5,6 +5,7 @@ token BLOCKSTART
 token FUNCTION
 token IDENTIFIER
 token INTEGER
+token IF
 token NEWLINE
 token NONE
 token PASS
@@ -43,12 +44,13 @@ rule
   # Every type of expression supported by our language is defined here.
   Expression:
     Literal                             { result = val[0] }
+  | If                                  { result = val[0] }
   | Message                             { result = val[0] }
   | Operation                           { result = val[0] }
   | Define                              { result = val[0] }
   | Return                              { result = val[0] }
-  | Typename                            { result = val[0] }
   | GetVariable                         { result = val[0] }
+  | Typename                            { result = val[0] }
   | Terminator                          { result = nil }
   ;
 
@@ -111,6 +113,10 @@ rule
     RETURN WHITESPACE Expression        { result = ReturnNode.new(val[2]) }
   ;
 
+  If:
+    IF WHITESPACE Expression NEWLINE Block { result = IfNode.new(val[2], val[4]) }
+  ;
+
   GetVariable:
     IDENTIFIER                          { result = GetVariableNode.new(val[0]) }
   ;
@@ -127,8 +133,8 @@ end
 
 ---- inner
   def parse(code, debug=false)
-    @tokens = Lexer.new.tokenize(code)
-    puts @tokens.inspect if debug
+    @tokens = Lexer.new(debug).tokenize(code)
+    @yydebug=debug
     do_parse # Kickoff the parsing process
   end
 
