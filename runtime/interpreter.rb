@@ -46,7 +46,7 @@ class Interpreter
     end
 
     def visit_DefineMessageNode(node)
-      returning = @context.defined_types[node.return_type]
+      returning = @context.definition_of(node.return_type)
       method = DaisyMethod.new(node.name, returning, node.parameters, node.body)
       @context.current_class.runtime_methods[method.name] = method
     end

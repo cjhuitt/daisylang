@@ -17,4 +17,10 @@ class Context
       @interpreter
     end
   end
+
+  def definition_of(def_type)
+    type = @defined_types[def_type]
+    return type if !type.nil? || @previous_context.nil?
+    @previous_context.definition_of(def_type)
+  end
 end
