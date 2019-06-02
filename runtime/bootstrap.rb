@@ -4,7 +4,6 @@ Constants["Class"] = DaisyClass.new
 Constants["Class"].runtime_class = Constants["Class"]
 Constants["Object"] = DaisyClass.new
 Constants["String"] = DaisyClass.new(Constants["Object"])
-Constants["Integer"] = DaisyClass.new(Constants["Object"])
 Constants["None"] = DaisyClass.new(Constants["Object"])
 
 Constants["none"] = Constants["None"].new(nil)
@@ -21,7 +20,3 @@ Constants["None"].def :print do |receiver, args|
   puts "(none)"
 end
 
-Constants["Integer"].def :+ do |receiver, args|
-  result = receiver.ruby_value + args.first[1].ruby_value
-  Constants["Integer"].new(result)
-end
