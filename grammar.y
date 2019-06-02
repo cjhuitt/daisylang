@@ -119,7 +119,7 @@ rule
   ;
 
   If:
-    IF WHITESPACE Expression Block { result = IfNode.new(val[2], val[3]) }
+    IF Expression Block                 { result = IfNode.new(val[1], val[2]) }
   ;
 
   GetVariable:
