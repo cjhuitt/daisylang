@@ -10,7 +10,7 @@ Constants["Object"].def :print do |interpreter, receiver, args|
 end
 
 root_self = Constants["Object"].new
-RootContext = Context.new(root_self, nil)
+RootContext = Context.new(nil, root_self)
 
 RootContext.defined_types["Object"] = Constants["Object"]
 RootContext.defined_types["Class"] = Constants["Class"]
