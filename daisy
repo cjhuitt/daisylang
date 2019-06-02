@@ -9,8 +9,27 @@
 
 require 'runtime/interpreter'
 require 'readline'
+require 'optparse'
 
-interpreter = Interpreter.new
+options = { "debug" => false }
+OptionParser.new do |opts|
+  opts.banner = "Usage:
+    ./daisy example.daisy # to run a file
+    ./daisy               # to start an interactive console "
+
+  opts.separator ""
+
+  opts.on("-d", "--debug", "Run in debug mode") do
+    options["debug"] = true
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end.parse!
+
+interpreter = Interpreter.new(options["debug"])
 
 # If a file is given we should run it.
 if file = ARGV.first

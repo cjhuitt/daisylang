@@ -12,9 +12,11 @@ class Lexer
       if indent = line[/\A( +)/, 1]
         blocks = indent.size / 4
         if blocks == blocklevel + 1
+          tokens.pop if tokens.last == [:NEWLINE, "\n"]
           tokens << [:BLOCKSTART, blocks]
           blocklevel = blocks
         else blocks < blocklevel
+          tokens.pop if tokens.last == [:NEWLINE, "\n"]
           while blocks < blocklevel
             tokens << [:BLOCKEND, blocklevel]
             blocklevel -= 1
@@ -22,6 +24,7 @@ class Lexer
         end
         line.delete_prefix!("    " * blocklevel)
       elsif 0 < blocklevel
+          tokens.pop if tokens.last == [:NEWLINE, "\n"]
           while 0 < blocklevel
             tokens << [:BLOCKEND, blocklevel]
             blocklevel -= 1
@@ -33,7 +36,7 @@ class Lexer
   end
 
   private
-    KEYWORDS = ["Function", "None", "pass", "return"]
+    KEYWORDS = ["Function", "None", "pass", "return", "if"]
 
     def tokenize_line(line)
       tokens = []
@@ -68,7 +71,11 @@ class Lexer
           i += str.size + 2
         elsif identifier = sub[/\A(\w+)/, 1]
           if KEYWORDS.include? identifier
-            tokens << [identifier.upcase.to_sym, identifier]
+            if identifier == "None"
+              tokens << [:NONETYPE, identifier]
+            else
+              tokens << [identifier.upcase.to_sym, identifier]
+            end
             debug_out("Extracted #{identifier} (Keyword)")
           else
             tokens << [:IDENTIFIER, identifier]
@@ -100,6 +107,14 @@ class Lexer
         elsif op = sub[/\A([().])/, 1]
           tokens << [op, op]
           i += op.size
+          debug_out("Extracted #{op} (Operator)")
+        elsif op = sub[/\A(&&|\|\|)/, 1]
+          tokens << [op, op]
+          i += 2
+          debug_out("Extracted #{op} (Operator)")
+        elsif op = sub[/\A(==|!=|<=|>=)/, 1]
+          tokens << [op, op]
+          i += 2
           debug_out("Extracted #{op} (Operator)")
         elsif space = sub[/\A(\s*\n)/m, 1]
           tokens << [:NEWLINE, "\n"]

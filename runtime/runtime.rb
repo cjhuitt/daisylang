@@ -1,4 +1,5 @@
 require 'daisy_class'
+require 'daisy_method'
 require 'context'
 require 'bootstrap'
 require 'integer'

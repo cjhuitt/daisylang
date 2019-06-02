@@ -20,8 +20,12 @@ class ParserTest < Test::Unit::TestCase
     assert_equal Nodes.new([IntegerNode.new(7)]), Parser.new.parse("7\n")
   end
 
+  def test_variable
+    assert_equal Nodes.new([GetVariableNode.new("q")]), Parser.new.parse("q")
+  end
+
   def test_message_no_arguments
-    assert_equal Nodes.new([SendMessageNode.new("variable", "method", [])]),
+    assert_equal Nodes.new([SendMessageNode.new(GetVariableNode.new("variable"), "method", [])]),
       Parser.new.parse("variable.method()")
   end
 
@@ -32,6 +36,27 @@ class ParserTest < Test::Unit::TestCase
       ])
     ])
     assert_equal expected, Parser.new.parse("method( 13 )")
+  end
+
+  def test_message_with_single_unlabeled_expression
+    expected = Nodes.new(
+      [
+        SendMessageNode.new(
+          nil, "method", [
+            ArgumentNode.new(
+              nil, SendMessageNode.new(
+                IntegerNode.new( 2 ), "*", [
+                  ArgumentNode.new(
+                    nil, IntegerNode.new( 3 )
+                  )
+                ]
+              )
+            )
+          ]
+        )
+      ]
+    )
+    assert_equal expected, Parser.new.parse("method( 2 * 3 )")
   end
 
   def test_message_with_single_labeled_argument
@@ -57,7 +82,7 @@ class ParserTest < Test::Unit::TestCase
   # representation of it and let the later analysis handle erroring
   def test_message_with_multiple_unlabeled_arguments
     expected = Nodes.new([
-      SendMessageNode.new("foo", "method", [
+      SendMessageNode.new(GetVariableNode.new("foo"), "method", [
         ArgumentNode.new(nil, IntegerNode.new(13)),
         ArgumentNode.new(nil, IntegerNode.new(42))
       ])
@@ -77,29 +102,123 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
-  def test_none
-    assert_equal Nodes.new([NoneNode.new]), Parser.new.parse("None")
-  end
-
   def test_pass
     assert_equal Nodes.new([PassNode.new]), Parser.new.parse("pass")
   end
 
-  def test_return
-    assert_equal Nodes.new([ReturnNode.new(IntegerNode.new(9))]),
-      Parser.new.parse("return 9")
+  def test_return_expression
+    expected = Nodes.new(
+      [
+        ReturnNode.new(
+          SendMessageNode.new(
+            StringNode.new("A"),
+            "*",
+            [ArgumentNode.new(nil, IntegerNode.new(5))]
+          )
+        )
+      ]
+    )
+    assert_equal expected, Parser.new.parse('return "A" * 5')
   end
 
-  def test_operators_are_messages
+  def test_multiple_returns
+    code = <<-CODE
+if true
+    return 1
+return 2
+CODE
+
+    expected = Nodes.new(
+      [
+        IfNode.new(
+          GetVariableNode.new("true"), Nodes.new(
+            [
+              ReturnNode.new(IntegerNode.new(1))
+            ]
+          )
+        ),
+        ReturnNode.new(IntegerNode.new(2))
+      ]
+    )
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_parenthesis_expression_ordering
     expected = Nodes.new([
-      SendMessageNode.new(IntegerNode.new(73), "+", [
-        ArgumentNode.new(nil, IntegerNode.new(42))
-      ])
+      SendMessageNode.new(
+        SendMessageNode.new(GetVariableNode.new("a"), "+", [
+          ArgumentNode.new(nil, GetVariableNode.new("b"))
+        ]), "+",
+        [ArgumentNode.new(nil, GetVariableNode.new("c"))]
+      )
     ])
-    assert_equal expected, Parser.new.parse("73 + 42")
+    assert_equal expected, Parser.new.parse("(a + b) + c")
   end
 
-  def test_define_method
+  def test_addition_operator_ordering
+    expected = Nodes.new([
+      SendMessageNode.new(
+        SendMessageNode.new(GetVariableNode.new("a"), "+", [
+          ArgumentNode.new(nil, GetVariableNode.new("b"))
+        ]), "+",
+        [ArgumentNode.new(nil, GetVariableNode.new("c"))]
+      )
+    ])
+    assert_equal expected, Parser.new.parse("a + b + c")
+  end
+
+  def test_if_expression
+    code = <<-CODE
+if n <= 2
+    pass
+
+CODE
+    expected = Nodes.new([
+      IfNode.new(
+        SendMessageNode.new(GetVariableNode.new("n"), "<=", [
+          ArgumentNode.new(nil, IntegerNode.new(2))
+        ]),
+        Nodes.new([PassNode.new])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_define_method_with_return_type
+    code = <<-CODE
+Function String Greeting()
+    return "Hey"
+
+CODE
+    expected = Nodes.new([
+      DefineMessageNode.new(
+        "Greeting",
+        "String",
+        [],
+        Nodes.new([ReturnNode.new(StringNode.new("Hey"))])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_define_simple_method_no_return_type
+    code = <<-CODE
+Function SayHi()
+    pass
+
+CODE
+    expected = Nodes.new([
+      DefineMessageNode.new(
+        "SayHi",
+        NoneNode.new,
+        [],
+        Nodes.new([PassNode.new])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_define_simple_method
     code = <<-CODE
 Function None SayHi()
     pass
@@ -111,6 +230,39 @@ CODE
         NoneNode.new,
         [],
         Nodes.new([PassNode.new])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_define_method_with_arguments
+    code = <<-CODE
+Function String Greet( name: String, greeting: "Hello" )
+    return greeting + " " + name
+
+CODE
+    expected = Nodes.new([
+      DefineMessageNode.new(
+        "Greet",
+        "String",
+        [ ParameterNode.new("name", nil, "String"),
+          ParameterNode.new("greeting", "String", StringNode.new("Hello"))
+        ],
+        Nodes.new(
+          [
+            ReturnNode.new(
+              SendMessageNode.new(
+                SendMessageNode.new(
+                  GetVariableNode.new("greeting"),
+                  "+",
+                  [ArgumentNode.new(nil, StringNode.new(" "))]
+                ),
+                "+",
+                [ArgumentNode.new(nil, GetVariableNode.new("name"))]
+              )
+            )
+          ]
+        ),
       )
     ])
     assert_equal expected, Parser.new.parse(code)

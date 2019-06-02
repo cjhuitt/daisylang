@@ -39,15 +39,16 @@ class LexerTest < Test::Unit::TestCase
   def test_recognizes_keywords
     assert_equal [[:FUNCTION, "Function"]], Lexer.new.tokenize("Function")
     assert_equal [[:RETURN, "return"]], Lexer.new.tokenize("return")
-    assert_equal [[:NONE, "None"]], Lexer.new.tokenize("None")
+    assert_equal [[:NONETYPE, "None"]], Lexer.new.tokenize("None")
     assert_equal [[:PASS, "pass"]], Lexer.new.tokenize("pass")
+    assert_equal [[:IF, "if"]], Lexer.new.tokenize("if")
   end
 
   def test_recognizes_identifiers
     assert_equal [[:IDENTIFIER, "Integer"]], Lexer.new.tokenize("Integer")
   end
 
-  def test_recognizes_operators
+  def test_recognizes_simple_operators
     assert_equal [['=', " = "]], Lexer.new.tokenize(" = ")
     assert_equal [['+', " + "]], Lexer.new.tokenize(" + ")
     assert_equal [['-', " - "]], Lexer.new.tokenize(" - ")
@@ -60,6 +61,15 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[' )', " )"]], Lexer.new.tokenize(" )")
     assert_equal [['(', "("]], Lexer.new.tokenize("(")
     assert_equal [[')', ")"]], Lexer.new.tokenize(")")
+  end
+
+  def test_recognizes_multichar_operators
+    assert_equal [['&&', "&&"]], Lexer.new.tokenize("&&")
+    assert_equal [['||', "||"]], Lexer.new.tokenize("||")
+    assert_equal [['==', "=="]], Lexer.new.tokenize("==")
+    assert_equal [['!=', "!="]], Lexer.new.tokenize("!=")
+    assert_equal [['>=', ">="]], Lexer.new.tokenize(">=")
+    assert_equal [['<=', "<="]], Lexer.new.tokenize("<=")
   end
 
   def test_finds_multiple_tokens_on_a_line
@@ -86,14 +96,15 @@ class LexerTest < Test::Unit::TestCase
 
   def test_lexes_block_opening
     expected = [
+      [:IDENTIFIER, "a"],
       [:BLOCKSTART, 1]
     ]
-    assert_equal expected, Lexer.new.tokenize("    ")
+    assert_equal expected, Lexer.new.tokenize("a\n    ")
   end
 
   def test_lexes_block_closing
     expected = [
-      [:BLOCKSTART, 1], [:NEWLINE, "\n"],
+      [:BLOCKSTART, 1],
       [:BLOCKEND, 1], ['(', "("]
     ]
     assert_equal expected, Lexer.new.tokenize("    \n(")
@@ -151,6 +162,17 @@ CODE
       [' )', " )"], [:NEWLINE, "\n"]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
+  end
+
+  def x_test_print_tokens
+    code = <<-CODE
+Function Integer fibonacci( n: Integer )
+    if n <= 2
+        return 1
+    return fibonacci( n - 1 ) + fibonacci( n - 2 )
+
+CODE
+    puts "#{Lexer.new.tokenize(code)}"
   end
 
   # To Test
