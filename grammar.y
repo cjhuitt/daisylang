@@ -73,12 +73,12 @@ rule
 
   Arguments:
     Argument                            { result = [val[0]] }
-  | Arguments "," WHITESPACE Argument   { result = val[0] << val[3] }
+  | Arguments "," Argument              { result = val[0] << val[2] }
   ;
 
   Argument:
     Literal                             { result = ArgumentNode.new(nil, val[0]) }
-  | IDENTIFIER ":" WHITESPACE Literal   { result = ArgumentNode.new(val[0], val[3]) }
+  | IDENTIFIER ":" Literal              { result = ArgumentNode.new(val[0], val[2]) }
   ;
 
   # Need to be defined individually for the precedence table to take effect:
