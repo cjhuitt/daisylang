@@ -68,7 +68,11 @@ class Lexer
           i += str.size + 2
         elsif identifier = sub[/\A(\w+)/, 1]
           if KEYWORDS.include? identifier
-            tokens << [identifier.upcase.to_sym, identifier]
+            if identifier == "None"
+              tokens << [:NONETYPE, identifier]
+            else
+              tokens << [identifier.upcase.to_sym, identifier]
+            end
             debug_out("Extracted #{identifier} (Keyword)")
           else
             tokens << [:IDENTIFIER, identifier]

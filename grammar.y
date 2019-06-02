@@ -7,7 +7,7 @@ token IDENTIFIER
 token INTEGER
 token IF
 token NEWLINE
-token NONE
+token NONETYPE
 token PASS
 token RETURN
 token STRING
@@ -55,7 +55,7 @@ rule
   ;
 
   Typename:
-    NONE                                { result = NoneNode.new }
+    NONETYPE                            { result = NoneNode.new }
   ;
 
   Literal:
