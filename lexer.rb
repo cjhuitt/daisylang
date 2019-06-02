@@ -80,11 +80,11 @@ class Lexer
           i += 2
           debug_out("Extracted () (Operator)")
         elsif "( " == sub[0..1]
-          tokens << ["(", "( "]
+          tokens << ["( ", "( "]
           i += 2
           debug_out("Extracted ( (Operator)")
         elsif " )" == sub[0..1]
-          tokens << [")", " )"]
+          tokens << [" )", " )"]
           i += 2
           debug_out("Extracted ) (Operator)")
         elsif op = sub[/\A( [=+-\/^*] )/, 1]

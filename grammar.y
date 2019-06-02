@@ -67,7 +67,7 @@ rule
 
   ArgumentList:
     "()"                                { result = [] }
-  | "(" Arguments ")"                   { result = val[1] }
+  | "( " Arguments " )"                 { result = val[1] }
   ;
 
   Arguments:
