@@ -121,11 +121,10 @@ rule
     IDENTIFIER ":" INTEGER              { result = ParameterNode.new(val[0], "Integer", IntegerNode.new(val[2])) }
   | IDENTIFIER ":" STRING               { result = ParameterNode.new(val[0], "String", StringNode.new(val[2])) }
   | IDENTIFIER ":" GetVariable          { result = ParameterNode.new(val[0], nil, val[2]) }
-  | IDENTIFIER ":" IDENTIFIER           { result = ParameterNode.new(val[0], val[2], nil) }
   ;
 
   Block:
-    BLOCKSTART Expressions BLOCKEND { result = val[1] }
+    BLOCKSTART Expressions BLOCKEND     { result = val[1] }
   ;
 
   Return:
