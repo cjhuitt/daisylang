@@ -13,6 +13,14 @@ class Interpreter
     @debug = debug
   end
 
+  def push_context(new_self)
+    @context = Context.new(@context, new_self)
+  end
+
+  def pop_context()
+    @context = @context.previous_context
+  end
+
   def eval(code)
     nodes = @parser.parse(code)
     nodes.accept(self)

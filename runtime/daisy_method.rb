@@ -11,8 +11,11 @@ class DaisyMethod < DaisyObject
   end
 
   def call(interpreter, receiver, args)
+    context = interpreter.push_context(receiver)
     puts "Need to appropriately implement calling #{@name}"
-    @body.accept(interpreter)
+    result = @body.accept(interpreter)
+    interpreter.pop_context
+    result
   end
 end
 
