@@ -28,7 +28,9 @@ class Interpreter
 
   def visit(node)
     dispatch = "visit_#{node.class}".to_sym
-    send(dispatch, node)
+    retval = send(dispatch, node)
+    debug_print("visit #{node.class} #{retval}")
+    retval
   end
 
   private
@@ -50,20 +52,24 @@ class Interpreter
     end
 
     def visit_ArgumentNode(node)
+      debug_print("Argument node: #{node.label}")
       [node.label, node.value.accept(self)]
     end
 
     def visit_DefineMessageNode(node)
+      debug_print("Define message #{node.name} with #{node.parameters}")
       returning = @context.definition_of(node.return_type)
       method = DaisyMethod.new(node.name, returning, node.parameters, node.body)
       @context.current_class.runtime_methods[method.name] = method
     end
 
     def visit_IntegerNode(node)
+      debug_print("IntegerNode #{node.value}")
       Constants["Integer"].new(node.value)
     end
 
     def visit_StringNode(node)
+      debug_print("StringNode #{node.value}")
       Constants["String"].new(node.value)
     end
 
@@ -77,11 +83,12 @@ class Interpreter
 
     def visit_ReturnNode(node)
       puts "Need to implement return"
+      Constants["none"]
     end
 
     def visit_GetVariableNode(node)
       puts "Need to implement getting a variable"
-      Constants["none"]
+      Constants["Integer"].new( 1 )
     end
 
     def debug_print(message)
