@@ -102,11 +102,11 @@ rule
   ;
 
   Define:
-    FUNCTION WHITESPACE Typename WHITESPACE IDENTIFIER "(" ")" NEWLINE Block { result = DefineMessageNode.new(val[4], val[2], [], val[8]) }
+    FUNCTION WHITESPACE Typename WHITESPACE IDENTIFIER "(" ")" Block { result = DefineMessageNode.new(val[4], val[2], [], val[7]) }
   ;
 
   Block:
-    BLOCKSTART Expressions BLOCKEND     { result = val[1] }
+    NEWLINE BLOCKSTART Expressions BLOCKEND { result = val[2] }
   ;
 
   Return:
@@ -114,7 +114,7 @@ rule
   ;
 
   If:
-    IF WHITESPACE Expression NEWLINE Block { result = IfNode.new(val[2], val[4]) }
+    IF WHITESPACE Expression Block { result = IfNode.new(val[2], val[3]) }
   ;
 
   GetVariable:
