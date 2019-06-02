@@ -114,6 +114,18 @@ CODE
     assert_equal expected, Parser.new.parse("a + b + c")
   end
 
+  def test_addtion_operator_ordering
+    expected = Nodes.new([
+      SendMessageNode.new(
+        SendMessageNode.new(GetVariableNode.new("a"), "+", [
+          ArgumentNode.new(nil, GetVariableNode.new("b"))
+        ]), "+",
+        [ArgumentNode.new(nil, GetVariableNode.new("c"))]
+      )
+    ])
+    assert_equal expected, Parser.new.parse("(a + b) + c")
+  end
+
   def test_if_expression
     code = <<-CODE
 if n <= 2
