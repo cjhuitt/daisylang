@@ -138,6 +138,21 @@ CODE
     assert_equal expected, Lexer.new.tokenize("a.b()")
   end
 
+  def test_call_method_with_multiple_parameters
+    code = <<-CODE
+Greet( name: "Caleb", greeting: "Hey" )
+CODE
+    expected = [
+      [:IDENTIFIER, "Greet"], ['(', "("],
+      [:WHITESPACE, " "], [:IDENTIFIER, "name"], [':', ":"],
+      [:WHITESPACE, " "], [:STRING, "Caleb"], [',', ","],
+      [:WHITESPACE, " "], [:IDENTIFIER, "greeting"], [':', ":"],
+      [:WHITESPACE, " "], [:STRING, "Hey"], [:WHITESPACE, " "],
+      [')', ")"], [:NEWLINE, "\n"]
+    ]
+    assert_equal expected, Lexer.new.tokenize(code)
+  end
+
   # To Test
   # Illegal Indentation (too much indentation)
   # More Keywords
