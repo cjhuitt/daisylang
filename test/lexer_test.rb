@@ -42,6 +42,8 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:NONETYPE, "None"]], Lexer.new.tokenize("None")
     assert_equal [[:PASS, "pass"]], Lexer.new.tokenize("pass")
     assert_equal [[:IF, "if"]], Lexer.new.tokenize("if")
+    assert_equal [[:TRUE, "true"]], Lexer.new.tokenize("true")
+    assert_equal [[:FALSE, "false"]], Lexer.new.tokenize("false")
   end
 
   def test_recognizes_identifiers
