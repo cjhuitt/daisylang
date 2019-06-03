@@ -122,6 +122,11 @@ class Interpreter
       var
     end
 
+    def visit_TrueNode(node)
+      debug_print("True node")
+      Constants["true"]
+    end
+
     def visit_CommentNode(node)
       debug_print("Skipping comment")
     end
