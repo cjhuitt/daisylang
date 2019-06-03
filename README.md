@@ -1,7 +1,7 @@
 # daisylang
 Daisy Programming Language
 
-![alt text](docs/daisy.png "Hand-drawn daisy")
+![alt text](docs/daisy_small.png "Hand-drawn daisy")
 
 ### Guiding Principles
 + Daisy should be **fun** to learn and use
