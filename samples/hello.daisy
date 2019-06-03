@@ -1,1 +1,2 @@
+// The standard first action with a new language:
 print( "Hello World" )
