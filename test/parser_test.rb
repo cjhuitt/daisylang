@@ -131,7 +131,29 @@ CODE
     expected = Nodes.new(
       [
         IfNode.new(
-          GetVariableNode.new("true"), Nodes.new(
+          TrueNode.new(), Nodes.new(
+            [
+              ReturnNode.new(IntegerNode.new(1))
+            ]
+          )
+        ),
+        ReturnNode.new(IntegerNode.new(2))
+      ]
+    )
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_false
+    code = <<-CODE
+if false
+    return 1
+return 2
+CODE
+
+    expected = Nodes.new(
+      [
+        IfNode.new(
+          FalseNode.new(), Nodes.new(
             [
               ReturnNode.new(IntegerNode.new(1))
             ]

@@ -1,16 +1,13 @@
 class Parser
 
-token BLOCKEND
-token BLOCKSTART
+token BLOCKSTART BLOCKEND
 token FUNCTION
 token IDENTIFIER
-token INTEGER
-token IF
+token INTEGER STRING
+token IF RETURN
 token NEWLINE
 token NONETYPE
-token PASS
-token RETURN
-token STRING
+token PASS TRUE FALSE
 
 # Based on the C and C++ Operator Precedence Table:
 # http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Operator_precedence
@@ -62,6 +59,8 @@ rule
     INTEGER                             { result = IntegerNode.new(val[0]) }
   | STRING                              { result = StringNode.new(val[0]) }
   | PASS                                { result = PassNode.new }
+  | TRUE                                { result = TrueNode.new }
+  | FALSE                               { result = FalseNode.new }
   ;
 
   Message:
