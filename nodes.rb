@@ -62,3 +62,7 @@ end
 class GetVariableNode < Struct.new(:id)
   include Visitable
 end
+
+class CommentNode < Struct.new(:text)
+  include Visitable
+end
