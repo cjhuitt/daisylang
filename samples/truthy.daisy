@@ -1,7 +1,7 @@
 if true
     print( "True is true" )
-//if false
-//    print( "False should NOT evaluate to true" )
+if false
+    print( "False should NOT evaluate to true" )
 //if true == true
 //    print( "Good thing true equals itself" )
 //if false == false

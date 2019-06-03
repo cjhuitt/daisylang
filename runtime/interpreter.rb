@@ -127,6 +127,11 @@ class Interpreter
       Constants["true"]
     end
 
+    def visit_FalseNode(node)
+      debug_print("False node")
+      Constants["false"]
+    end
+
     def visit_CommentNode(node)
       debug_print("Skipping comment")
     end
