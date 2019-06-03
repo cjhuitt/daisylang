@@ -2,15 +2,15 @@ if true
     print( "True is true" )
 if false
     print( "False should NOT evaluate to true" )
-//if true == true
-//    print( "Good thing true equals itself" )
-//if false == false
-//    print( "Oh?  We can compare false to get true?  Hot dog!"
+if true == true
+    print( "Good thing true equals itself" )
+if false == false
+    print( "Oh?  We can compare false to get true?  Hot dog!" )
 
 //if true != true
 //    print( "Good thing true equals itself" )
 //if false != false
-//    print( "Oh?  We can compare false to get true?  Hot dog!"
+//    print( "Oh?  We can compare false to get true?  Hot dog!" )
 //if true != none
 //    print( "True should NEVER compare positively to none" )
 //if false != none
