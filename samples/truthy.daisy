@@ -7,10 +7,10 @@ if true == true
 if false == false
     print( "Oh?  We can compare false to get true?  Hot dog!" )
 
-//if true != true
-//    print( "Good thing true equals itself" )
-//if false != false
-//    print( "Oh?  We can compare false to get true?  Hot dog!" )
+if true != true
+    print( "True should NOT be inequal to itself" )
+if false != false
+    print( "False should NOT be inequal to itself" )
 //if true != none
 //    print( "True should NEVER compare positively to none" )
 //if false != none
