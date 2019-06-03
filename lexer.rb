@@ -58,7 +58,10 @@ class Lexer
       while i < line.size
         sub = line[i..-1]
         debug_out("Checking partial >>#{sub}<<")
-        if integer = sub[/\A(\d+)/, 1]
+        if "//" == sub[0..1]
+          tokens << [:COMMENT, sub]
+          break
+        elsif integer = sub[/\A(\d+)/, 1]
           tokens << [:INTEGER, integer.to_i]
           i += integer.size
           debug_out("Extracted #{integer} (Integer)")
