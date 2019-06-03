@@ -8,6 +8,7 @@ token IF RETURN
 token NEWLINE
 token NONETYPE
 token PASS TRUE FALSE
+token COMMENT
 
 # Based on the C and C++ Operator Precedence Table:
 # http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Operator_precedence
@@ -48,6 +49,7 @@ rule
   | Return                              { result = val[0] }
   | GetVariable                         { result = val[0] }
   | "(" Expression ")"                  { result = val[1] }
+  | Comment                             { result = val[0] }
   ;
 
   Typename:
@@ -135,6 +137,10 @@ rule
 
   GetVariable:
     IDENTIFIER                          { result = GetVariableNode.new(val[0]) }
+  ;
+
+  Comment:
+    COMMENT                             { result = CommentNode.new(val[0]) }
   ;
 
   Terminator:

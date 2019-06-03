@@ -122,6 +122,10 @@ class Interpreter
       var
     end
 
+    def visit_CommentNode(node)
+      debug_print("Skipping comment")
+    end
+
     def debug_print(message)
       puts message if @debug
     end

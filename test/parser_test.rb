@@ -290,4 +290,9 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_comments_are_ignored
+    assert_equal Nodes.new([CommentNode.new("// pass")]),
+      Parser.new.parse("// pass")
+  end
+
 end
