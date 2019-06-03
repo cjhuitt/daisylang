@@ -164,6 +164,13 @@ CODE
     assert_equal expected, Lexer.new.tokenize(code)
   end
 
+  def test_comment
+    expected = [
+      [:COMMENT, "// true"]
+    ]
+    assert_equal expected, Lexer.new.tokenize("// true")
+  end
+
   def x_test_print_tokens
     code = <<-CODE
 Function Integer fibonacci( n: Integer )
