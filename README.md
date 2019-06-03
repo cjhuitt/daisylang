@@ -35,7 +35,6 @@ print( fibonacci( 10 ) )
 
 A whole lot remains to make this go, but the highlights are
 + Built-in types: Float, List, Dict, Boolean
-+ Built-in values: true, false
 + A bunch of built-in operators for those types
 + Rename some of the keywords
 + Class definitions
