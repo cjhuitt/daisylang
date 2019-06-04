@@ -31,9 +31,19 @@ Constants["Boolean"].def :'?' do |interpreter, receiver, args|
   receiver
 end
 
-#Constants["Boolean"].def :&& do |interpreter, receiver, args|
-#end
-#
-#Constants["Boolean"].def :|| do |interpreter, receiver, args|
-#end
+Constants["Boolean"].def :'&&' do |interpreter, receiver, args|
+  if receiver.ruby_value && args.first[1].ruby_value
+    Constants["true"]
+  else
+    Constants["false"]
+  end
+end
+
+Constants["Boolean"].def :'||' do |interpreter, receiver, args|
+  if receiver.ruby_value || args.first[1].ruby_value
+    Constants["true"]
+  else
+    Constants["false"]
+  end
+end
 

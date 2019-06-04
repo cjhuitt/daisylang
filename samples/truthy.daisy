@@ -20,6 +20,24 @@ if true != none
 if false != none
     print( "False is not none" )
 
+if true && true
+    print( "Correct logical and operation (true && true)" )
+if true && false
+    print( "INCORRECT logical and operation (true && false)" )
+if false && true
+    print( "INCORRECT logical and operation (false && true)" )
+if false && false
+    print( "INCORRECT logical and operation (false && false)" )
+
+if true || true
+    print( "Correct logical or operation (true || true)" )
+if true || false
+    print( "Correct logical or operation (true || false)" )
+if false || true
+    print( "Correct logical or operation (false || true)" )
+if false || false
+    print( "INCORRECT logical or operation (false || false)" )
+
 a = Boolean
 if a
     print( "Boolean default should NOT be true" )
