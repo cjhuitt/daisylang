@@ -20,8 +20,13 @@ class ParserTest < Test::Unit::TestCase
     assert_equal Nodes.new([IntegerNode.new(7)]), Parser.new.parse("7\n")
   end
 
-  def test_variable
+  def test_get_variable
     assert_equal Nodes.new([GetVariableNode.new("q")]), Parser.new.parse("q")
+  end
+
+  def test_set_variable
+    assert_equal Nodes.new([SetVariableNode.new("asdf", TrueNode.new())]),
+      Parser.new.parse("asdf = true")
   end
 
   def test_message_no_arguments

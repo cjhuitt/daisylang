@@ -49,6 +49,7 @@ rule
   | Define                              { result = val[0] }
   | Return                              { result = val[0] }
   | GetVariable                         { result = val[0] }
+  | SetVariable                         { result = val[0] }
   | "(" Expression ")"                  { result = val[1] }
   | Comment                             { result = val[0] }
   ;
@@ -89,21 +90,21 @@ rule
 
   # Need to be defined individually for the precedence table to take effect:
   Operation:
-    Expression  "+" Expression { result = SendMessageNode.new(val[0],  "+", [ArgumentNode.new(nil, val[2])]) }
-  | Expression  "-" Expression { result = SendMessageNode.new(val[0],  "-", [ArgumentNode.new(nil, val[2])]) }
-  | Expression  "*" Expression { result = SendMessageNode.new(val[0],  "*", [ArgumentNode.new(nil, val[2])]) }
-  | Expression  "/" Expression { result = SendMessageNode.new(val[0],  "/", [ArgumentNode.new(nil, val[2])]) }
-  | Expression  "^" Expression { result = SendMessageNode.new(val[0],  "^", [ArgumentNode.new(nil, val[2])]) }
-  | Expression  "<" Expression { result = SendMessageNode.new(val[0],  "<", [ArgumentNode.new(nil, val[2])]) }
-  | Expression  ">" Expression { result = SendMessageNode.new(val[0],  ">", [ArgumentNode.new(nil, val[2])]) }
-  | Expression "||" Expression { result = SendMessageNode.new(val[0], "||", [ArgumentNode.new(nil, val[2])]) }
-  | Expression "&&" Expression { result = SendMessageNode.new(val[0], "&&", [ArgumentNode.new(nil, val[2])]) }
-  | Expression "<=" Expression { result = SendMessageNode.new(val[0], "<=", [ArgumentNode.new(nil, val[2])]) }
-  | Expression ">=" Expression { result = SendMessageNode.new(val[0], ">=", [ArgumentNode.new(nil, val[2])]) }
-  | Expression "==" Expression { result = SendMessageNode.new(val[0], "==", [ArgumentNode.new(nil, val[2])]) }
-  | Expression "!=" Expression { result = SendMessageNode.new(val[0], "!=", [ArgumentNode.new(nil, val[2])]) }
-  |             "!" Expression { result = SendMessageNode.new(val[1],  "!", []) }
-  | Expression  "?"            { result = SendMessageNode.new(val[0],  "?", []) }
+    Expression  "+" Expression          { result = SendMessageNode.new(val[0],  "+", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "-" Expression          { result = SendMessageNode.new(val[0],  "-", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "*" Expression          { result = SendMessageNode.new(val[0],  "*", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "/" Expression          { result = SendMessageNode.new(val[0],  "/", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "^" Expression          { result = SendMessageNode.new(val[0],  "^", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "<" Expression          { result = SendMessageNode.new(val[0],  "<", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  ">" Expression          { result = SendMessageNode.new(val[0],  ">", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "||" Expression          { result = SendMessageNode.new(val[0], "||", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "&&" Expression          { result = SendMessageNode.new(val[0], "&&", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "<=" Expression          { result = SendMessageNode.new(val[0], "<=", [ArgumentNode.new(nil, val[2])]) }
+  | Expression ">=" Expression          { result = SendMessageNode.new(val[0], ">=", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "==" Expression          { result = SendMessageNode.new(val[0], "==", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "!=" Expression          { result = SendMessageNode.new(val[0], "!=", [ArgumentNode.new(nil, val[2])]) }
+  |             "!" Expression          { result = SendMessageNode.new(val[1],  "!", []) }
+  | Expression  "?"                     { result = SendMessageNode.new(val[0],  "?", []) }
   ;
 
   Define:
@@ -142,6 +143,10 @@ rule
 
   GetVariable:
     IDENTIFIER                          { result = GetVariableNode.new(val[0]) }
+  ;
+
+  SetVariable:
+    IDENTIFIER "=" Expression           { result = SetVariableNode.new(val[0], val[2]) }
   ;
 
   Comment:
