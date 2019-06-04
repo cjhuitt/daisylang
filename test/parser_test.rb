@@ -295,4 +295,9 @@ CODE
       Parser.new.parse("// pass")
   end
 
+  def test_none_is_parsed
+    assert_equal Nodes.new([NoneNode.new()]),
+      Parser.new.parse("none")
+  end
+
 end

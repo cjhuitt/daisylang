@@ -7,7 +7,7 @@ token INTEGER STRING
 token IF RETURN
 token NEWLINE
 token NONETYPE
-token PASS TRUE FALSE
+token PASS TRUE FALSE NONE
 token COMMENT
 
 # Based on the C and C++ Operator Precedence Table:
@@ -63,6 +63,7 @@ rule
   | PASS                                { result = PassNode.new }
   | TRUE                                { result = TrueNode.new }
   | FALSE                               { result = FalseNode.new }
+  | NONE                                { result = NoneNode.new }
   ;
 
   Message:
