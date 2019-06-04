@@ -128,6 +128,10 @@ class Interpreter
     def visit_GetVariableNode(node)
       debug_print("Getting value for #{node.id}")
       var = @context.value_for(node.id)
+      if var.nil?
+        type = @context.definition_of(node.id)
+        var = type.new unless type.nil?
+      end
       raise "Referenced unknown variable #{node.id}" if var.nil?
       var
     end

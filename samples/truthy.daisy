@@ -20,10 +20,11 @@ if true != none
 if false != none
     print( "False is not none" )
 
-//if Boolean.new()?
-//    print( "Boolean default should NOT be true" )
-//if !Boolean.new()?
-//    print( "We can invert a boolean!" )
+a = Boolean
+if a
+    print( "Boolean default should NOT be true" )
+if !a
+    print( "We can invert a boolean!" )
 if none?
     print( "None should NEVER be truthy" )
 if !none?
