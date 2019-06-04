@@ -132,6 +132,11 @@ class Interpreter
       Constants["false"]
     end
 
+    def visit_NoneNode(node)
+      debug_print("None node")
+      Constants["none"]
+    end
+
     def visit_CommentNode(node)
       debug_print("Skipping comment")
     end
