@@ -1,22 +1,20 @@
 class Parser
 
-token BLOCKEND
-token BLOCKSTART
+token BLOCKSTART BLOCKEND
 token FUNCTION
 token IDENTIFIER
-token INTEGER
-token IF
+token INTEGER STRING
+token IF UNLESS RETURN
 token NEWLINE
 token NONETYPE
-token PASS
-token RETURN
-token STRING
+token PASS TRUE FALSE NONE
 token COMMENT
 
 # Based on the C and C++ Operator Precedence Table:
 # http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Operator_precedence
 prechigh
   left  '.'
+  left  '?'
   right '!'
   left  '^'
   left  '*' '/'
@@ -51,6 +49,7 @@ rule
   | Define                              { result = val[0] }
   | Return                              { result = val[0] }
   | GetVariable                         { result = val[0] }
+  | SetVariable                         { result = val[0] }
   | "(" Expression ")"                  { result = val[1] }
   | Comment                             { result = val[0] }
   ;
@@ -64,6 +63,9 @@ rule
     INTEGER                             { result = IntegerNode.new(val[0]) }
   | STRING                              { result = StringNode.new(val[0]) }
   | PASS                                { result = PassNode.new }
+  | TRUE                                { result = TrueNode.new }
+  | FALSE                               { result = FalseNode.new }
+  | NONE                                { result = NoneNode.new }
   ;
 
   Message:
@@ -88,19 +90,21 @@ rule
 
   # Need to be defined individually for the precedence table to take effect:
   Operation:
-    Expression  "+" Expression { result = SendMessageNode.new(val[0],  "+", [ArgumentNode.new(nil, val[2])]) }
-  | Expression  "-" Expression { result = SendMessageNode.new(val[0],  "-", [ArgumentNode.new(nil, val[2])]) }
-  | Expression  "*" Expression { result = SendMessageNode.new(val[0],  "*", [ArgumentNode.new(nil, val[2])]) }
-  | Expression  "/" Expression { result = SendMessageNode.new(val[0],  "/", [ArgumentNode.new(nil, val[2])]) }
-  | Expression  "^" Expression { result = SendMessageNode.new(val[0],  "^", [ArgumentNode.new(nil, val[2])]) }
-  | Expression  "<" Expression { result = SendMessageNode.new(val[0],  "<", [ArgumentNode.new(nil, val[2])]) }
-  | Expression  ">" Expression { result = SendMessageNode.new(val[0],  ">", [ArgumentNode.new(nil, val[2])]) }
-  | Expression "||" Expression { result = SendMessageNode.new(val[0], "||", [ArgumentNode.new(nil, val[2])]) }
-  | Expression "&&" Expression { result = SendMessageNode.new(val[0], "&&", [ArgumentNode.new(nil, val[2])]) }
-  | Expression "<=" Expression { result = SendMessageNode.new(val[0], "<=", [ArgumentNode.new(nil, val[2])]) }
-  | Expression ">=" Expression { result = SendMessageNode.new(val[0], ">=", [ArgumentNode.new(nil, val[2])]) }
-  | Expression "==" Expression { result = SendMessageNode.new(val[0], "==", [ArgumentNode.new(nil, val[2])]) }
-  | Expression "!=" Expression { result = SendMessageNode.new(val[0], "!=", [ArgumentNode.new(nil, val[2])]) }
+    Expression  "+" Expression          { result = SendMessageNode.new(val[0],  "+", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "-" Expression          { result = SendMessageNode.new(val[0],  "-", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "*" Expression          { result = SendMessageNode.new(val[0],  "*", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "/" Expression          { result = SendMessageNode.new(val[0],  "/", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "^" Expression          { result = SendMessageNode.new(val[0],  "^", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  "<" Expression          { result = SendMessageNode.new(val[0],  "<", [ArgumentNode.new(nil, val[2])]) }
+  | Expression  ">" Expression          { result = SendMessageNode.new(val[0],  ">", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "||" Expression          { result = SendMessageNode.new(val[0], "||", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "&&" Expression          { result = SendMessageNode.new(val[0], "&&", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "<=" Expression          { result = SendMessageNode.new(val[0], "<=", [ArgumentNode.new(nil, val[2])]) }
+  | Expression ">=" Expression          { result = SendMessageNode.new(val[0], ">=", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "==" Expression          { result = SendMessageNode.new(val[0], "==", [ArgumentNode.new(nil, val[2])]) }
+  | Expression "!=" Expression          { result = SendMessageNode.new(val[0], "!=", [ArgumentNode.new(nil, val[2])]) }
+  |             "!" Expression          { result = SendMessageNode.new(val[1],  "!", []) }
+  | Expression  "?"                     { result = SendMessageNode.new(val[0],  "?", []) }
   ;
 
   Define:
@@ -134,10 +138,15 @@ rule
 
   If:
     IF Expression Block                 { result = IfNode.new(val[1], val[2]) }
+  | UNLESS Expression Block             { result = UnlessNode.new(val[1], val[2]) }
   ;
 
   GetVariable:
     IDENTIFIER                          { result = GetVariableNode.new(val[0]) }
+  ;
+
+  SetVariable:
+    IDENTIFIER "=" Expression           { result = SetVariableNode.new(val[0], val[2]) }
   ;
 
   Comment:

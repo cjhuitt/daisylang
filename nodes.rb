@@ -32,6 +32,16 @@ class PassNode < LiteralNode
     super(nil)
   end
 end
+class TrueNode < LiteralNode
+  def initialize
+    super(true)
+  end
+end
+class FalseNode < LiteralNode
+  def initialize
+    super(false)
+  end
+end
 
 class SendMessageNode < Struct.new(:receiver, :message, :arguments)
   include Visitable
@@ -58,8 +68,14 @@ class ConditionalNode < Struct.new(:condition, :body); end
 class IfNode < ConditionalNode
   include Visitable
 end
+class UnlessNode < ConditionalNode
+  include Visitable
+end
 
 class GetVariableNode < Struct.new(:id)
+  include Visitable
+end
+class SetVariableNode < Struct.new(:id, :value)
   include Visitable
 end
 

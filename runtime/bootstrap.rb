@@ -23,6 +23,9 @@ RootContext.defined_types["None"] = Constants["None"]
 Constants["None"].def :print do |receiver, args|
   puts "(none)"
 end
+Constants["None"].def :'?' do |interpreter, receiver, args|
+  Constants["false"]
+end
 
 Constants["none"] = Constants["None"].new(nil)
 

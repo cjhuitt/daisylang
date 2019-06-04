@@ -36,7 +36,8 @@ class Lexer
   end
 
   private
-    KEYWORDS = ["Function", "None", "pass", "return", "if"]
+    KEYWORDS = ["Function", "None", "pass", "return", "if", "true", "false",
+                "none", "unless"]
 
     def tokenize_line(line)
       tokens = []
@@ -107,10 +108,6 @@ class Lexer
           tokens << [tok, op]
           i += op.size
           debug_out("Extracted #{tok} (Operator)")
-        elsif op = sub[/\A([().])/, 1]
-          tokens << [op, op]
-          i += op.size
-          debug_out("Extracted #{op} (Operator)")
         elsif op = sub[/\A(&&|\|\|)/, 1]
           tokens << [op, op]
           i += 2
@@ -118,6 +115,10 @@ class Lexer
         elsif op = sub[/\A(==|!=|<=|>=)/, 1]
           tokens << [op, op]
           i += 2
+          debug_out("Extracted #{op} (Operator)")
+        elsif op = sub[/\A([().?!])/, 1]
+          tokens << [op, op]
+          i += op.size
           debug_out("Extracted #{op} (Operator)")
         elsif space = sub[/\A(\s*\n)/m, 1]
           tokens << [:NEWLINE, "\n"]

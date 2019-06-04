@@ -37,15 +37,19 @@ class LexerTest < Test::Unit::TestCase
   end
 
   def test_recognizes_keywords
-    assert_equal [[:FUNCTION, "Function"]], Lexer.new.tokenize("Function")
     assert_equal [[:RETURN, "return"]], Lexer.new.tokenize("return")
-    assert_equal [[:NONETYPE, "None"]], Lexer.new.tokenize("None")
     assert_equal [[:PASS, "pass"]], Lexer.new.tokenize("pass")
     assert_equal [[:IF, "if"]], Lexer.new.tokenize("if")
+    assert_equal [[:UNLESS, "unless"]], Lexer.new.tokenize("unless")
+    assert_equal [[:TRUE, "true"]], Lexer.new.tokenize("true")
+    assert_equal [[:FALSE, "false"]], Lexer.new.tokenize("false")
+    assert_equal [[:NONE, "none"]], Lexer.new.tokenize("none")
   end
 
   def test_recognizes_identifiers
     assert_equal [[:IDENTIFIER, "Integer"]], Lexer.new.tokenize("Integer")
+    assert_equal [[:NONETYPE, "None"]], Lexer.new.tokenize("None")
+    assert_equal [[:FUNCTION, "Function"]], Lexer.new.tokenize("Function")
   end
 
   def test_recognizes_simple_operators
@@ -61,6 +65,8 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[' )', " )"]], Lexer.new.tokenize(" )")
     assert_equal [['(', "("]], Lexer.new.tokenize("(")
     assert_equal [[')', ")"]], Lexer.new.tokenize(")")
+    assert_equal [['?', "?"]], Lexer.new.tokenize("?")
+    assert_equal [['!', "!"]], Lexer.new.tokenize("!")
   end
 
   def test_recognizes_multichar_operators

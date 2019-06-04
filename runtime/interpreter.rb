@@ -107,6 +107,16 @@ class Interpreter
       end
     end
 
+    def visit_UnlessNode(node)
+      if !node.condition.accept(self).ruby_value
+        debug_print("Unless node: triggered")
+        node.body.accept(self)
+      else
+        debug_print("Unless node: nogo")
+        Constants["none"]
+      end
+    end
+
     def visit_ReturnNode(node)
       val = node.expression.accept(self)
       debug_print("Return node #{val}")
@@ -118,8 +128,34 @@ class Interpreter
     def visit_GetVariableNode(node)
       debug_print("Getting value for #{node.id}")
       var = @context.value_for(node.id)
+      if var.nil?
+        type = @context.definition_of(node.id)
+        var = type.new unless type.nil?
+      end
       raise "Referenced unknown variable #{node.id}" if var.nil?
       var
+    end
+
+    def visit_SetVariableNode(node)
+      debug_print("Setting value for #{node.id}")
+      val = node.value.accept(self)
+      @context.set_value_for(node.id, val)
+      val
+    end
+
+    def visit_TrueNode(node)
+      debug_print("True node")
+      Constants["true"]
+    end
+
+    def visit_FalseNode(node)
+      debug_print("False node")
+      Constants["false"]
+    end
+
+    def visit_NoneNode(node)
+      debug_print("None node")
+      Constants["none"]
     end
 
     def visit_CommentNode(node)

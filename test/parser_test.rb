@@ -20,8 +20,13 @@ class ParserTest < Test::Unit::TestCase
     assert_equal Nodes.new([IntegerNode.new(7)]), Parser.new.parse("7\n")
   end
 
-  def test_variable
+  def test_get_variable
     assert_equal Nodes.new([GetVariableNode.new("q")]), Parser.new.parse("q")
+  end
+
+  def test_set_variable
+    assert_equal Nodes.new([SetVariableNode.new("asdf", TrueNode.new())]),
+      Parser.new.parse("asdf = true")
   end
 
   def test_message_no_arguments
@@ -123,7 +128,29 @@ CODE
 
   def test_multiple_returns
     code = <<-CODE
-if true
+unless true
+    return 1
+return 2
+CODE
+
+    expected = Nodes.new(
+      [
+        UnlessNode.new(
+          TrueNode.new(), Nodes.new(
+            [
+              ReturnNode.new(IntegerNode.new(1))
+            ]
+          )
+        ),
+        ReturnNode.new(IntegerNode.new(2))
+      ]
+    )
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_false
+    code = <<-CODE
+if false
     return 1
 return 2
 CODE
@@ -131,7 +158,7 @@ CODE
     expected = Nodes.new(
       [
         IfNode.new(
-          GetVariableNode.new("true"), Nodes.new(
+          FalseNode.new(), Nodes.new(
             [
               ReturnNode.new(IntegerNode.new(1))
             ]
@@ -271,6 +298,28 @@ CODE
   def test_comments_are_ignored
     assert_equal Nodes.new([CommentNode.new("// pass")]),
       Parser.new.parse("// pass")
+  end
+
+  def test_none_is_parsed
+    assert_equal Nodes.new([NoneNode.new()]),
+      Parser.new.parse("none")
+  end
+
+  def test_question_and_negation_operators_on_same_variable
+    expected = Nodes.new(
+      [
+        SendMessageNode.new(
+          SendMessageNode.new(
+            NoneNode.new(),
+            "?",
+            []
+          ),
+          "!",
+          []
+        )
+      ]
+    )
+    assert_equal expected, Parser.new.parse("!none?")
   end
 
 end

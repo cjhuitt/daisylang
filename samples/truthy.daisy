@@ -1,0 +1,55 @@
+if true
+    print( "True is true" )
+if false
+    print( "False should NOT evaluate to true" )
+if true == true
+    print( "Good thing true equals itself" )
+if false == false
+    print( "Oh?  We can compare false to get true?  Hot dog!" )
+if true == none
+    print( "True should NEVER compare positively to none" )
+if false == none
+    print( "False should NEVER compare positively to none" )
+
+if true != true
+    print( "True should NOT be inequal to itself" )
+if false != false
+    print( "False should NOT be inequal to itself" )
+if true != none
+    print( "True is not none" )
+if false != none
+    print( "False is not none" )
+
+if true && true
+    print( "Correct logical and operation (true && true)" )
+if true && false
+    print( "INCORRECT logical and operation (true && false)" )
+if false && true
+    print( "INCORRECT logical and operation (false && true)" )
+if false && false
+    print( "INCORRECT logical and operation (false && false)" )
+
+if true || true
+    print( "Correct logical or operation (true || true)" )
+if true || false
+    print( "Correct logical or operation (true || false)" )
+if false || true
+    print( "Correct logical or operation (false || true)" )
+if false || false
+    print( "INCORRECT logical or operation (false || false)" )
+
+a = Boolean
+if a
+    print( "Boolean default should NOT be true" )
+if !a
+    print( "We can invert a boolean!" )
+if none?
+    print( "None should NEVER be truthy" )
+if !none?
+    print( "The logical inverse of none should be true!  Hurray!" )
+
+unless true
+    print( "True should NOT run in an unless block" )
+unless false
+    print( "False should be running now, in this unless block!  Yippee!" )
+
