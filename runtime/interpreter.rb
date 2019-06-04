@@ -107,6 +107,16 @@ class Interpreter
       end
     end
 
+    def visit_UnlessNode(node)
+      if !node.condition.accept(self).ruby_value
+        debug_print("Unless node: triggered")
+        node.body.accept(self)
+      else
+        debug_print("Unless node: nogo")
+        Constants["none"]
+      end
+    end
+
     def visit_ReturnNode(node)
       val = node.expression.accept(self)
       debug_print("Return node #{val}")

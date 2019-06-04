@@ -40,6 +40,7 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:RETURN, "return"]], Lexer.new.tokenize("return")
     assert_equal [[:PASS, "pass"]], Lexer.new.tokenize("pass")
     assert_equal [[:IF, "if"]], Lexer.new.tokenize("if")
+    assert_equal [[:UNLESS, "unless"]], Lexer.new.tokenize("unless")
     assert_equal [[:TRUE, "true"]], Lexer.new.tokenize("true")
     assert_equal [[:FALSE, "false"]], Lexer.new.tokenize("false")
     assert_equal [[:NONE, "none"]], Lexer.new.tokenize("none")

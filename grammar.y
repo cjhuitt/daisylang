@@ -4,7 +4,7 @@ token BLOCKSTART BLOCKEND
 token FUNCTION
 token IDENTIFIER
 token INTEGER STRING
-token IF RETURN
+token IF UNLESS RETURN
 token NEWLINE
 token NONETYPE
 token PASS TRUE FALSE NONE
@@ -137,6 +137,7 @@ rule
 
   If:
     IF Expression Block                 { result = IfNode.new(val[1], val[2]) }
+  | UNLESS Expression Block             { result = UnlessNode.new(val[1], val[2]) }
   ;
 
   GetVariable:

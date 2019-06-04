@@ -123,14 +123,14 @@ CODE
 
   def test_multiple_returns
     code = <<-CODE
-if true
+unless true
     return 1
 return 2
 CODE
 
     expected = Nodes.new(
       [
-        IfNode.new(
+        UnlessNode.new(
           TrueNode.new(), Nodes.new(
             [
               ReturnNode.new(IntegerNode.new(1))

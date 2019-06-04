@@ -29,7 +29,8 @@ if none?
 if !none?
     print( "The logical inverse of none should be true!  Hurray!" )
 
-//unless true
-//    print( "True should NOT run in an unless block" )
-//unless false
-//    print( "False should be running now, in this unless block!  Yippee!" )
+unless true
+    print( "True should NOT run in an unless block" )
+unless false
+    print( "False should be running now, in this unless block!  Yippee!" )
+

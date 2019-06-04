@@ -68,6 +68,9 @@ class ConditionalNode < Struct.new(:condition, :body); end
 class IfNode < ConditionalNode
   include Visitable
 end
+class UnlessNode < ConditionalNode
+  include Visitable
+end
 
 class GetVariableNode < Struct.new(:id)
   include Visitable
