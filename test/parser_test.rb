@@ -300,4 +300,21 @@ CODE
       Parser.new.parse("none")
   end
 
+  def test_question_and_negation_operators_on_same_variable
+    expected = Nodes.new(
+      [
+        SendMessageNode.new(
+          SendMessageNode.new(
+            NoneNode.new(),
+            "?",
+            []
+          ),
+          "!",
+          []
+        )
+      ]
+    )
+    assert_equal expected, Parser.new.parse("!none?")
+  end
+
 end

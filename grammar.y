@@ -14,6 +14,7 @@ token COMMENT
 # http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Operator_precedence
 prechigh
   left  '.'
+  left  '?'
   right '!'
   left  '^'
   left  '*' '/'
@@ -101,6 +102,8 @@ rule
   | Expression ">=" Expression { result = SendMessageNode.new(val[0], ">=", [ArgumentNode.new(nil, val[2])]) }
   | Expression "==" Expression { result = SendMessageNode.new(val[0], "==", [ArgumentNode.new(nil, val[2])]) }
   | Expression "!=" Expression { result = SendMessageNode.new(val[0], "!=", [ArgumentNode.new(nil, val[2])]) }
+  |             "!" Expression { result = SendMessageNode.new(val[1],  "!", []) }
+  | Expression  "?"            { result = SendMessageNode.new(val[0],  "?", []) }
   ;
 
   Define:

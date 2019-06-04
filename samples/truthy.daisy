@@ -24,8 +24,8 @@ if false != none
 //    print( "Boolean default should NOT be true" )
 //if !Boolean.new()?
 //    print( "We can invert a boolean!" )
-//if none?
-//    print( "None should NEVER be truthy" )
+if none?
+    print( "None should NEVER be truthy" )
 //if !none?
 //    print( "The logical inverse of none should be true!  Hurray!" )
 
