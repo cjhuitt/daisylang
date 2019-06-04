@@ -3,8 +3,17 @@ RootContext.defined_types["Boolean"] = Constants["Boolean"]
 Constants["true"] = Constants["Boolean"].new(true)
 Constants["false"] = Constants["Boolean"].new(false)
 
+Constants["Boolean"].def :check_compat do |other|
+  if other.runtime_class != Constants["Boolean"] &&
+      other.runtime_class != Constants["None"]
+    raise "Type error mismatch"
+  end
+end
+
 Constants["Boolean"].def :== do |interpreter, receiver, args|
-  if receiver.ruby_value == args.first[1].ruby_value
+  val = args.first[1]
+  Constants["Boolean"].lookup('check_compat').call(val)
+  if receiver.ruby_value == val.ruby_value
     Constants["true"]
   else
     Constants["false"]
@@ -12,7 +21,9 @@ Constants["Boolean"].def :== do |interpreter, receiver, args|
 end
 
 Constants["Boolean"].def :!= do |interpreter, receiver, args|
-  if receiver.ruby_value == args.first[1].ruby_value
+  val = args.first[1]
+  Constants["Boolean"].lookup('check_compat').call(val)
+  if receiver.ruby_value == val.ruby_value
     Constants["false"]
   else
     Constants["true"]
@@ -32,7 +43,9 @@ Constants["Boolean"].def :'?' do |interpreter, receiver, args|
 end
 
 Constants["Boolean"].def :'&&' do |interpreter, receiver, args|
-  if receiver.ruby_value && args.first[1].ruby_value
+  val = args.first[1]
+  Constants["Boolean"].lookup('check_compat').call(val)
+  if receiver.ruby_value && val.ruby_value
     Constants["true"]
   else
     Constants["false"]
@@ -40,7 +53,9 @@ Constants["Boolean"].def :'&&' do |interpreter, receiver, args|
 end
 
 Constants["Boolean"].def :'||' do |interpreter, receiver, args|
-  if receiver.ruby_value || args.first[1].ruby_value
+  val = args.first[1]
+  Constants["Boolean"].lookup('check_compat').call(val)
+  if receiver.ruby_value || val.ruby_value
     Constants["true"]
   else
     Constants["false"]
