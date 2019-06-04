@@ -19,6 +19,10 @@ Constants["Boolean"].def :!= do |interpreter, receiver, args|
   end
 end
 
+Constants["Boolean"].def :'?' do |interpreter, receiver, args|
+  receiver
+end
+
 #Constants["Boolean"].def :&& do |interpreter, receiver, args|
 #end
 #
