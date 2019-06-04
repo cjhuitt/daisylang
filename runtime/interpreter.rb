@@ -132,6 +132,13 @@ class Interpreter
       var
     end
 
+    def visit_SetVariableNode(node)
+      debug_print("Setting value for #{node.id}")
+      val = node.value.accept(self)
+      @context.set_value_for(node.id, val)
+      val
+    end
+
     def visit_TrueNode(node)
       debug_print("True node")
       Constants["true"]

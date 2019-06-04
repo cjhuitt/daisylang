@@ -32,6 +32,10 @@ class Context
     end
   end
 
+  def set_value_for(name, value)
+    @locals[name] = value
+  end
+
   def value_for(name)
     value = @locals[name]
     if !value.nil? || @previous_context.nil?
