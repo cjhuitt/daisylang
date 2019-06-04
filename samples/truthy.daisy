@@ -26,8 +26,8 @@ if false != none
 //    print( "We can invert a boolean!" )
 if none?
     print( "None should NEVER be truthy" )
-//if !none?
-//    print( "The logical inverse of none should be true!  Hurray!" )
+if !none?
+    print( "The logical inverse of none should be true!  Hurray!" )
 
 //unless true
 //    print( "True should NOT run in an unless block" )

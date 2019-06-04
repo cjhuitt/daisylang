@@ -19,6 +19,14 @@ Constants["Boolean"].def :!= do |interpreter, receiver, args|
   end
 end
 
+Constants["Boolean"].def :! do |interpreter, receiver, args|
+  if receiver.ruby_value
+    Constants["false"]
+  else
+    Constants["true"]
+  end
+end
+
 Constants["Boolean"].def :'?' do |interpreter, receiver, args|
   receiver
 end
