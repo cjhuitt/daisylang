@@ -254,7 +254,7 @@ CODE
     expected = Nodes.new([
       DefineMessageNode.new(
         "SayHi",
-        NoneNode.new,
+        "None",
         [],
         Nodes.new([PassNode.new])
       )

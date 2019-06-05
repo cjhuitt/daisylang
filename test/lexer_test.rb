@@ -48,7 +48,7 @@ class LexerTest < Test::Unit::TestCase
 
   def test_recognizes_identifiers
     assert_equal [[:IDENTIFIER, "Integer"]], Lexer.new.tokenize("Integer")
-    assert_equal [[:NONETYPE, "None"]], Lexer.new.tokenize("None")
+    assert_equal [[:IDENTIFIER, "None"]], Lexer.new.tokenize("None")
     assert_equal [[:FUNCTION, "Function"]], Lexer.new.tokenize("Function")
   end
 
