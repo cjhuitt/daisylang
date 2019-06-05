@@ -7,11 +7,11 @@ if true.isa?( Boolean )
     print( "Recognizes own class" )
 if true.isa?( Object )
     print( "Recognizes base class" )
-//unless true.isa?( None )
-//    print( "Recognizes not a different class" )
-//
+unless true.isa?( None )
+    print( "Recognizes not a different class" )
+
 //if 1.isa?( Sortable )
 //    print( "Recognizes met contract" )
-//unless Class.isa?( Comperable )
+//unless Class.isa?( Sortable )
 //    print( "Recognizes when not meeting a contract" )
 
