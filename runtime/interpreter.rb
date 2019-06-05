@@ -64,14 +64,14 @@ class Interpreter
       value = node.value
       unless value.nil?
         if value.is_a? String
-          value = @context.value_for(value)
+          value = @context.symbol(value)
         end
         if value.nil?
           node.type = node.value
           node.value = nil
         end
       end
-      type = @context.definition_of(node.type)
+      type = @context.symbol(node.type)
       raise "Unknown parameter type" if type.nil? && value.nil?
       if type.nil?
         type = value.runtime_class unless value.nil?
@@ -81,7 +81,7 @@ class Interpreter
 
     def visit_DefineMessageNode(node)
       debug_print("Define message #{node.name} with #{node.parameters}")
-      returning = @context.definition_of(node.return_type)
+      returning = @context.symbol(node.return_type)
       params = node.parameters.each { |param| param.accept(self) }
       method = DaisyMethod.new(node.name, returning, params, node.body)
       @context.current_class.runtime_methods[method.name] = method
@@ -127,10 +127,7 @@ class Interpreter
 
     def visit_GetSymbolNode(node)
       debug_print("Getting value for #{node.id}")
-      var = @context.value_for(node.id)
-      if var.nil?
-        var = @context.definition_of(node.id)
-      end
+      var = @context.symbol(node.id)
       raise "Referenced unknown symbol #{node.id}" if var.nil?
       var
     end
@@ -138,7 +135,7 @@ class Interpreter
     def visit_SetSymbolNode(node)
       debug_print("Setting value for #{node.id}")
       val = node.value.accept(self)
-      @context.set_value_for(node.id, val)
+      @context.assign_symbol(node.id, val)
       val
     end
 

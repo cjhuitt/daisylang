@@ -1,5 +1,5 @@
 Constants["Integer"] = DaisyClass.new("Integer", Constants["Object"])
-RootContext.defined_types["Integer"] = Constants["Integer"]
+RootContext.symbols["Integer"] = Constants["Integer"]
 
 Constants["Integer"].def :+ do |interpreter, receiver, args|
   result = receiver.ruby_value + args.first[1].ruby_value

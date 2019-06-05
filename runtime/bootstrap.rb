@@ -20,14 +20,14 @@ end
 root_self = Constants["Object"].new
 RootContext = Context.new(nil, root_self)
 
-RootContext.defined_types["Object"] = Constants["Object"]
-RootContext.defined_types["Class"] = Constants["Class"]
+RootContext.symbols["Object"] = Constants["Object"]
+RootContext.symbols["Class"] = Constants["Class"]
 
 Constants["String"] = DaisyClass.new("String", Constants["Object"])
-RootContext.defined_types["String"] = Constants["String"]
+RootContext.symbols["String"] = Constants["String"]
 
 Constants["None"] = DaisyClass.new("None", Constants["Object"])
-RootContext.defined_types["None"] = Constants["None"]
+RootContext.symbols["None"] = Constants["None"]
 Constants["None"].def :print do |receiver, args|
   puts "(none)"
 end

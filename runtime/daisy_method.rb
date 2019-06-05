@@ -15,7 +15,7 @@ class DaisyMethod < DaisyObject
   def call(interpreter, receiver, args)
     context = interpreter.push_context(receiver)
     arglist(args).each do |name, value|
-      context.locals[name] = value
+      context.symbols[name] = value
     end
     context.return_type = @return_type
 
@@ -55,10 +55,10 @@ class DaisyMethod < DaisyObject
       args_dict = {}
       @params.each do |param|
         if val = given_dict.delete(param.label)
-          context.locals[param.label] = val
+          context.symbols[param.label] = val
         else
           raise "Parameter #{param.label} to method #{@name} required" if param.value.nil?
-          context.locals[param.label] = param.value
+          context.symbols[param.label] = param.value
         end
       end
       raise "Too many parameters passed to method #{@name}" unless given_dict.empty
