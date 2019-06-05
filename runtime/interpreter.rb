@@ -84,7 +84,7 @@ class Interpreter
       returning = @context.symbol(node.return_type)
       params = node.parameters.each { |param| param.accept(self) }
       method = DaisyMethod.new(node.name, returning, params, node.body)
-      @context.assign_symbol(node.name, method)
+      @context.assign_symbol(node.name, Constants["Function"].new(method))
       @context.current_class.runtime_methods[method.name] = method
     end
 
