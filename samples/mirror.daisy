@@ -10,6 +10,17 @@ if true.isa?( Object )
 unless true.isa?( None )
     print( "Recognizes not a different class" )
 
+// Lists of things to come
+//functions = Boolean.functions()
+//for func in functions
+//    print func
+//functions = functions() // root context
+//for func in functions
+//    print func
+//symbols = symbols() // root context
+//for sym in symbols
+//    print sym
+
 // Contracts to come:
 //if 1.is?( Sortable )
 //    print( "Recognizes met contract" )
