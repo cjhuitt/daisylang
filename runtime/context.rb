@@ -1,6 +1,6 @@
 class Context
   attr_reader :previous_context, :current_self, :current_class
-  attr_accessor :interpreter, :defined_types, :locals
+  attr_accessor :interpreter, :symbols
   attr_accessor :return_type, :return_value, :should_return
 
   def initialize(prev_context, current_self, current_class=current_self.runtime_class)
@@ -8,8 +8,7 @@ class Context
     @current_self = current_self
     @current_class = current_class
     @interpreter = interpreter
-    @defined_types = {}
-    @locals = {}
+    @symbols = {}
     @return_type = Constants["None"]
     @return_value = Constants["none"]
     @should_return = false
@@ -24,7 +23,7 @@ class Context
   end
 
   def definition_of(def_type)
-    type = @defined_types[def_type]
+    type = @symbols[def_type]
     if !type.nil? || @previous_context.nil?
       type
     else
@@ -32,12 +31,12 @@ class Context
     end
   end
 
-  def set_value_for(name, value)
-    @locals[name] = value
+  def assign_symbol(name, value)
+    @symbols[name] = value
   end
 
-  def value_for(name)
-    value = @locals[name]
+  def symbol(name)
+    value = @symbols[name]
     if !value.nil? || @previous_context.nil?
       value
     else
