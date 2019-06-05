@@ -1,4 +1,4 @@
-Constants["Boolean"] = DaisyClass.new(Constants["Object"])
+Constants["Boolean"] = DaisyClass.new("Boolean", Constants["Object"])
 RootContext.defined_types["Boolean"] = Constants["Boolean"]
 Constants["true"] = Constants["Boolean"].new(true)
 Constants["false"] = Constants["Boolean"].new(false)
