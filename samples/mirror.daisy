@@ -3,8 +3,8 @@ print( false.type() )
 if Boolean.type() != Class
     print( "A class's type should NOT be itself" )
 
-//if true.isa?( Boolean )
-//    print( "Recognizes own class" )
+if true.isa?( Boolean )
+    print( "Recognizes own class" )
 //if true.isa?( Object )
 //    print( "Recognizes base class" )
 //unless true.isa?( None )
