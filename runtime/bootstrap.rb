@@ -53,11 +53,14 @@ RootContext.symbols["Class"] = Constants["Class"]
 
 Constants["String"] = DaisyClass.new("String", Constants["Object"])
 RootContext.symbols["String"] = Constants["String"]
+Constants["String"].def :printable do |interpreter, receiver, args|
+  args.first[1]
+end
 
 Constants["None"] = DaisyClass.new("None", Constants["Object"])
 RootContext.symbols["None"] = Constants["None"]
-Constants["None"].def :print do |receiver, args|
-  puts "(none)"
+Constants["None"].def :printable do |interpreter, receiver, args|
+  Constants["String"].new("(none)")
 end
 Constants["None"].def :'?' do |interpreter, receiver, args|
   Constants["false"]
