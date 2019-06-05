@@ -1,4 +1,4 @@
-Constants["Integer"] = DaisyClass.new(Constants["Object"])
+Constants["Integer"] = DaisyClass.new("Integer", Constants["Object"])
 RootContext.defined_types["Integer"] = Constants["Integer"]
 
 Constants["Integer"].def :+ do |interpreter, receiver, args|
