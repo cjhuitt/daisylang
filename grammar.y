@@ -48,8 +48,8 @@ rule
   | Operation                           { result = val[0] }
   | Define                              { result = val[0] }
   | Return                              { result = val[0] }
-  | GetVariable                         { result = val[0] }
-  | SetVariable                         { result = val[0] }
+  | GetSymbol                           { result = val[0] }
+  | SetSymbol                           { result = val[0] }
   | "(" Expression ")"                  { result = val[1] }
   | Comment                             { result = val[0] }
   ;
@@ -141,12 +141,12 @@ rule
   | UNLESS Expression Block             { result = UnlessNode.new(val[1], val[2]) }
   ;
 
-  GetVariable:
-    IDENTIFIER                          { result = GetVariableNode.new(val[0]) }
+  GetSymbol:
+    IDENTIFIER                          { result = GetSymbolNode.new(val[0]) }
   ;
 
-  SetVariable:
-    IDENTIFIER "=" Expression           { result = SetVariableNode.new(val[0], val[2]) }
+  SetSymbol:
+    IDENTIFIER "=" Expression           { result = SetSymbolNode.new(val[0], val[2]) }
   ;
 
   Comment:

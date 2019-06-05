@@ -59,10 +59,10 @@ class ArgumentNode < Struct.new(:label, :value)
   include Visitable
 end
 
-class VariableNode < Struct.new(:label, :type, :value)
+class SymbolNode < Struct.new(:label, :type, :value)
   include Visitable
 end
-class ParameterNode < VariableNode; end
+class ParameterNode < SymbolNode; end
 
 class ConditionalNode < Struct.new(:condition, :body); end
 class IfNode < ConditionalNode
@@ -72,10 +72,10 @@ class UnlessNode < ConditionalNode
   include Visitable
 end
 
-class GetVariableNode < Struct.new(:id)
+class GetSymbolNode < Struct.new(:id)
   include Visitable
 end
-class SetVariableNode < Struct.new(:id, :value)
+class SetSymbolNode < Struct.new(:id, :value)
   include Visitable
 end
 
