@@ -11,6 +11,11 @@ class DaisyClass < DaisyObject
     @runtime_superclass = superclass
   end
 
+  def is_type(type)
+    return self == type ||
+      (!@runtime_superclass.nil? && @runtime_superclass.is_type(type))
+  end
+
   def lookup(message)
     method = @runtime_methods[message]
     unless method

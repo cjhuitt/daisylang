@@ -5,8 +5,8 @@ if Boolean.type() != Class
 
 if true.isa?( Boolean )
     print( "Recognizes own class" )
-//if true.isa?( Object )
-//    print( "Recognizes base class" )
+if true.isa?( Object )
+    print( "Recognizes base class" )
 //unless true.isa?( None )
 //    print( "Recognizes not a different class" )
 //
