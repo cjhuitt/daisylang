@@ -1,6 +1,6 @@
-print( true.get_class() )
-print( false.get_class() )
-//if Boolean.get_class() != Class
+print( true.type() )
+print( false.type() )
+//if Boolean.type() != Class
 //    print( "A class's type should NOT be itself" )
 
 //if true.isa?( Boolean )
