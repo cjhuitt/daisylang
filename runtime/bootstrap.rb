@@ -8,6 +8,10 @@ Constants["Object"].def :print do |interpreter, receiver, args|
   message = args.map { |arg| arg[1].ruby_value }
   puts message
 end
+Constants["Object"].def :get_class do |interpreter, receiver, args|
+  Constants["String"].new(receiver.runtime_class.class_name)
+end
+
 
 root_self = Constants["Object"].new
 RootContext = Context.new(nil, root_self)
