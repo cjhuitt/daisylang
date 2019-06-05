@@ -1,0 +1,7 @@
+print( true )
+print( false )
+print( none )
+print( 1 )
+print( Integer )
+print( Class )
+print( None )
