@@ -1,7 +1,7 @@
 print( true.type() )
 print( false.type() )
-//if Boolean.type() != Class
-//    print( "A class's type should NOT be itself" )
+if Boolean.type() != Class
+    print( "A class's type should NOT be itself" )
 
 //if true.isa?( Boolean )
 //    print( "Recognizes own class" )

@@ -10,15 +10,36 @@ Constants["Object"].def :print do |interpreter, receiver, args|
   puts message
 end
 Constants["Object"].def :type do |interpreter, receiver, args|
-  Constants["String"].new(receiver.runtime_class.class_name)
+  receiver.runtime_class
 end
 Constants["Object"].def :default do |interpreter, receiver, args|
   receiver.new
 end
-
+Constants["Object"].def :'isa?' do |interpreter, receiver, args|
+  if receiver.runtime_class == args.first[1]
+    Constants["true"]
+  else
+    Constants["false"]
+  end
+end
 
 root_self = Constants["Object"].new
 RootContext = Context.new(nil, root_self)
+
+Constants["Class"].def :== do |interpreter, receiver, args|
+  if receiver == args.first[1]
+    Constants["true"]
+  else
+    Constants["false"]
+  end
+end
+Constants["Class"].def :!= do |interpreter, receiver, args|
+  if receiver == args.first[1]
+    Constants["false"]
+  else
+    Constants["true"]
+  end
+end
 
 RootContext.symbols["Object"] = Constants["Object"]
 RootContext.symbols["Class"] = Constants["Class"]
