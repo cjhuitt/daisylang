@@ -177,6 +177,17 @@ CODE
     assert_equal expected, Lexer.new.tokenize("// true")
   end
 
+  def test_distinguishes_potentially_ambiguous_portions
+    assert_equal [[:IDENTIFIER, "a"],
+                  ["?", "?"]], Lexer.new.tokenize("a?")
+    assert_equal [[:IDENTIFIER, "a?"],
+                  ['()', "()"]], Lexer.new.tokenize("a?()")
+    assert_equal [[:IDENTIFIER, "a?"],
+                  ['( ', "( "],
+                  [:IDENTIFIER, "b"],
+                  [' )', " )"]], Lexer.new.tokenize("a?( b )")
+  end
+
   def x_test_print_tokens
     code = <<-CODE
 Function Integer fibonacci( n: Integer )
@@ -191,6 +202,4 @@ CODE
   # To Test
   # Illegal Indentation (too much indentation)
   # More Keywords
-  # Multi-char operators
-  # Comments
 end
