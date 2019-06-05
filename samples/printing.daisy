@@ -5,3 +5,9 @@ print( 1 )
 print( Integer )
 print( Class )
 print( None )
+
+Function None foo()
+    none
+
+//print( foo )
+
