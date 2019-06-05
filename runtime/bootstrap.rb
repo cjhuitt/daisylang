@@ -11,6 +11,9 @@ end
 Constants["Object"].def :type do |interpreter, receiver, args|
   Constants["String"].new(receiver.runtime_class.class_name)
 end
+Constants["Object"].def :default do |interpreter, receiver, args|
+  receiver.runtime_class.new
+end
 
 
 root_self = Constants["Object"].new

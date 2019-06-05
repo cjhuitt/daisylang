@@ -38,7 +38,7 @@ if false || true
 if false || false
     print( "INCORRECT logical or operation (false || false)" )
 
-a = Boolean
+a = Boolean.default()
 if a
     print( "Boolean default should NOT be true" )
 if !a
