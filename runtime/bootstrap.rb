@@ -4,6 +4,7 @@ Constants["Class"] = DaisyClass.new("Class")
 Constants["Class"].runtime_class = Constants["Class"]
 
 Constants["Object"] = DaisyClass.new("Object")
+Constants["Class"].runtime_superclass = Constants["Object"]
 Constants["Object"].def :print do |interpreter, receiver, args|
   message = args.map { |arg| arg[1].ruby_value }
   puts message
@@ -12,7 +13,7 @@ Constants["Object"].def :type do |interpreter, receiver, args|
   Constants["String"].new(receiver.runtime_class.class_name)
 end
 Constants["Object"].def :default do |interpreter, receiver, args|
-  receiver.runtime_class.new
+  receiver.new
 end
 
 

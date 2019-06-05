@@ -50,7 +50,7 @@ class Interpreter
     def visit_SendMessageNode(node)
       receiver = node.receiver.nil? ? @context.current_self : node.receiver.accept(self)
       evaluated_args = node.arguments.map { |arg| arg.accept(self) }
-      debug_print("Dispatching #{node.message} on #{receiver}")
+      debug_print("Dispatching #{node.message} on #{receiver.runtime_class.class_name}")
       debug_print("Arguments: #{evaluated_args}")
       receiver.dispatch(@context, node.message, evaluated_args)
     end
@@ -129,10 +129,9 @@ class Interpreter
       debug_print("Getting value for #{node.id}")
       var = @context.value_for(node.id)
       if var.nil?
-        type = @context.definition_of(node.id)
-        var = type.new unless type.nil?
+        var = @context.definition_of(node.id)
       end
-      raise "Referenced unknown variable #{node.id}" if var.nil?
+      raise "Referenced unknown symbol #{node.id}" if var.nil?
       var
     end
 
