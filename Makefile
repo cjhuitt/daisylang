@@ -12,7 +12,7 @@ check: tests
 parser.rb: grammar.y
 	racc -g -o parser.rb grammar.y
 
-samples: hello calc fibo truthy
+samples: hello calc fibo truthy mirror
 
 hello: daisy samples/hello.daisy
 	./daisy samples/hello.daisy
@@ -25,4 +25,7 @@ fibo: daisy samples/fibo.daisy
 
 truthy: daisy samples/truthy.daisy
 	./daisy samples/truthy.daisy
+
+mirror: daisy samples/mirror.daisy
+	./daisy samples/mirror.daisy
 
