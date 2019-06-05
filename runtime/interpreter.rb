@@ -125,7 +125,7 @@ class Interpreter
       val
     end
 
-    def visit_GetVariableNode(node)
+    def visit_GetSymbolNode(node)
       debug_print("Getting value for #{node.id}")
       var = @context.value_for(node.id)
       if var.nil?
@@ -135,7 +135,7 @@ class Interpreter
       var
     end
 
-    def visit_SetVariableNode(node)
+    def visit_SetSymbolNode(node)
       debug_print("Setting value for #{node.id}")
       val = node.value.accept(self)
       @context.set_value_for(node.id, val)
