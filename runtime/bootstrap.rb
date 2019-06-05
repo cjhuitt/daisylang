@@ -6,8 +6,9 @@ Constants["Class"].runtime_class = Constants["Class"]
 Constants["Object"] = DaisyClass.new("Object")
 Constants["Class"].runtime_superclass = Constants["Object"]
 Constants["Object"].def :print do |interpreter, receiver, args|
-  message = args.map { |arg| arg[1].ruby_value }
-  puts message
+  formatter = args.first[1].runtime_class.lookup("printable")
+  message = formatter.call(interpreter, receiver, args)
+  puts message.ruby_value
 end
 Constants["Object"].def :type do |interpreter, receiver, args|
   receiver.runtime_class
@@ -21,6 +22,9 @@ Constants["Object"].def :'isa?' do |interpreter, receiver, args|
   else
     Constants["false"]
   end
+end
+Constants["Object"].def :printable do |interpreter, receiver, args|
+  Constants["String"].new( "Instance of #{receiver.runtime_class.class_name}" )
 end
 
 root_self = Constants["Object"].new
