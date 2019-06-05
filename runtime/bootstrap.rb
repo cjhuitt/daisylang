@@ -16,7 +16,7 @@ Constants["Object"].def :default do |interpreter, receiver, args|
   receiver.new
 end
 Constants["Object"].def :'isa?' do |interpreter, receiver, args|
-  if receiver.runtime_class == args.first[1]
+  if receiver.runtime_class.is_type( args.first[1] )
     Constants["true"]
   else
     Constants["false"]
