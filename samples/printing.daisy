@@ -9,5 +9,5 @@ print( None )
 Function None foo()
     none
 
-//print( foo )
+print( foo )
 
