@@ -12,7 +12,11 @@ class DaisyClass < DaisyObject
   end
 
   def lookup(message)
-    @runtime_methods[message]
+    method = @runtime_methods[message]
+    unless method
+      method = @runtime_superclass.lookup(message)
+    end
+    method
   end
 
   def lookup_dispatch()
