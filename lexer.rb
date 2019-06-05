@@ -73,6 +73,10 @@ class Lexer
         elsif str = sub[/\A"([^"]*)/, 1]
           @string_accumulator = str
           i += str.size + 2
+        elsif identifier = sub[/\A(\w+\?)\(/, 1]
+          tokens << [:IDENTIFIER, identifier]
+          debug_out("Extracted #{identifier} (Identifier)")
+          i += identifier.size
         elsif identifier = sub[/\A(\w+)/, 1]
           if KEYWORDS.include? identifier
             if identifier == "None"
