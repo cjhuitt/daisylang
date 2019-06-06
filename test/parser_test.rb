@@ -213,7 +213,7 @@ CODE
 
   def test_define_method_with_return_type
     code = <<-CODE
-Function String Greeting()
+Function: String Greeting()
     return "Hey"
 
 CODE
@@ -230,7 +230,7 @@ CODE
 
   def test_define_simple_method_no_return_type
     code = <<-CODE
-Function SayHi()
+Function: SayHi()
     pass
 
 CODE
@@ -247,7 +247,7 @@ CODE
 
   def test_define_simple_method
     code = <<-CODE
-Function None SayHi()
+Function: None SayHi()
     pass
 
 CODE
@@ -264,7 +264,7 @@ CODE
 
   def test_define_method_with_arguments
     code = <<-CODE
-Function String Greet( name: String, greeting: "Hello" )
+Function: String Greet( name: String, greeting: "Hello" )
     return greeting + " " + name
 
 CODE

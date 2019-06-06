@@ -49,7 +49,8 @@ class LexerTest < Test::Unit::TestCase
   def test_recognizes_identifiers
     assert_equal [[:IDENTIFIER, "Integer"]], Lexer.new.tokenize("Integer")
     assert_equal [[:IDENTIFIER, "None"]], Lexer.new.tokenize("None")
-    assert_equal [[:FUNCTION, "Function"]], Lexer.new.tokenize("Function")
+    assert_equal [[:IDENTIFIER, "Function"]], Lexer.new.tokenize("Function")
+    assert_equal [[:FUNCTION, "Function:"]], Lexer.new.tokenize("Function: ")
   end
 
   def test_recognizes_simple_operators
@@ -118,12 +119,12 @@ class LexerTest < Test::Unit::TestCase
 
   def test_function
     code = <<-CODE
-Function Integer Summation( n: Integer )
+Function: Integer Summation( n: Integer )
     return n * (n - 1) / 2
 
 CODE
     expected = [
-      [:FUNCTION, "Function"], [:IDENTIFIER, "Integer"],
+      [:FUNCTION, "Function:"], [:IDENTIFIER, "Integer"],
           [:IDENTIFIER, "Summation"], ['( ', "( "],
           [:IDENTIFIER, "n"], [':', ": "],
           [:IDENTIFIER, "Integer"], [' )', " )"], [:NEWLINE, "\n"],
@@ -190,7 +191,7 @@ CODE
 
   def x_test_print_tokens
     code = <<-CODE
-Function Integer fibonacci( n: Integer )
+Function: Integer fibonacci( n: Integer )
     if n <= 2
         return 1
     return fibonacci( n - 1 ) + fibonacci( n - 2 )
