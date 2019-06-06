@@ -162,5 +162,14 @@ class Interpreter
     def debug_print(message)
       puts message if @debug
     end
+
+    def visit_DefineClassNode(node)
+      debug_print("Define class #{node.name}")
+      cls = DaisyClass.new(node.name, Constants["Object"])
+      @context.assign_symbol(node.name, cls)
+      push_context(cls)
+      node.body.accept(self)
+      pop_context()
+    end
 end
 
