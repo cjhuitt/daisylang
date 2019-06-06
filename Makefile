@@ -12,13 +12,16 @@ check: tests
 parser.rb: grammar.y
 	racc -g -o parser.rb grammar.y
 
-samples: calc fibo hello mirror printing truthy
+samples: calc classical fibo hello mirror printing truthy
 
 hello: daisy samples/hello.daisy
 	./daisy samples/hello.daisy
 
 calc: daisy samples/calc.daisy
 	./daisy samples/calc.daisy
+
+classical: daisy samples/classical.daisy
+	./daisy samples/classical.daisy
 
 fibo: daisy samples/fibo.daisy
 	./daisy samples/fibo.daisy

@@ -1,0 +1,66 @@
+// Base class (implicitly inherits from Object)
+Class Color
+    red: Integer
+//    green: Integer
+//    blue: Integer
+//    alpha: Integer
+//
+//    Function Color Blended( other: Color )
+//        result = Color.default
+//        result.red = (red + other.red) / 2
+//        result.green = (green + other.green) / 2
+//        result.blue = (blue + other.blue) / 2
+//        result.alpha = (alpha + other.alpha) / 2
+//
+//    Function Color Blend!( other: Color )
+//        red = (red + other.red) / 2
+//        green = (green + other.green) / 2
+//        blue = (blue + other.blue) / 2
+//        alpha = (alpha + other.alpha) / 2
+//
+//    Function Color =( other: Color )
+//        red = other.red
+//        green = other.green
+//        blue = other.blue
+//        alpha = other.alpha
+//
+//    Function None *Muddy!()
+//        mud = (red + green + blue) / 3
+//        red = mud
+//        green = mud
+//        blue = mud
+//
+//
+//// A contract
+//Contract Dimensional
+//    Function Integer Width()
+//    Function Integer Height()
+//
+//// A class fulfilling the contract
+//class Painting is Dimensional
+//    width: Integer
+//    height: Integer
+//    artist: String
+//    primary_color: Color
+//
+//    Function Integer Width()
+//        return width
+//
+//    using height#self as Height()
+//
+//// A class that meets multiple contracts and delegates them
+//Class Distance is Comperable, Sortable
+//    distance: Integer
+//
+//    delegate Sortable to distance
+//    delegate Comperable to distance
+//
+//    Function setup( cm: 0, m: 0, ft: 0, in: 0 )
+//        // The user will almost certainly only specify one of these, but since
+//        // we total them, it doesn't matter if they are zeroed or not.
+//        distance = cm + 100 * m + 2 * in + 30 * ft
+//
+//    Function Integer Centimeters()
+//        return distance
+//
+//
