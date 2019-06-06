@@ -1,30 +1,30 @@
 // Base class (implicitly inherits from Object)
-Class Color
-    red: Integer
-//    green: Integer
-//    blue: Integer
-//    alpha: Integer
+Class: Color
+    red = Integer
+//    green = Integer
+//    blue = Integer
+//    alpha = Integer
 //
-//    Function Color Blended( other: Color )
+//    Function: Color blended( other: Color )
 //        result = Color.default
 //        result.red = (red + other.red) / 2
 //        result.green = (green + other.green) / 2
 //        result.blue = (blue + other.blue) / 2
 //        result.alpha = (alpha + other.alpha) / 2
 //
-//    Function Color Blend!( other: Color )
+//    Function: Color blend!( other: Color )
 //        red = (red + other.red) / 2
 //        green = (green + other.green) / 2
 //        blue = (blue + other.blue) / 2
 //        alpha = (alpha + other.alpha) / 2
 //
-//    Function Color =( other: Color )
+//    Function: Color =( other: Color )
 //        red = other.red
 //        green = other.green
 //        blue = other.blue
 //        alpha = other.alpha
 //
-//    Function None *Muddy!()
+//    Function: None *muddy!()
 //        mud = (red + green + blue) / 3
 //        red = mud
 //        green = mud
@@ -32,35 +32,50 @@ Class Color
 //
 //
 //// A contract
-//Contract Dimensional
-//    Function Integer Width()
-//    Function Integer Height()
+//Contract: Dimensional
+//    Function: Integer width()
+//    Function: Integer height()
 //
 //// A class fulfilling the contract
-//class Painting is Dimensional
-//    width: Integer
-//    height: Integer
-//    artist: String
-//    primary_color: Color
+//Class: Painting is Dimensional
+//    width = Integer
+//    height = Integer
+//    artist = String
+//    primary_color = Color
 //
-//    Function Integer Width()
+//    Function: Integer width()
 //        return width
 //
-//    using height#self as Height()
+//    using height#self as height()
 //
 //// A class that meets multiple contracts and delegates them
-//Class Distance is Comperable, Sortable
-//    distance: Integer
+//Class: Distance is Comperable, Sortable
+//    distance = Integer
 //
 //    delegate Sortable to distance
 //    delegate Comperable to distance
 //
-//    Function setup( cm: 0, m: 0, ft: 0, in: 0 )
+//    Function: setup( cm: 0, m: 0, ft: 0, in: 0 )
 //        // The user will almost certainly only specify one of these, but since
 //        // we total them, it doesn't matter if they are zeroed or not.
 //        distance = cm + 100 * m + 2 * in + 30 * ft
 //
-//    Function Integer Centimeters()
+//    Function: Integer centimeters()
 //        return distance
 //
 //
+// A class with an init function is called when the class's create function
+// is called, with the same parameters.  A Dirty class is cleaned up when
+// the last reference to it goes out of scope, allowing RAII.
+//Class: Socket is Dirty
+//    device = String
+//    is_open = false
+//
+//    Function: None init( dev: String )
+//        device = dev
+//        if open( device )
+//            is_open = true
+//
+//    Function: None cleanup()
+//        if is_open
+//            close( device )
