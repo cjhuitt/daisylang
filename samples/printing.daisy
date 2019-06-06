@@ -6,7 +6,7 @@ print( Integer )
 print( Class )
 print( None )
 
-Function None foo()
+Function: None foo()
     none
 
 print( foo )

@@ -36,7 +36,7 @@ class Lexer
   end
 
   private
-    KEYWORDS = ["Function", "pass", "return", "if", "true", "false",
+    KEYWORDS = [ "pass", "return", "if", "true", "false",
                 "none", "unless"]
 
     def tokenize_line(line)
@@ -73,6 +73,10 @@ class Lexer
         elsif str = sub[/\A"([^"]*)/, 1]
           @string_accumulator = str
           i += str.size + 2
+        elsif sub.start_with? "Function: "
+          tokens << [:FUNCTION, "Function:"]
+          debug_out("Extracted Function: (Definition start)")
+          i += "Function: ".size
         elsif identifier = sub[/\A(\w+\?)\(/, 1]
           tokens << [:IDENTIFIER, identifier]
           debug_out("Extracted #{identifier} (Identifier)")
