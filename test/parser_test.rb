@@ -322,4 +322,22 @@ CODE
     assert_equal expected, Parser.new.parse("!none?")
   end
 
+  def test_define_class
+    code = <<-CODE
+Class: Foo
+    a = Integer
+
+CODE
+    expected = Nodes.new([
+      DefineClassNode.new("Foo",
+        Nodes.new([
+          SetSymbolNode.new("a",
+            GetSymbolNode.new("Integer")
+          )
+        ])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end

@@ -1,7 +1,7 @@
 class Parser
 
 token BLOCKSTART BLOCKEND
-token FUNCTION
+token FUNCTION CLASS
 token IDENTIFIER
 token INTEGER STRING
 token IF UNLESS RETURN
@@ -110,6 +110,7 @@ rule
   Define:
     FUNCTION Typename IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[2], val[1], val[3], val[4]) }
   | FUNCTION IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[1], NoneNode.new, val[2], val[3]) }
+  | CLASS IDENTIFIER Block              { result = DefineClassNode.new(val[1], val[2]) }
   ;
 
   ParameterList:

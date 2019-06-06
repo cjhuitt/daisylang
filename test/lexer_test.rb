@@ -51,6 +51,8 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:IDENTIFIER, "None"]], Lexer.new.tokenize("None")
     assert_equal [[:IDENTIFIER, "Function"]], Lexer.new.tokenize("Function")
     assert_equal [[:FUNCTION, "Function:"]], Lexer.new.tokenize("Function: ")
+    assert_equal [[:IDENTIFIER, "Class"]], Lexer.new.tokenize("Class")
+    assert_equal [[:CLASS, "Class:"]], Lexer.new.tokenize("Class: ")
   end
 
   def test_recognizes_simple_operators

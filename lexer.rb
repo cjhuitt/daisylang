@@ -75,8 +75,12 @@ class Lexer
           i += str.size + 2
         elsif sub.start_with? "Function: "
           tokens << [:FUNCTION, "Function:"]
-          debug_out("Extracted Function: (Definition start)")
+          debug_out("Extracted Function: (Definition)")
           i += "Function: ".size
+        elsif sub.start_with? "Class: "
+          tokens << [:CLASS, "Class:"]
+          debug_out("Extracted Class: (Definition)")
+          i += "Class: ".size
         elsif identifier = sub[/\A(\w+\?)\(/, 1]
           tokens << [:IDENTIFIER, identifier]
           debug_out("Extracted #{identifier} (Identifier)")
