@@ -1,10 +1,14 @@
 // Base class (implicitly inherits from Object)
 Class: Color
     red = Integer
-//    green = Integer
-//    blue = Integer
-//    alpha = Integer
-//
+    green = Integer
+    blue = Integer
+    alpha = Integer
+    
+    Function: String printable()
+        return "#00000000"
+//        return "#{hex( red )}{hex( green )}{hex( blue )}{hex( alpha )}"
+//    
 //    Function: Color blended( other: Color )
 //        result = Color.default
 //        result.red = (red + other.red) / 2
@@ -24,13 +28,16 @@ Class: Color
 //        blue = other.blue
 //        alpha = other.alpha
 //
-//    Function: None *muddy!()
+//    Function: String *hex( val: Integer )
 //        mud = (red + green + blue) / 3
 //        red = mud
 //        green = mud
 //        blue = mud
 //
-//
+
+color = Color.default()
+print( color )
+
 //// A contract
 //Contract: Dimensional
 //    Function: Integer width()
