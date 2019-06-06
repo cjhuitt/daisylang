@@ -22,15 +22,6 @@ class Context
     end
   end
 
-  def definition_of(def_type)
-    type = @symbols[def_type]
-    if !type.nil? || @previous_context.nil?
-      type
-    else
-      @previous_context.definition_of(def_type)
-    end
-  end
-
   def assign_symbol(name, value)
     @symbols[name] = value
   end
@@ -40,7 +31,7 @@ class Context
     if !value.nil? || @previous_context.nil?
       value
     else
-      @previous_context.value_for(name)
+      @previous_context.symbol(name)
     end
   end
 end
