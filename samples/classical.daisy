@@ -7,7 +7,7 @@ Class: Color
     
     Function: String printable()
         return "#00000000"
-//        return "#{hex( red )}{hex( green )}{hex( blue )}{hex( alpha )}"
+//        return "#{ red.InHex() }{ green.InHex() }{ blue.InHex() }{ alpha.InHex() }"
 //    
 //    Function: Color blended( other: Color )
 //        result = Color.default
@@ -27,13 +27,6 @@ Class: Color
 //        green = other.green
 //        blue = other.blue
 //        alpha = other.alpha
-//
-//    Function: String *hex( val: Integer )
-//        mud = (red + green + blue) / 3
-//        red = mud
-//        green = mud
-//        blue = mud
-//
 
 color = Color.default()
 print( color )
