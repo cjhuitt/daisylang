@@ -81,6 +81,10 @@ class Lexer
           tokens << [:CLASS, "Class:"]
           debug_out("Extracted Class: (Definition)")
           i += "Class: ".size
+        elsif sub.start_with? "Contract: "
+          tokens << [:CONTRACT, "Contract:"]
+          debug_out("Extracted Contract: (Definition)")
+          i += "Function: ".size
         elsif identifier = sub[/\A(\w+\?)\(/, 1]
           tokens << [:IDENTIFIER, identifier]
           debug_out("Extracted #{identifier} (Identifier)")

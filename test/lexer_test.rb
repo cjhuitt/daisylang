@@ -52,6 +52,8 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:IDENTIFIER, "Function"]], Lexer.new.tokenize("Function")
     assert_equal [[:FUNCTION, "Function:"]], Lexer.new.tokenize("Function: ")
     assert_equal [[:IDENTIFIER, "Class"]], Lexer.new.tokenize("Class")
+    assert_equal [[:CONTRACT, "Contract:"]], Lexer.new.tokenize("Contract: ")
+    assert_equal [[:IDENTIFIER, "Contract"]], Lexer.new.tokenize("Contract")
     assert_equal [[:CLASS, "Class:"]], Lexer.new.tokenize("Class: ")
   end
 
