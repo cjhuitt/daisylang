@@ -167,9 +167,9 @@ class Interpreter
       debug_print("Define class #{node.name}")
       cls = DaisyClass.new(node.name, Constants["Object"])
       @context.assign_symbol(node.name, cls)
-      push_context(cls)
+      @context = Context.new(@context, cls, cls)
       node.body.accept(self)
-      pop_context()
+      @context = @context.previous_context
     end
 end
 
