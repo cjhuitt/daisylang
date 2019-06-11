@@ -7,7 +7,7 @@ Class: Color
     
     Function: String printable()
         return "#00000000"
-//        return "#{ red.InHex() }{ green.InHex() }{ blue.InHex() }{ alpha.InHex() }"
+//        return "#{ red.hex() }{ green.hex() }{ blue.hex() }{ alpha.hex() }"
 //    
 //    Function: Color blended( other: Color )
 //        result = Color.default
@@ -30,6 +30,8 @@ Class: Color
 
 color = Color.default()
 print( color )
+//print( color.fields() )
+//print( color.methods() )
 
 //// A contract
 //Contract: Dimensional
