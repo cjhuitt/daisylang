@@ -83,6 +83,10 @@ class CommentNode < Struct.new(:text)
   include Visitable
 end
 
+class DefineContractNode < Struct.new(:name, :body)
+  include Visitable
+end
+
 class DefineClassNode < Struct.new(:name, :body)
   include Visitable
 end
