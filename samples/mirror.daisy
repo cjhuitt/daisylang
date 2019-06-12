@@ -1,16 +1,21 @@
-print( true.type() )
-print( false.type() )
-if Boolean.type() != Class
-    print( "A class's type should NOT be itself" )
+//print( true.type() )
+//print( false.type() )
+//if Boolean.type() != Class
+//    print( "A class's type should NOT be itself" )
+//
+//if true.isa?( Boolean )
+//    print( "Recognizes own class" )
+//if true.isa?( Object )
+//    print( "Recognizes base class" )
+//unless true.isa?( None )
+//    print( "Recognizes not a different class" )
+//
+//print( true.isa?( Function ) )
 
-if true.isa?( Boolean )
-    print( "Recognizes own class" )
-if true.isa?( Object )
-    print( "Recognizes base class" )
-unless true.isa?( None )
-    print( "Recognizes not a different class" )
+Contract: Serializable
+    Function: String pickle()
 
-print( true.isa?( Function ) )
+print( Serializable.isa?( Contract ) )
 
 // Contracts to come:
 //if 1.is?( Sortable )
