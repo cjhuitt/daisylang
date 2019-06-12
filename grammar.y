@@ -112,6 +112,7 @@ rule
   | FUNCTION IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[1], NoneNode.new, val[2], val[3]) }
   | CLASS IDENTIFIER Block              { result = DefineClassNode.new(val[1], val[2]) }
   | CONTRACT IDENTIFIER Block           { result = DefineContractNode.new(val[1], val[2]) }
+  | FUNCTION Typename IDENTIFIER ParameterList     { result = DefineMessageNode.new(val[2], val[1], val[3], NoneNode.new) }
   ;
 
   ParameterList:
