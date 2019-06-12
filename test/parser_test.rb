@@ -343,13 +343,18 @@ CODE
   def test_define_contract
     code = <<-CODE
 Contract: Foo
-    pass
+    Function: None bar()
 
 CODE
     expected = Nodes.new([
       DefineContractNode.new("Foo",
         Nodes.new([
-          PassNode.new()
+          DefineMessageNode.new(
+            "bar",
+            "None",
+            [],
+            NoneNode.new
+          )
         ])
       )
     ])
