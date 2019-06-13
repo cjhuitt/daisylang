@@ -9,9 +9,8 @@ Class: Color is Stringifiable
     alpha = Integer
     
     Function: String toString()
-        return "#00000000"
-//        return "#{ red.hex() }{ green.hex() }{ blue.hex() }{ alpha.hex() }"
-//    
+        return red.toString() + green.toString() + blue.toString() + alpha.toString()
+
 //    Function: Color blended( other: Color )
 //        result = Color.default
 //        result.red = (red + other.red) / 2
