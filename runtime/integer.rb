@@ -51,6 +51,7 @@ Constants["Integer"].def :'?' do |interpreter, receiver, args|
   receiver.ruby_value.nil? ? Constants["false"] : Constants["true"]
 end
 
+Constants["Integer"].add_contract(Constants["Stringifiable"].ruby_value)
 Constants["Integer"].def :printable do |interpreter, receiver, args|
   Constants["String"].new( "#{args.first[1].ruby_value}" )
 end

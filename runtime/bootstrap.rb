@@ -6,9 +6,14 @@ Constants["Class"].runtime_class = Constants["Class"]
 Constants["Object"] = DaisyClass.new("Object")
 Constants["Class"].runtime_superclass = Constants["Object"]
 Constants["Object"].def :print do |interpreter, receiver, args|
-  formatter = args.first[1].runtime_class.lookup("printable")
-  message = formatter.call(interpreter, receiver, args)
-  puts message.ruby_value
+  daisy_class = args.first[1].runtime_class
+  if daisy_class.has_contract(Constants["Stringifiable"].ruby_value)
+    formatter = args.first[1].runtime_class.lookup("printable")
+    message = formatter.call(interpreter, receiver, args)
+    puts message.ruby_value
+  else
+    puts "<#{daisy_class.name}:#{args.first[1].object_id}>"
+  end
 end
 Constants["Object"].def :type do |interpreter, receiver, args|
   receiver.runtime_class
