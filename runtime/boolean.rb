@@ -62,6 +62,7 @@ Constants["Boolean"].def :'||' do |interpreter, receiver, args|
   end
 end
 
+Constants["Boolean"].add_contract(Constants["Stringifiable"].ruby_value)
 Constants["Boolean"].def :printable do |interpreter, receiver, args|
   Constants["String"].new( "#{args.first[1].ruby_value}" )
 end
