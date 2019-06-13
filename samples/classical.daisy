@@ -9,7 +9,7 @@ Class: Color
     blue = Integer
     alpha = Integer
     
-    Function: String printable()
+    Function: String toString()
         return "#00000000"
 //        return "#{ red.hex() }{ green.hex() }{ blue.hex() }{ alpha.hex() }"
 //    
