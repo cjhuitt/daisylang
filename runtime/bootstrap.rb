@@ -81,3 +81,8 @@ Constants["Function"].def :printable do |interpreter, receiver, args|
   Constants["String"].new( "Function #{method.return_type.class_name} #{method.name}#{params}" )
 end
 
+############### Contracts
+Constants["Contract"] = DaisyContract.new("Contract", Constants["Object"])
+Constants["Contract"].runtime_class = Constants["Class"]
+RootContext.symbols["Contract"] = Constants["Contract"]
+###############
