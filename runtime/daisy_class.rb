@@ -2,11 +2,11 @@ require 'daisy_object'
 
 class DaisyClass < DaisyObject
   attr_accessor :runtime_methods, :runtime_superclass
-  attr_reader :class_name
+  attr_reader :name
 
-  def initialize(class_name, superclass=nil)
+  def initialize(name, superclass=nil)
     super(Constants["Class"])
-    @class_name = class_name
+    @name = name
     @runtime_methods = {}
     @runtime_superclass = superclass
   end

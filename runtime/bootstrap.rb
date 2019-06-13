@@ -24,7 +24,7 @@ Constants["Object"].def :'isa?' do |interpreter, receiver, args|
   end
 end
 Constants["Object"].def :printable do |interpreter, receiver, args|
-  Constants["String"].new( "Instance of #{args.first[1].runtime_class.class_name}" )
+  Constants["String"].new( "Instance of #{args.first[1].runtime_class.name}" )
 end
 
 root_self = Constants["Object"].new
@@ -45,7 +45,7 @@ Constants["Class"].def :!= do |interpreter, receiver, args|
   end
 end
 Constants["Class"].def :printable do |interpreter, receiver, args|
-  Constants["String"].new( args.first[1].class_name )
+  Constants["String"].new( args.first[1].name )
 end
 
 RootContext.symbols["Object"] = Constants["Object"]
@@ -78,7 +78,7 @@ Constants["Function"].def :printable do |interpreter, receiver, args|
   else
     params = "( " + params + " )"
   end
-  Constants["String"].new( "Function #{method.return_type.class_name} #{method.name}#{params}" )
+  Constants["String"].new( "Function #{method.return_type.name} #{method.name}#{params}" )
 end
 
 ############### Contracts

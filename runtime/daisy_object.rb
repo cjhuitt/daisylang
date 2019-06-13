@@ -18,6 +18,6 @@ class DaisyObject
 
   def unknown_message(message, args)
     # Todo: This should error-handle via Daisy code paths, not Ruby
-    raise "Received unknown message #{message} for #{@runtime_class.class_name}"
+    raise "Received unknown message #{message} for #{@runtime_class.name}"
   end
 end

@@ -50,7 +50,7 @@ class Interpreter
     def visit_SendMessageNode(node)
       receiver = node.receiver.nil? ? @context.current_self : node.receiver.accept(self)
       evaluated_args = node.arguments.map { |arg| arg.accept(self) }
-      debug_print("Dispatching #{node.message} on #{receiver.runtime_class.class_name}")
+      debug_print("Dispatching #{node.message} on #{receiver.runtime_class.name}")
       debug_print("Arguments: #{evaluated_args}")
       receiver.dispatch(@context, node.message, evaluated_args)
     end
