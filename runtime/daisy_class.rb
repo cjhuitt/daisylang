@@ -28,6 +28,10 @@ class DaisyClass < DaisyObject
     @runtime_methods["dispatch"]
   end
 
+  def add_method(method)
+    runtime_methods[method.name] = method
+  end
+
   # Helper methods to use this class in ruby:
   def def(name, &block)
     @runtime_methods[name.to_s] = block

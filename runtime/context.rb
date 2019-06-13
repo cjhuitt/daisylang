@@ -34,4 +34,8 @@ class Context
       @previous_context.symbol(name)
     end
   end
+
+  def add_method(method)
+    @current_class.add_method(method)
+  end
 end
