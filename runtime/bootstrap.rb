@@ -82,6 +82,6 @@ Constants["Function"].def :printable do |interpreter, receiver, args|
 end
 
 ############### Contracts
-Constants["Contract"] = DaisyContract.new("Contract", Constants["Object"])
+Constants["Contract"] = DaisyClass.new("Contract", Constants["Object"])
 RootContext.symbols["Contract"] = Constants["Contract"]
 ###############
