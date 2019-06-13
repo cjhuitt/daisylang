@@ -5,7 +5,7 @@ class DaisyContract < DaisyObject
   attr_reader :name
 
   def initialize(name, superclass=nil)
-    super(Constants["Class"])
+    super(Constants["Contract"])
     @name = name
     @defined_methods = {}
     @runtime_superclass = superclass
@@ -13,6 +13,10 @@ class DaisyContract < DaisyObject
 
   def is_type(type)
     return self == type
+  end
+
+  def lookup(message)
+    @defined_methods[message]
   end
 
   def defines?(message)
@@ -25,7 +29,7 @@ class DaisyContract < DaisyObject
 
   # Helper methods to use this class in ruby:
   def def(name, &block)
-    @runtime_methods[name.to_s] = block
+    @defined_methods[name.to_s] = block
   end
 
   def new(value=nil)
