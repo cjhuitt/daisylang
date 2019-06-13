@@ -16,6 +16,11 @@ class DaisyClass < DaisyObject
       (!@runtime_superclass.nil? && @runtime_superclass.is_type(type))
   end
 
+  def has_contract(contract)
+    return self == contract ||
+      (!@runtime_superclass.nil? && @runtime_superclass.has_contract(contract))
+  end
+
   def lookup(message)
     method = @runtime_methods[message]
     unless method

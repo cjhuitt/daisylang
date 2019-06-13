@@ -23,6 +23,13 @@ Constants["Object"].def :'isa?' do |interpreter, receiver, args|
     Constants["false"]
   end
 end
+Constants["Object"].def :'is?' do |interpreter, receiver, args|
+  if receiver.runtime_class.has_contract( args.first[1] )
+    Constants["true"]
+  else
+    Constants["false"]
+  end
+end
 Constants["Object"].def :printable do |interpreter, receiver, args|
   Constants["String"].new( "Instance of #{args.first[1].runtime_class.name}" )
 end
@@ -81,7 +88,3 @@ Constants["Function"].def :printable do |interpreter, receiver, args|
   Constants["String"].new( "Function #{method.return_type.name} #{method.name}#{params}" )
 end
 
-############### Contracts
-Constants["Contract"] = DaisyClass.new("Contract", Constants["Object"])
-RootContext.symbols["Contract"] = Constants["Contract"]
-###############
