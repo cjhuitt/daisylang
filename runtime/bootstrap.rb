@@ -83,6 +83,5 @@ end
 
 ############### Contracts
 Constants["Contract"] = DaisyContract.new("Contract", Constants["Object"])
-Constants["Contract"].runtime_class = Constants["Class"]
 RootContext.symbols["Contract"] = Constants["Contract"]
 ###############

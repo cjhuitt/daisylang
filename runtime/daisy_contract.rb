@@ -5,7 +5,7 @@ class DaisyContract < DaisyObject
   attr_reader :name
 
   def initialize(name, superclass=nil)
-    super(Constants["Contract"])
+    super(Constants["Class"])
     @name = name
     @defined_methods = {}
     @runtime_superclass = superclass
