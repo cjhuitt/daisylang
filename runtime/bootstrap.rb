@@ -35,9 +35,6 @@ Constants["Object"].def :'is?' do |interpreter, receiver, args|
     Constants["false"]
   end
 end
-Constants["Object"].def :printable do |interpreter, receiver, args|
-  Constants["String"].new( "Instance of #{args.first[1].runtime_class.name}" )
-end
 
 root_self = Constants["Object"].new
 RootContext = Context.new(nil, root_self)
