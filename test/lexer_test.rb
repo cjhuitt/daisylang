@@ -191,6 +191,9 @@ CODE
                   ['( ', "( "],
                   [:IDENTIFIER, "b"],
                   [' )', " )"]], Lexer.new.tokenize("a?( b )")
+    assert_equal [[:IS, "is"]], Lexer.new.tokenize("is ")
+    assert_equal [[:IDENTIFIER, "is"],
+                  ["?", "?"]], Lexer.new.tokenize("is?")
   end
 
   def x_test_print_tokens

@@ -1,7 +1,7 @@
 class Parser
 
 token BLOCKSTART BLOCKEND
-token FUNCTION CLASS CONTRACT
+token FUNCTION CLASS CONTRACT IS
 token IDENTIFIER
 token INTEGER STRING
 token IF UNLESS RETURN
@@ -110,7 +110,8 @@ rule
   Define:
     FUNCTION Typename IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[2], val[1], val[3], val[4]) }
   | FUNCTION IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[1], NoneNode.new, val[2], val[3]) }
-  | CLASS IDENTIFIER Block              { result = DefineClassNode.new(val[1], val[2]) }
+  | CLASS IDENTIFIER Block              { result = DefineClassNode.new(val[1], Nodes.new([]), val[2]) }
+  | CLASS IDENTIFIER IS Contracts Block { result = DefineClassNode.new(val[1], val[3], val[4]) }
   | CONTRACT IDENTIFIER Block           { result = DefineContractNode.new(val[1], val[2]) }
   | FUNCTION Typename IDENTIFIER ParameterList     { result = DefineMessageNode.new(val[2], val[1], val[3], NoneNode.new) }
   ;
@@ -129,6 +130,15 @@ rule
     IDENTIFIER ":" INTEGER              { result = ParameterNode.new(val[0], "Integer", IntegerNode.new(val[2])) }
   | IDENTIFIER ":" STRING               { result = ParameterNode.new(val[0], "String", StringNode.new(val[2])) }
   | IDENTIFIER ":" IDENTIFIER           { result = ParameterNode.new(val[0], nil, val[2]) }
+  ;
+
+  Contracts:
+    Contract                            { result = [val[0]] }
+  | Contracts "," Contract              { result = val[0] << val[2] }
+  ;
+
+  Contract:
+    IDENTIFIER                          { result = val[0] }
   ;
 
   Block:
