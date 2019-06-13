@@ -26,6 +26,7 @@ Constants["Integer"].def :^ do |interpreter, receiver, args|
   Constants["Integer"].new(result)
 end
 
+Constants["Integer"].add_contract(Constants["Sortable"].ruby_value)
 Constants["Integer"].def :< do |interpreter, receiver, args|
   result = receiver.ruby_value < args.first[1].ruby_value
   Constants["Integer"].new(result)

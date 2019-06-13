@@ -24,7 +24,7 @@ Constants["Object"].def :'isa?' do |interpreter, receiver, args|
   end
 end
 Constants["Object"].def :'is?' do |interpreter, receiver, args|
-  if receiver.runtime_class.has_contract( args.first[1] )
+  if receiver.runtime_class.has_contract( args.first[1].ruby_value )
     Constants["true"]
   else
     Constants["false"]

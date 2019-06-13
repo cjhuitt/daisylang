@@ -1,13 +1,14 @@
 require 'daisy_object'
 
 class DaisyClass < DaisyObject
-  attr_accessor :runtime_methods, :runtime_superclass
+  attr_accessor :runtime_methods, :runtime_superclass, :contracts
   attr_reader :name
 
   def initialize(name, superclass=nil)
     super(Constants["Class"])
     @name = name
     @runtime_methods = {}
+    @contracts = {}
     @runtime_superclass = superclass
   end
 
@@ -17,7 +18,7 @@ class DaisyClass < DaisyObject
   end
 
   def has_contract(contract)
-    return self == contract ||
+    return @contracts.key?(contract.name) ||
       (!@runtime_superclass.nil? && @runtime_superclass.has_contract(contract))
   end
 
@@ -35,6 +36,10 @@ class DaisyClass < DaisyObject
 
   def add_method(method)
     runtime_methods[method.name] = method
+  end
+
+  def add_contract(contract)
+    contracts[contract.name] = contract
   end
 
   # Helper methods to use this class in ruby:
