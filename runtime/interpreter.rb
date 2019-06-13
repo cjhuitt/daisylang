@@ -85,7 +85,7 @@ class Interpreter
       params = node.parameters.each { |param| param.accept(self) }
       method = DaisyMethod.new(node.name, returning, params, node.body)
       @context.assign_symbol(node.name, Constants["Function"].new(method))
-      @context.current_class.runtime_methods[method.name] = method
+      @context.add_method( method )
     end
 
     def visit_IntegerNode(node)
@@ -165,9 +165,18 @@ class Interpreter
 
     def visit_DefineClassNode(node)
       debug_print("Define class #{node.name}")
-      cls = DaisyClass.new(node.name, Constants["Object"])
-      @context.assign_symbol(node.name, cls)
-      @context = Context.new(@context, cls, cls)
+      daisy_class = DaisyClass.new(node.name, Constants["Object"])
+      @context.assign_symbol(node.name, daisy_class)
+      @context = Context.new(@context, daisy_class, daisy_class)
+      node.body.accept(self)
+      @context = @context.previous_context
+    end
+
+    def visit_DefineContractNode(node)
+      debug_print("Define contract #{node.name}")
+      contract = DaisyContract.new(node.name, Constants["Object"])
+      @context.assign_symbol(node.name, contract)
+      @context = Context.new(@context, contract, contract)
       node.body.accept(self)
       @context = @context.previous_context
     end
