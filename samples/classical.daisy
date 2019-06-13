@@ -2,8 +2,7 @@ Contract: Stringifiable
     Function: String toString()
 
 // Base class (implicitly inherits from Object)
-//Class: Color is Stringifiable
-Class: Color
+Class: Color is Stringifiable
     red = Integer
     green = Integer
     blue = Integer

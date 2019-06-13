@@ -330,6 +330,7 @@ Class: Foo
 CODE
     expected = Nodes.new([
       DefineClassNode.new("Foo",
+        Nodes.new([]),
         Nodes.new([
           SetSymbolNode.new("a",
             GetSymbolNode.new("Integer")
@@ -355,6 +356,23 @@ CODE
             [],
             NoneNode.new
           )
+        ])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_define_class_with_contracts
+    code = <<-CODE
+Class: Foo is Functional, Capable
+    pass
+
+CODE
+    expected = Nodes.new([
+      DefineClassNode.new("Foo",
+        [ "Functional", "Capable" ],
+        Nodes.new([
+          PassNode.new
         ])
       )
     ])
