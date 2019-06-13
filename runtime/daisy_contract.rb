@@ -2,11 +2,11 @@ require 'daisy_object'
 
 class DaisyContract < DaisyObject
   attr_accessor :defined_methods, :runtime_superclass
-  attr_reader :contract_name
+  attr_reader :name
 
-  def initialize(contract_name, superclass=nil)
+  def initialize(name, superclass=nil)
     super(Constants["Contract"])
-    @contract_name = contract_name
+    @name = name
     @defined_methods = {}
     @runtime_superclass = superclass
   end
