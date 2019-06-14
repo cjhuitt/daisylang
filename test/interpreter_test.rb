@@ -71,4 +71,16 @@ CODE
     symbol = @interpreter.context.symbol("a")
     assert_equal Constants["false"], symbol
   end
+
+  def test_unless_expression
+    code = <<-CODE
+a = true
+unless false
+    a = false
+
+CODE
+    @interpreter.eval(code)
+    symbol = @interpreter.context.symbol("a")
+    assert_equal Constants["false"], symbol
+  end
 end
