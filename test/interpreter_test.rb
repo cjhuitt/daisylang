@@ -4,6 +4,12 @@ require "runtime/interpreter"
 class DaisyInterpreterTest < Test::Unit::TestCase
   def setup
     @interpreter = Interpreter.new
+    new_self = Constants["Object"].new
+    @interpreter.push_context(new_self)
+  end
+
+  def cleanup
+    @interpreter.pop_context
   end
 
   def test_can_define_variable
@@ -52,5 +58,17 @@ CODE
     symbol = @interpreter.context.symbol("retval")
     assert_equal Constants["String"], symbol.runtime_class
     assert_equal "Hey", symbol.ruby_value
+  end
+
+  def test_if_expression
+    code = <<-CODE
+a = true
+if true
+    a = false
+
+CODE
+    @interpreter.eval(code)
+    symbol = @interpreter.context.symbol("a")
+    assert_equal Constants["false"], symbol
   end
 end
