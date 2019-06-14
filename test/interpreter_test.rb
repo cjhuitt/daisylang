@@ -26,7 +26,7 @@ class DaisyInterpreterTest < Test::Unit::TestCase
     end
   end
 
-  def test_define_function
+  def test_define_method
     code = <<-CODE
 Function: String Greeting()
     return "Hey"
@@ -39,5 +39,18 @@ CODE
     assert_equal "Greeting", method.name
     assert_equal Constants["String"], method.return_type
     assert_equal [], method.params
+  end
+
+  def test_send_message
+    code = <<-CODE
+Function: String Greeting()
+    return "Hey"
+
+retval = Greeting()
+CODE
+    @interpreter.eval(code)
+    symbol = @interpreter.context.symbol("retval")
+    assert_equal Constants["String"], symbol.runtime_class
+    assert_equal "Hey", symbol.ruby_value
   end
 end
