@@ -10,5 +10,21 @@ class DaisyBooleanTest < Test::Unit::TestCase
     assert_not_nil Constants.key?("true")
     assert_not_nil Constants.key?("false")
   end
+
+  def test_equality_operations
+    assert_not_nil Constants["Boolean"].lookup("==")
+    assert_not_nil Constants["Boolean"].lookup("!=")
+  end
+
+  def test_logical_operations
+    assert_not_nil Constants["Boolean"].lookup("!")
+    assert_not_nil Constants["Boolean"].lookup("?")
+    assert_not_nil Constants["Boolean"].lookup("&&")
+    assert_not_nil Constants["Boolean"].lookup("||")
+  end
+
+  def test_pretty_print
+    assert_not_nil Constants["Boolean"].lookup("printable")
+  end
 end
 
