@@ -4,11 +4,12 @@ require "runtime/interpreter"
 
 class BodyMock
   attr_reader :interpreter, :context, :current_self, :called
-  def initialize
+  def initialize(return_val=nil)
     @interpreter = nil
     @context = nil
     @current_self = nil
     @called = false
+    @return_val = return_val
   end
 
   def accept(interpreter)
@@ -16,6 +17,7 @@ class BodyMock
     @context = interpreter.context
     @current_self = interpreter.context.current_self
     @called = true
+    @context.return_value = @return_val
   end
 end
 
@@ -73,5 +75,14 @@ class DaisyMethodTest < Test::Unit::TestCase
     args = { "a" => Constants["false"] }
     method.call(interp, method, args)
     assert_equal nil, body.context.symbol("a")
+  end
+
+  def test_returns_value_from_body
+    retval = Constants["String"].new("Tralalalala")
+    body = BodyMock.new(retval)
+    params = []
+    method = DaisyMethod.new("foo", Constants["None"], params, body)
+    interp = Interpreter.new
+    assert_equal retval, method.call(interp, method, {})
   end
 end
