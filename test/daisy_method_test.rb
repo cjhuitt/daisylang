@@ -64,4 +64,14 @@ class DaisyMethodTest < Test::Unit::TestCase
     assert_equal Constants["false"], body.context.symbol("a")
     assert_equal b, body.context.symbol("b")
   end
+
+  def test_does_not_add_args_for_nonexistant_params_to_context
+    body = BodyMock.new
+    params = []
+    method = DaisyMethod.new("foo", Constants["None"], params, body)
+    interp = Interpreter.new
+    args = { "a" => Constants["false"] }
+    method.call(interp, method, args)
+    assert_equal nil, body.context.symbol("a")
+  end
 end
