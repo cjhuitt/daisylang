@@ -1,5 +1,6 @@
 require "test_helper"
 require "lexer"
+
 class LexerTest < Test::Unit::TestCase
   def test_empty
     assert_equal [], Lexer.new.tokenize("")
