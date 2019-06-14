@@ -83,4 +83,10 @@ CODE
     symbol = @interpreter.context.symbol("a")
     assert_equal Constants["false"], symbol
   end
+
+  def test_can_handle_comment
+    assert_nothing_raised do
+      @interpreter.eval("// This shouldn't do anything")
+    end
+  end
 end
