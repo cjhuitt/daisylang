@@ -40,7 +40,7 @@ class Context
     if !value.nil? || @previous_context.nil?
       value
     else
-      @previous_context.value_for(name)
+      @previous_context.symbol(name)
     end
   end
 end
