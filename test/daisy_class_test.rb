@@ -66,6 +66,10 @@ class DaisyClassTest < Test::Unit::TestCase
     assert_not_nil Constants["Class"].lookup("!=")
   end
 
+  def test_creation_functions_exist
+    assert_not_nil Constants["Class"].lookup("default")
+  end
+
   def test_pretty_print_exists
     assert_not_nil Constants["Class"].lookup("printable")
   end
