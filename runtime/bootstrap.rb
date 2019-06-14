@@ -13,9 +13,6 @@ end
 Constants["Object"].def :type do |interpreter, receiver, args|
   receiver.runtime_class
 end
-Constants["Object"].def :default do |interpreter, receiver, args|
-  receiver.new
-end
 Constants["Object"].def :'isa?' do |interpreter, receiver, args|
   if receiver.runtime_class.is_type( args.first[1] )
     Constants["true"]
@@ -43,6 +40,9 @@ Constants["Class"].def :!= do |interpreter, receiver, args|
   else
     Constants["true"]
   end
+end
+Constants["Class"].def :default do |interpreter, receiver, args|
+  receiver.new
 end
 Constants["Class"].def :printable do |interpreter, receiver, args|
   Constants["String"].new( args.first[1].class_name )
