@@ -85,4 +85,12 @@ class DaisyMethodTest < Test::Unit::TestCase
     interp = Interpreter.new
     assert_equal retval, method.call(interp, method, {})
   end
+
+  def test_class_in_root_context
+    assert_not_nil RootContext.symbol("Function")
+  end
+
+  def test_pretty_print_exists
+    assert_not_nil Constants["Function"].lookup("printable")
+  end
 end
