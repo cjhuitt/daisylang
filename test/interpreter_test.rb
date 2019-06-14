@@ -21,7 +21,9 @@ class DaisyInterpreterTest < Test::Unit::TestCase
   def test_can_define_variable
     interpreter = Interpreter.new
     interpreter.eval("asdf = true")
-    assert_equal Constants["true"], interpreter.context.symbol("asdf")
+    symbol = interpreter.context.symbol("asdf")
+    assert_equal Constants["true"], symbol
+    assert_equal Constants["Boolean"], symbol.runtime_class
   end
 
 end
