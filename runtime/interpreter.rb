@@ -6,6 +6,8 @@ require 'parser'
 require 'runtime'
 
 class Interpreter
+  attr_reader :context
+
   def initialize(debug=false)
     @parser = Parser.new
     @context = RootContext
