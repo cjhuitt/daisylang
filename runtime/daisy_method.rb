@@ -55,13 +55,13 @@ class DaisyMethod < DaisyObject
       args_dict = {}
       @params.each do |param|
         if val = given_dict.delete(param.label)
-          context.symbols[param.label] = val
+          args_dict[param.label] = val
         else
           raise "Parameter #{param.label} to method #{@name} required" if param.value.nil?
-          context.symbols[param.label] = param.value
+          args_dict[param.label] = param.value
         end
       end
-      raise "Too many parameters passed to method #{@name}" unless given_dict.empty
+      raise "Too many parameters passed to method #{@name}" unless given_dict.empty?
       args_dict
     end
 end
