@@ -46,6 +46,22 @@ class DaisyMethodTest < Test::Unit::TestCase
     method = DaisyMethod.new("foo", Constants["None"], params, body)
     interp = Interpreter.new
     method.call(interp, method, {})
-    assert_equal Constants["true"], body.context.symbol("a")
+    assert_equal a, body.context.symbol("a")
+    assert_equal b, body.context.symbol("b")
+  end
+
+  def test_adds_arg_values_to_context
+    body = BodyMock.new
+    a = Constants["true"]
+    paramA = DaisyParameter.new("a", Constants["Boolean"], a)
+    b = Constants["Integer"].new(1)
+    paramB = DaisyParameter.new("b", Constants["Integer"], b)
+    params = [paramA, paramB]
+    method = DaisyMethod.new("foo", Constants["None"], params, body)
+    interp = Interpreter.new
+    args = { "a" => Constants["false"] }
+    method.call(interp, method, args)
+    assert_equal Constants["false"], body.context.symbol("a")
+    assert_equal b, body.context.symbol("b")
   end
 end
