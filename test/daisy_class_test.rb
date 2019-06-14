@@ -56,4 +56,17 @@ class DaisyClassTest < Test::Unit::TestCase
     method = class2.lookup("foo")
     assert_nil method
   end
+
+  def test_class_in_root_context
+    assert_not_nil RootContext.symbol("Class")
+  end
+
+  def test_equality_operations_exists
+    assert_not_nil Constants["Class"].lookup("==")
+    assert_not_nil Constants["Class"].lookup("!=")
+  end
+
+  def test_pretty_print_exists
+    assert_not_nil Constants["Class"].lookup("printable")
+  end
 end
