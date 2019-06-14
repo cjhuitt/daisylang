@@ -6,6 +6,25 @@ class DaisyIntegerTest < Test::Unit::TestCase
     assert_not_nil RootContext.symbol("Integer")
   end
 
+  def test_immutable_math_operations_exist
+    assert_not_nil Constants["Integer"].lookup("+")
+    assert_not_nil Constants["Integer"].lookup("-")
+    assert_not_nil Constants["Integer"].lookup("*")
+    assert_not_nil Constants["Integer"].lookup("/")
+    assert_not_nil Constants["Integer"].lookup("^")
+  end
+
+  def test_comparison_operations_exist
+    assert_not_nil Constants["Integer"].lookup("<")
+    assert_not_nil Constants["Integer"].lookup("<=")
+    assert_not_nil Constants["Integer"].lookup(">")
+    assert_not_nil Constants["Integer"].lookup(">=")
+  end
+
+  def test_logical_operations_exist
+    assert_not_nil Constants["Integer"].lookup("?")
+  end
+
   def test_pretty_print
     assert_not_nil Constants["Integer"].lookup("printable")
   end
