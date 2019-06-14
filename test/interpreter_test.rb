@@ -89,4 +89,11 @@ CODE
       @interpreter.eval("// This shouldn't do anything")
     end
   end
+
+  def test_send_message_argument
+    @interpreter.eval("a = 1 + 2")
+    symbol = @interpreter.context.symbol("a")
+    assert_equal Constants["Integer"], symbol.runtime_class
+    assert_equal 3, symbol.ruby_value
+  end
 end
