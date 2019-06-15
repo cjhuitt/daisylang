@@ -24,4 +24,12 @@ class DaisyContextTest < Test::Unit::TestCase
     context = Context.new(prev_context, new_self)
     assert_equal "foo", context.symbol("foo")
   end
+
+  def test_add_method_puts_method_in_class
+    daisy_class = DaisyClass.new("Foo", Constants["Object"])
+    context = Context.new(nil, daisy_class, daisy_class)
+    method = DaisyMethod.new("bar", Constants["None"], {}, NoneNode.new)
+    context.add_method(method)
+    assert_true daisy_class.runtime_methods.key?("bar")
+  end
 end
