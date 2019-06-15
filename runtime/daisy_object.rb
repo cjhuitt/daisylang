@@ -1,10 +1,11 @@
 # The base object everything inherits from
 class DaisyObject
-  attr_accessor :runtime_class, :ruby_value
+  attr_accessor :runtime_class, :ruby_value, :instance_data
 
   def initialize(runtime_class, ruby_value=self)
     @runtime_class = runtime_class
     @ruby_value = ruby_value
+    @instance_data = {}
   end
 
   def dispatch(context, message, args)

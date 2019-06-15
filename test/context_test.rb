@@ -43,4 +43,13 @@ class DaisyContextTest < Test::Unit::TestCase
     context.assign_symbol("foo", field)
     assert_equal field, daisy_class.field("foo")
   end
+
+  def test_retrieves_symbol_from_class_instance_if_available
+    daisy_class = DaisyClass.new("Foo", Constants["Object"])
+    new_self = Constants["Object"].new(daisy_class)
+    context = Context.new(nil, new_self)
+    field = Constants["Integer"].new(2)
+    new_self.instance_data["foo"] = field
+    assert_equal field, context.symbol("foo")
+  end
 end

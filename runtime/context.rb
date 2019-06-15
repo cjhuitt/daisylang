@@ -35,6 +35,10 @@ class Context
   def symbol(name)
     value = @symbols[name]
     return value if !value.nil?
+    if !@current_self.instance_data.nil?
+      value = @current_self.instance_data[name]
+      return value if !value.nil?
+    end
     return @previous_context.symbol(name) if !@previous_context.nil?
     nil
   end
