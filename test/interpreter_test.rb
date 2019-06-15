@@ -134,4 +134,19 @@ CODE
     assert_equal [], method.params
   end
 
+  def test_define_class_with_contracts
+    code = <<-CODE
+Class: Foo is Stringifiable, Sortable
+    Function: None bar()
+
+CODE
+    @interpreter.eval(code)
+    symbol = @interpreter.context.symbol("Foo")
+    assert_not_nil symbol
+    assert_equal Constants["Class"], symbol.runtime_class
+    daisy_class = symbol.ruby_value
+    assert_true daisy_class.has_contract(Constants["Stringifiable"].ruby_value)
+    assert_true daisy_class.has_contract(Constants["Sortable"].ruby_value)
+  end
+
 end
