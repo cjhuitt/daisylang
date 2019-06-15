@@ -110,7 +110,7 @@ rule
   Define:
     FUNCTION Typename IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[2], val[1], val[3], val[4]) }
   | FUNCTION IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[1], NoneNode.new, val[2], val[3]) }
-  | CLASS IDENTIFIER Block              { result = DefineClassNode.new(val[1], Nodes.new([]), val[2]) }
+  | CLASS IDENTIFIER Block              { result = DefineClassNode.new(val[1], [], val[2]) }
   | CLASS IDENTIFIER IS Contracts Block { result = DefineClassNode.new(val[1], val[3], val[4]) }
   | CONTRACT IDENTIFIER Block           { result = DefineContractNode.new(val[1], val[2]) }
   | FUNCTION Typename IDENTIFIER ParameterList     { result = DefineMessageNode.new(val[2], val[1], val[3], NoneNode.new) }

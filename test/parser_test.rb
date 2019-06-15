@@ -330,7 +330,7 @@ Class: Foo
 CODE
     expected = Nodes.new([
       DefineClassNode.new("Foo",
-        Nodes.new([]),
+        [],
         Nodes.new([
           SetSymbolNode.new("a",
             GetSymbolNode.new("Integer")
