@@ -62,10 +62,14 @@ class DaisyClass < DaisyObject
   end
 
   def new(value=nil)
-    obj = DaisyObject.new(self, value)
+    instance = DaisyObject.new(self, value)
+    add_fields_to(instance)
+  end
+
+  def add_fields_to(instance)
     @fields.each do |name, field|
-      obj.instance_data[name] = field
+      instance.instance_data[name] = field
     end
-    obj
+    instance
   end
 end
