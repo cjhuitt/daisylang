@@ -2,6 +2,7 @@ class Context
   attr_reader :previous_context, :current_self, :current_class
   attr_accessor :interpreter, :symbols
   attr_accessor :return_type, :return_value, :should_return
+  attr_accessor :defining_class
 
   def initialize(prev_context, current_self, current_class=current_self.runtime_class)
     @previous_context = prev_context
@@ -12,6 +13,7 @@ class Context
     @return_type = Constants["None"]
     @return_value = Constants["none"]
     @should_return = false
+    @defining_class = nil
   end
 
   def interpreter()
@@ -23,7 +25,11 @@ class Context
   end
 
   def assign_symbol(name, value)
-    @symbols[name] = value
+    if @defining_class.nil?
+      @symbols[name] = value
+    else
+      @defining_class.assign_field(name, value)
+    end
   end
 
   def symbol(name)

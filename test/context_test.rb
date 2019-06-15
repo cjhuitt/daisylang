@@ -32,4 +32,15 @@ class DaisyContextTest < Test::Unit::TestCase
     context.add_method(method)
     assert_true daisy_class.runtime_methods.key?("bar")
   end
+
+  def test_add_symbol_when_defining_class_adds_field_to_class
+    new_self = Constants["Object"].new
+    prev_context = Context.new(nil, new_self)
+    daisy_class = DaisyClass.new("Foo", Constants["Object"])
+    context = Context.new(prev_context, daisy_class, daisy_class)
+    field = Constants["Integer"].new
+    context.defining_class = daisy_class
+    context.assign_symbol("foo", field)
+    assert_equal field, daisy_class.field("foo")
+  end
 end
