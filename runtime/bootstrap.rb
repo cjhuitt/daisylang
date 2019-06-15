@@ -54,7 +54,7 @@ Constants["Class"].def :default do |interpreter, receiver, args|
   receiver.new
 end
 Constants["Class"].def :toString do |interpreter, receiver, args|
-  Constants["String"].new( args.first[1].class_name )
+  Constants["String"].new( args.first[1].name )
 end
 
 RootContext.symbols["Object"] = Constants["Object"]
