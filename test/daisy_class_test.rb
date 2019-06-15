@@ -95,4 +95,27 @@ class DaisyClassTest < Test::Unit::TestCase
     assert_true Constants["Class"].has_contract(Constants["Stringifiable"].ruby_value)
     assert_not_nil Constants["Class"].lookup("toString")
   end
+
+  def test_finds_defined_field
+    daisy_class = DaisyClass.new("Test")
+    field = Constants["Integer"].new
+    daisy_class.assign_field("foo", field)
+    assert_equal field, daisy_class.field("foo")
+  end
+
+  def test_finds_field_defined_in_superclass
+    daisy_class = DaisyClass.new("Test")
+    field = Constants["Integer"].new
+    daisy_class.assign_field("foo", field)
+    class2 = DaisyClass.new("Bar", daisy_class)
+    assert_equal field, class2.field("foo")
+  end
+
+  def test_does_not_find_field_from_different_class
+    daisy_class = DaisyClass.new("Test")
+    field = Constants["Integer"].new
+    daisy_class.assign_field("foo", field)
+    class2 = DaisyClass.new("Bar")
+    assert_nil class2.field("foo")
+  end
 end

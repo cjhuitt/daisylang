@@ -1,7 +1,7 @@
 require 'daisy_object'
 
 class DaisyClass < DaisyObject
-  attr_accessor :runtime_methods, :runtime_superclass, :contracts
+  attr_accessor :runtime_methods, :runtime_superclass, :contracts, :fields
   attr_reader :name
 
   def initialize(name, superclass=nil)
@@ -9,6 +9,7 @@ class DaisyClass < DaisyObject
     @name = name
     @runtime_methods = {}
     @contracts = {}
+    @fields = {}
     @runtime_superclass = superclass
   end
 
@@ -40,6 +41,19 @@ class DaisyClass < DaisyObject
 
   def add_contract(contract)
     contracts[contract.name] = contract
+  end
+
+  def assign_field(name, value)
+    @fields[name] = value
+  end
+
+  def field(name)
+    value = @fields[name]
+    if !value.nil? || @runtime_superclass.nil?
+      value
+    else
+      @runtime_superclass.field(name)
+    end
   end
 
   # Helper methods to use this class in ruby:
