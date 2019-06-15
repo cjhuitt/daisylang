@@ -96,4 +96,24 @@ CODE
     assert_equal Constants["Integer"], symbol.runtime_class
     assert_equal 3, symbol.ruby_value
   end
+
+  def test_define_contract
+    code = <<-CODE
+Contract: Foo
+    Function: None bar()
+
+CODE
+    @interpreter.eval(code)
+    symbol = @interpreter.context.symbol("Foo")
+    assert_not_nil symbol
+    assert_equal Constants["Contract"], symbol.runtime_class
+    contract = symbol.ruby_value
+    assert_equal "Foo", contract.name
+    assert_true contract.defines?("bar")
+    method = contract.lookup("bar")
+    assert_equal "bar", method.name
+    assert_equal Constants["None"], method.return_type
+    assert_equal [], method.params
+  end
+
 end
