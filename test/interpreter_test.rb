@@ -167,4 +167,27 @@ CODE
     assert_equal Constants["Integer"], field.runtime_class
   end
 
+  def test_class_instance_can_use_fields
+    code = <<-CODE
+Class: Foo
+    a = 2
+    Function: String bar()
+        return a.toString()
+
+foo = Foo.default()
+foo.bar()
+
+CODE
+    @interpreter.eval(code)
+    daisy_class = @interpreter.context.symbol("Foo")
+    assert_not_nil daisy_class
+    symbol = @interpreter.context.symbol("foo")
+    assert_not_nil symbol
+    assert_equal daisy_class, symbol.runtime_class
+    field = symbol.instance_data["a"]
+    assert_not_nil field
+    assert_equal Constants["Integer"], field.runtime_class
+    assert_equal 2, field.ruby_value
+  end
+
 end
