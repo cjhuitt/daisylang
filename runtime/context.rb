@@ -34,11 +34,9 @@ class Context
 
   def symbol(name)
     value = @symbols[name]
-    if !value.nil? || @previous_context.nil?
-      value
-    else
-      @previous_context.symbol(name)
-    end
+    return value if !value.nil?
+    return @previous_context.symbol(name) if !@previous_context.nil?
+    nil
   end
 
   def add_method(method)
