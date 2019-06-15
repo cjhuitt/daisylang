@@ -118,4 +118,17 @@ class DaisyClassTest < Test::Unit::TestCase
     class2 = DaisyClass.new("Bar")
     assert_nil class2.field("foo")
   end
+
+  def test_adds_fields_to_instance_data_when_craating_new_object
+    daisy_class = DaisyClass.new("Test")
+    daisy_class.assign_field("foo", Constants["Integer"].new(1))
+    daisy_class.assign_field("bar", Constants["String"].new('asdf'))
+    instance = daisy_class.new
+    foo = instance.instance_data["foo"]
+    assert_not_nil foo
+    assert_equal 1, foo.ruby_value
+    bar = instance.instance_data["bar"]
+    assert_not_nil bar
+    assert_equal 'asdf', bar.ruby_value
+  end
 end
