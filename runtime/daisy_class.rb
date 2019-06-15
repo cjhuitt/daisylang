@@ -70,6 +70,7 @@ class DaisyClass < DaisyObject
     @fields.each do |name, field|
       instance.instance_data[name] = field
     end
+    @runtime_superclass.add_fields_to(instance) if !@runtime_superclass.nil?
     instance
   end
 end
