@@ -3,10 +3,10 @@ Contract: Stringifiable
 
 // Base class (implicitly inherits from Object)
 Class: Color is Stringifiable
-    red = Integer
-    green = Integer
-    blue = Integer
-    alpha = Integer
+    red = Integer.default()
+    green = Integer.default()
+    blue = Integer.default()
+    alpha = Integer.default()
     
     Function: String toString()
         return red.toString() + green.toString() + blue.toString() + alpha.toString()
