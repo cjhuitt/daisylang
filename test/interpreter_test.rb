@@ -116,7 +116,7 @@ CODE
     assert_equal [], method.params
   end
 
-  def test_define_class
+  def test_define_class_with_method
     code = <<-CODE
 Class: Foo
     Function: None bar()
