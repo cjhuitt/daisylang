@@ -3,16 +3,16 @@ Contract: Stringifiable
 
 // Base class (implicitly inherits from Object)
 Class: Color is Stringifiable
-    red = Integer
-    green = Integer
-    blue = Integer
-    alpha = Integer
+    red = Integer.default()
+    green = Integer.default()
+    blue = Integer.default()
+    alpha = Integer.default()
     
     Function: String toString()
         return red.toString() + green.toString() + blue.toString() + alpha.toString()
 
 //    Function: Color blended( other: Color )
-//        result = Color.default
+//        result = Color.default()
 //        result.red = (red + other.red) / 2
 //        result.green = (green + other.green) / 2
 //        result.blue = (blue + other.blue) / 2
@@ -42,10 +42,10 @@ print( color )
 //
 //// A class fulfilling the contract
 //Class: Painting is Dimensional
-//    width = Integer
-//    height = Integer
-//    artist = String
-//    primary_color = Color
+//    width = Integer.default()
+//    height = Integer.default()
+//    artist = String.default()
+//    primary_color = Color.default()
 //
 //    Function: Integer width()
 //        return width
@@ -54,7 +54,7 @@ print( color )
 //
 //// A class that meets multiple contracts and delegates them
 //Class: Distance is Comperable, Sortable
-//    distance = Integer
+//    distance = Integer.default()
 //
 //    delegate Sortable to distance
 //    delegate Comperable to distance
@@ -72,7 +72,7 @@ print( color )
 // is called, with the same parameters.  A Dirty class is cleaned up when
 // the last reference to it goes out of scope, allowing RAII.
 //Class: Socket is Dirty
-//    device = String
+//    device = String.default()
 //    is_open = false
 //
 //    Function: None init( dev: String )
