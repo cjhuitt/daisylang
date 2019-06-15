@@ -20,7 +20,7 @@ class DaisyContract < DaisyObject
   end
 
   def defines?(message)
-    @defined_methods.contains?(message)
+    @defined_methods.key?(message)
   end
 
   def add_method(method)
