@@ -181,7 +181,7 @@ class Interpreter
 
     def visit_DefineContractNode(node)
       debug_print("Define contract #{node.name}")
-      contract = DaisyContract.new(node.name, Constants["Object"])
+      contract = DaisyContract.new(node.name)
       @context.assign_symbol(node.name, contract)
       @context = Context.new(@context, contract, contract)
       node.body.accept(self)
