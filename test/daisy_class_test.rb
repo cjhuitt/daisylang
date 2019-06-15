@@ -19,6 +19,27 @@ class DaisyClassTest < Test::Unit::TestCase
     assert_false class2.is_type(daisy_class)
   end
 
+  def test_finds_contract
+    contract = DaisyContract.new("Foo")
+    daisy_class = DaisyClass.new("Test")
+    daisy_class.add_contract(contract)
+    assert_true daisy_class.has_contract(contract)
+  end
+
+  def test_finds_contract_in_superclass
+    contract = DaisyContract.new("Foo")
+    daisy_class = DaisyClass.new("Test")
+    daisy_class.add_contract(contract)
+    class2 = DaisyClass.new("Bar", daisy_class)
+    assert_true class2.has_contract(contract)
+  end
+
+  def test_does_not_find_invalid_contract
+    contract = DaisyContract.new("Foo")
+    daisy_class = DaisyClass.new("Test")
+    assert_false daisy_class.has_contract(contract)
+  end
+
   def test_lookup_finds_defined_method
     daisy_class = DaisyClass.new("Test")
     run = false
