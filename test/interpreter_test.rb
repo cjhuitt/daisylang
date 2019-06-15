@@ -116,4 +116,22 @@ CODE
     assert_equal [], method.params
   end
 
+  def test_define_class
+    code = <<-CODE
+Class: Foo
+    Function: None bar()
+
+CODE
+    @interpreter.eval(code)
+    symbol = @interpreter.context.symbol("Foo")
+    assert_not_nil symbol
+    assert_equal Constants["Class"], symbol.runtime_class
+    daisy_class = symbol.ruby_value
+    assert_equal "Foo", daisy_class.name
+    method = daisy_class.lookup("bar")
+    assert_equal "bar", method.name
+    assert_equal Constants["None"], method.return_type
+    assert_equal [], method.params
+  end
+
 end

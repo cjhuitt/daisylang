@@ -7,6 +7,7 @@ require 'runtime'
 
 class Interpreter
   attr_reader :context
+  attr_accessor :debug
 
   def initialize(debug=false)
     @parser = Parser.new
@@ -168,7 +169,7 @@ class Interpreter
     def visit_DefineClassNode(node)
       debug_print("Define class #{node.name}")
       daisy_class = DaisyClass.new(node.name, Constants["Object"])
-      node.contracts.each do |contract_name|
+      node.contracts.nodes.each do |contract_name|
         contract = @context.symbol(contract_name)
         raise "Referenced unknown symbol #{contract_name}" if contract.nil?
         daisy_class.add_contract(contract)
