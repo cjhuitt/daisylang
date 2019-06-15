@@ -149,4 +149,22 @@ CODE
     assert_true daisy_class.has_contract(Constants["Sortable"].ruby_value)
   end
 
+  def test_define_class_with_fields
+    code = <<-CODE
+Class: Foo
+    a = Integer.default()
+    Function: String toString()
+        return a.toString()
+
+CODE
+    @interpreter.eval(code)
+    symbol = @interpreter.context.symbol("Foo")
+    assert_not_nil symbol
+    assert_equal Constants["Class"], symbol.runtime_class
+    daisy_class = symbol.ruby_value
+    field = daisy_class.field("a")
+    assert_not_nil field
+    assert_equal Constants["Integer"], field.runtime_class
+  end
+
 end

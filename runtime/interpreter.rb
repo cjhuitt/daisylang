@@ -176,6 +176,7 @@ class Interpreter
       end
       @context.assign_symbol(node.name, daisy_class)
       @context = Context.new(@context, daisy_class, daisy_class)
+      @context.defining_class = daisy_class
       node.body.accept(self)
       @context = @context.previous_context
     end
