@@ -36,6 +36,12 @@ Constants["Object"].def :'isa?' do |interpreter, receiver, args|
     Constants["false"]
   end
 end
+Constants["Object"].def :contracts do |interpreter, receiver, args|
+  contracts = receiver.runtime_class.contracts.map do |contract|
+    interpreter.context.symbol(contract, nil)
+  end
+  Constants["Array"].new(contracts)
+end
 Constants["Object"].def :'is?' do |interpreter, receiver, args|
   if receiver.runtime_class.has_contract( args.first[1].ruby_value )
     Constants["true"]

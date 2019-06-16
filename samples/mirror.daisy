@@ -4,6 +4,7 @@ if Boolean.type() != Class
     print( "A class's type should NOT be itself" )
 print( Boolean.types() )
 print( true.types() )
+print( true.contracts() )
 
 if true.isa?( Boolean )
     print( "Recognizes own class" )

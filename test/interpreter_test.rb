@@ -378,4 +378,17 @@ CODE
     assert_true list.include? "toString"
   end
 
+  def test_getting_contracts
+    code = <<-CODE
+contracts = true.contracts()
+CODE
+    @interpreter.eval(code)
+    contracts = @interpreter.context.symbol("contracts", nil)
+    assert_equal Constants["Array"], contracts.runtime_class
+    assert_equal 3, contracts.ruby_value.size
+    assert_true contracts.ruby_value.include? Constants["Stringifiable"]
+    assert_true contracts.ruby_value.include? Constants["Equatable"]
+    assert_true contracts.ruby_value.include? Constants["Verifiable"]
+  end
+
 end
