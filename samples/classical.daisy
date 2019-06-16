@@ -57,10 +57,10 @@ Class: Painting is Dimensional
 //    using height#self as height()
 
 //// A class that meets multiple contracts and delegates them
-//Class: Distance is Comperable, Sortable
+//Class: Distance is Equatable, Comperable
 //    distance = Integer.create()
 //
-//    delegate Sortable to distance
+//    delegate Equatable to distance
 //    delegate Comperable to distance
 //
 //    Function: setup( cm: 0, m: 0, ft: 0, in: 0 )

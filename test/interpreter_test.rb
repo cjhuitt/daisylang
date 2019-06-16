@@ -136,7 +136,7 @@ CODE
 
   def test_define_class_with_contracts
     code = <<-CODE
-Class: Foo is Stringifiable, Sortable
+Class: Foo is Stringifiable, Comperable
     Function: None bar()
 
 CODE
@@ -146,7 +146,7 @@ CODE
     assert_equal Constants["Class"], symbol.runtime_class
     daisy_class = symbol.ruby_value
     assert_true daisy_class.has_contract(Constants["Stringifiable"].ruby_value)
-    assert_true daisy_class.has_contract(Constants["Sortable"].ruby_value)
+    assert_true daisy_class.has_contract(Constants["Comperable"].ruby_value)
   end
 
   def test_define_class_with_fields

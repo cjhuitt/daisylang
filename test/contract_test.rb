@@ -8,7 +8,7 @@ class ContractTest < Test::Unit::TestCase
 
   def test_predefined_contracts_in_root_context
     assert_not_nil RootContext.symbol("Stringifiable", nil)
-    assert_not_nil RootContext.symbol("Sortable", nil)
+    assert_not_nil RootContext.symbol("Comperable", nil)
   end
 
   def test_pretty_print_exists
