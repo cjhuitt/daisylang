@@ -85,7 +85,7 @@ class Interpreter
       returning = @context.symbol(node.return_type)
       params = node.parameters.map { |param| param.accept(self) }
       method = DaisyMethod.new(node.name, returning, params, node.body)
-      @context.assign_symbol(node.name, Constants["Function"].new(method))
+      @context.assign_symbol(node.name, nil, Constants["Function"].new(method))
       @context.add_method( method )
     end
 
@@ -137,7 +137,7 @@ class Interpreter
     def visit_SetSymbolNode(node)
       debug_print("Setting value for #{node.id}")
       val = node.value.accept(self)
-      @context.assign_symbol(node.id, val)
+      @context.assign_symbol(node.id, node.instance, val)
       val
     end
 
@@ -172,7 +172,7 @@ class Interpreter
         raise "Referenced unknown symbol #{contract_name}" if contract.nil?
         daisy_class.add_contract(contract.ruby_value)
       end
-      @context.assign_symbol(node.name, daisy_class)
+      @context.assign_symbol(node.name, nil, daisy_class)
       @context = Context.new(@context, daisy_class, daisy_class)
       @context.defining_class = daisy_class
       node.body.accept(self)
@@ -182,7 +182,7 @@ class Interpreter
     def visit_DefineContractNode(node)
       debug_print("Define contract #{node.name}")
       contract = DaisyContract.new(node.name)
-      @context.assign_symbol(node.name, contract)
+      @context.assign_symbol(node.name, nil, contract)
       @context = Context.new(@context, contract, contract)
       node.body.accept(self)
       @context = @context.previous_context

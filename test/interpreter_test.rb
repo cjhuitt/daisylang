@@ -26,7 +26,7 @@ class DaisyInterpreterTest < Test::Unit::TestCase
   end
 
   def test_get_symbol
-    RootContext.assign_symbol("foo", Constants["false"])
+    RootContext.assign_symbol("foo", nil, Constants["false"])
     assert_nothing_raised do
       @interpreter.eval("foo")
     end
@@ -227,6 +227,35 @@ CODE
     assert_not_nil a
     assert_equal Constants["Integer"], a.runtime_class
     assert_equal 5, a.ruby_value
+  end
+
+  def test_can_obtain_instance_member
+    code = <<-CODE
+Class: Foo
+    a = 2
+    Function: None change( other: Foo )
+        other.a = 5
+
+foo = Foo.create()
+bar = Foo.create()
+foo.change( bar )
+
+CODE
+    @interpreter.eval(code)
+
+    foo = @interpreter.context.symbol("foo")
+    assert_not_nil foo
+    foo_a = foo.instance_data["a"]
+    assert_not_nil foo_a
+    assert_equal Constants["Integer"], foo_a.runtime_class
+    assert_equal 2, foo_a.ruby_value
+
+    bar = @interpreter.context.symbol("bar")
+    assert_not_nil bar
+    bar_a = bar.instance_data["a"]
+    assert_not_nil bar_a
+    assert_equal Constants["Integer"], bar_a.runtime_class
+    assert_equal 5, bar_a.ruby_value
   end
 
 end

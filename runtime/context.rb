@@ -24,14 +24,17 @@ class Context
     end
   end
 
-  def assign_symbol(name, value)
+  def assign_symbol(name, instance, value)
     if @defining_class.nil?
       if @symbols.key?(name)
         @symbols[name] = value
+      elsif !instance.nil?
+        sym = symbol(instance)
+        sym.instance_data[name] = value
       elsif !@current_self.instance_data.nil? && @current_self.instance_data.key?(name)
         @current_self.instance_data[name] = value
       elsif !@previous_context.nil? && !@previous_context.symbol(name).nil?
-        @previous_context.assign_symbol(name, value)
+        @previous_context.assign_symbol(name, instance, value)
       else
         @symbols[name] = value
       end

@@ -13,14 +13,14 @@ class DaisyContextTest < Test::Unit::TestCase
   def test_finds_symbol
     new_self = Constants["Object"].new
     context = Context.new(nil, new_self)
-    context.assign_symbol("foo", "foo")
+    context.assign_symbol("foo", nil, "foo")
     assert_equal "foo", context.symbol("foo")
   end
 
   def test_finds_symbol_in_previous_context
     new_self = Constants["Object"].new
     prev_context = Context.new(nil, new_self)
-    prev_context.assign_symbol("foo", "foo")
+    prev_context.assign_symbol("foo", nil, "foo")
     context = Context.new(prev_context, new_self)
     assert_equal "foo", context.symbol("foo")
   end
@@ -40,7 +40,7 @@ class DaisyContextTest < Test::Unit::TestCase
     context = Context.new(prev_context, daisy_class, daisy_class)
     field = Constants["Integer"].new
     context.defining_class = daisy_class
-    context.assign_symbol("foo", field)
+    context.assign_symbol("foo", nil, field)
     assert_equal field, daisy_class.field("foo")
   end
 
