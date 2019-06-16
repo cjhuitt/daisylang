@@ -47,3 +47,8 @@ RootContext.symbols["Verifiable"] = Constants["Verifiable"]
 Constants["Verifiable"].runtime_class.def :'?' do end
 Constants["None"].add_contract(Constants["Verifiable"].ruby_value)
 Constants["String"].add_contract(Constants["Verifiable"].ruby_value)
+
+Constants["Countable"] = Constants["Contract"].new(DaisyContract.new("Countable"))
+RootContext.symbols["Countable"] = Constants["Countable"]
+Constants["Countable"].runtime_class.def :empty? do end
+Constants["Countable"].runtime_class.def :size do end
