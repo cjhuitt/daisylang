@@ -23,9 +23,16 @@ class DaisyBooleanTest < Test::Unit::TestCase
     assert_not_nil Constants["Boolean"].lookup("||")
   end
 
-  def test_pretty_print_exists
+  def test_stringifiable
     assert_true Constants["Boolean"].has_contract(Constants["Stringifiable"].ruby_value)
     assert_not_nil Constants["Boolean"].lookup("toString")
   end
+
+  def test_equatable
+    assert_true Constants["Boolean"].has_contract(Constants["Equatable"].ruby_value)
+    assert_not_nil Constants["Boolean"].lookup("==")
+    assert_not_nil Constants["Boolean"].lookup("!=")
+  end
+
 end
 

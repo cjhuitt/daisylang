@@ -25,9 +25,15 @@ class DaisyIntegerTest < Test::Unit::TestCase
     assert_not_nil Constants["Integer"].lookup("?")
   end
 
-  def test_pretty_print
+  def test_stringifiable
     assert_true Constants["Integer"].has_contract(Constants["Stringifiable"].ruby_value)
     assert_not_nil Constants["Integer"].lookup("toString")
+  end
+
+  def test_equatable
+    assert_true Constants["Integer"].has_contract(Constants["Equatable"].ruby_value)
+    assert_not_nil Constants["Integer"].lookup("==")
+    assert_not_nil Constants["Integer"].lookup("!=")
   end
 
   def test_convert_output

@@ -90,8 +90,15 @@ class DaisyMethodTest < Test::Unit::TestCase
     assert_not_nil RootContext.symbol("Function", nil)
   end
 
-  def test_pretty_print_exists
+  def test_stringifiable
     assert_true Constants["Function"].has_contract(Constants["Stringifiable"].ruby_value)
     assert_not_nil Constants["Function"].lookup("toString")
   end
+
+  def test_equatable
+    assert_true Constants["Function"].has_contract(Constants["Equatable"].ruby_value)
+    assert_not_nil Constants["Function"].lookup("==")
+    assert_not_nil Constants["Function"].lookup("!=")
+  end
+
 end

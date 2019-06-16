@@ -33,6 +33,16 @@ Constants["Object"].def :'is?' do |interpreter, receiver, args|
     Constants["false"]
   end
 end
+Constants["Object"].def :== do |interpreter, receiver, args|
+  other = args.first[1]
+  return Constants["true"] if receiver.ruby_value == other.ruby_value
+  Constants["false"]
+end
+Constants["Object"].def :!= do |interpreter, receiver, args|
+  other = args.first[1]
+  return Constants["false"] if receiver.ruby_value == other.ruby_value
+  Constants["true"]
+end
 
 root_self = Constants["Object"].new
 RootContext = Context.new(nil, root_self)
@@ -97,5 +107,15 @@ Constants["Function"].def :toString do |interpreter, receiver, args|
     params = "( " + params + " )"
   end
   Constants["String"].new( "Function #{method.return_type.name} #{method.name}#{params}" )
+end
+Constants["Function"].def :== do |interpreter, receiver, args|
+  other = args.first[1]
+  return Constants["true"] if receiver.ruby_value == other.ruby_value
+  Constants["false"]
+end
+Constants["Function"].def :!= do |interpreter, receiver, args|
+  other = args.first[1]
+  return Constants["false"] if receiver.ruby_value == other.ruby_value
+  Constants["true"]
 end
 

@@ -52,4 +52,11 @@ class DaisyObjectTest < Test::Unit::TestCase
     assert_not_nil Constants["Object"].lookup("type")
     assert_not_nil Constants["Object"].lookup("isa?")
   end
+
+  def test_equatable
+    assert_true Constants["Object"].has_contract(Constants["Equatable"].ruby_value)
+    assert_not_nil Constants["Object"].lookup("==")
+    assert_not_nil Constants["Object"].lookup("!=")
+  end
+
 end

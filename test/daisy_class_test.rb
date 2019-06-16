@@ -103,9 +103,15 @@ class DaisyClassTest < Test::Unit::TestCase
     assert_true called
   end
 
-  def test_pretty_print_exists
+  def test_stringifiable
     assert_true Constants["Class"].has_contract(Constants["Stringifiable"].ruby_value)
     assert_not_nil Constants["Class"].lookup("toString")
+  end
+
+  def test_equatable
+    assert_true Constants["Class"].has_contract(Constants["Equatable"].ruby_value)
+    assert_not_nil Constants["Class"].lookup("==")
+    assert_not_nil Constants["Class"].lookup("!=")
   end
 
   def test_finds_defined_field

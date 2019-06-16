@@ -26,6 +26,18 @@ Constants["Integer"].def :^ do |interpreter, receiver, args|
   Constants["Integer"].new(result)
 end
 
+Constants["Integer"].add_contract(Constants["Equatable"].ruby_value)
+Constants["Integer"].def :== do |interpreter, receiver, args|
+  other = args.first[1]
+  return Constants["true"] if receiver.ruby_value == other.ruby_value
+  Constants["false"]
+end
+Constants["Integer"].def :!= do |interpreter, receiver, args|
+  other = args.first[1]
+  return Constants["false"] if receiver.ruby_value == other.ruby_value
+  Constants["true"]
+end
+
 Constants["Integer"].add_contract(Constants["Comperable"].ruby_value)
 Constants["Integer"].def :< do |interpreter, receiver, args|
   result = receiver.ruby_value < args.first[1].ruby_value

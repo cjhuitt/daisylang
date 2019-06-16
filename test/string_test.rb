@@ -6,9 +6,15 @@ class DaisyStringTest < Test::Unit::TestCase
     assert_not_nil RootContext.symbol("String", nil)
   end
 
-  def test_pretty_print
+  def test_stringifiable
     assert_true Constants["String"].has_contract(Constants["Stringifiable"].ruby_value)
     assert_not_nil Constants["String"].lookup("toString")
+  end
+
+  def test_equatable
+    assert_true Constants["String"].has_contract(Constants["Equatable"].ruby_value)
+    assert_not_nil Constants["String"].lookup("==")
+    assert_not_nil Constants["String"].lookup("!=")
   end
 
   def test_add_strings

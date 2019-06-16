@@ -10,6 +10,7 @@ Constants["Boolean"].def :check_compat do |other|
   end
 end
 
+Constants["Boolean"].add_contract(Constants["Equatable"].ruby_value)
 Constants["Boolean"].def :== do |interpreter, receiver, args|
   val = args.first[1]
   Constants["Boolean"].lookup('check_compat').call(val)
@@ -19,7 +20,6 @@ Constants["Boolean"].def :== do |interpreter, receiver, args|
     Constants["false"]
   end
 end
-
 Constants["Boolean"].def :!= do |interpreter, receiver, args|
   val = args.first[1]
   Constants["Boolean"].lookup('check_compat').call(val)

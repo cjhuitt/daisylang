@@ -53,13 +53,13 @@ Class: Painting is Dimensional
     
     Function: Integer width()
         return width
-
+    
 //    using height#self as height()
 
-//// A class that meets multiple contracts and delegates them
-//Class: Distance is Equatable, Comperable
-//    distance = Integer.create()
-//
+// A class that meets multiple contracts and delegates them
+Class: Distance is Equatable, Comperable
+    distance = Integer.create()
+    
 //    delegate Equatable to distance
 //    delegate Comperable to distance
 //
@@ -72,9 +72,9 @@ Class: Painting is Dimensional
 //        return distance
 //
 //
-// A class with an init function is called when the class's create function is
-// called, with the same parameters.  A Cleanable class is cleaned up when the
-// last reference to it goes out of scope, allowing RAII.
+//// A class with an init function is called when the class's create function is
+//// called, with the same parameters.  A Cleanable class is cleaned up when the
+//// last reference to it goes out of scope, allowing RAII.
 //Class: Socket is Cleanable
 //    device = String.create()
 //    is_open = false
