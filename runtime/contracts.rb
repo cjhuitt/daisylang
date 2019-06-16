@@ -15,3 +15,7 @@ end
 
 Constants["Comperable"] = Constants["Contract"].new(DaisyContract.new("Comperable"))
 RootContext.symbols["Comperable"] = Constants["Comperable"]
+Constants["Comperable"].runtime_class.def :< do end
+Constants["Comperable"].runtime_class.def :<= do end
+Constants["Comperable"].runtime_class.def :> do end
+Constants["Comperable"].runtime_class.def :>= do end

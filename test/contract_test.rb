@@ -15,4 +15,11 @@ class ContractTest < Test::Unit::TestCase
     assert_true Constants["Contract"].has_contract(Constants["Stringifiable"].ruby_value)
     assert_not_nil Constants["Contract"].lookup("toString")
   end
+
+  def test_comperable_functions_exist
+    assert_not_nil Constants["Comperable"].runtime_class.lookup("<")
+    assert_not_nil Constants["Comperable"].runtime_class.lookup("<=")
+    assert_not_nil Constants["Comperable"].runtime_class.lookup(">")
+    assert_not_nil Constants["Comperable"].runtime_class.lookup(">=")
+  end
 end
