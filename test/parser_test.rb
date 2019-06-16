@@ -147,7 +147,8 @@ CODE
       UnlessNode.new(
         TrueNode.new(), Nodes.new([
           ReturnNode.new(IntegerNode.new(1))
-        ])
+        ]),
+        nil
       ),
       ReturnNode.new(IntegerNode.new(2))
     ])
@@ -165,7 +166,8 @@ CODE
       IfNode.new(
         FalseNode.new(), Nodes.new([
           ReturnNode.new(IntegerNode.new(1))
-        ])
+        ]),
+        nil
       ),
       ReturnNode.new(IntegerNode.new(2))
     ])
@@ -207,7 +209,8 @@ CODE
         SendMessageNode.new(GetSymbolNode.new("n", nil), "<=", [
           ArgumentNode.new(nil, IntegerNode.new(2))
         ]),
-        Nodes.new([PassNode.new])
+        Nodes.new([PassNode.new]),
+        nil
       )
     ])
     assert_equal expected, Parser.new.parse(code)
