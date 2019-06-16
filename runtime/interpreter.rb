@@ -187,5 +187,11 @@ class Interpreter
       node.body.accept(self)
       @context = @context.previous_context
     end
+
+    def visit_ArrayNode(node)
+      debug_print("ArrayNode #{node.members.size}")
+      evaluated_members = node.members.map { |member| member.accept(self) }
+      Constants["none"]
+    end
 end
 
