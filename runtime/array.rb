@@ -16,6 +16,7 @@ Constants["Array"].def :+ do |interpreter, receiver, args|
   Constants["Array"].new(result)
 end
 
+Constants["Array"].add_contract(Constants["Verifiable"].ruby_value)
 Constants["Array"].def :'?' do |interpreter, receiver, args|
   receiver.ruby_value.nil? || receiver.ruby_value.empty? ? Constants["false"] : Constants["true"]
 end

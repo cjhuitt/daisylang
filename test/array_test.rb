@@ -20,6 +20,7 @@ class DaisyArrayTest < Test::Unit::TestCase
   end
 
   def test_verifiable
+    assert_true Constants["Array"].has_contract(Constants["Verifiable"].ruby_value)
     assert_not_nil Constants["Array"].lookup("?")
   end
 
