@@ -64,6 +64,13 @@ class DaisyClass < DaisyObject
     types.uniq
   end
 
+  def contracts
+    contracts = []
+    contracts += @runtime_superclass.contracts if !@runtime_superclass.nil?
+    contracts += @contracts.keys
+    contracts.uniq
+  end
+
   def daisy_methods
     methods = []
     methods += @runtime_superclass.daisy_methods if !@runtime_superclass.nil?

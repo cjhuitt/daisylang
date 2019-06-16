@@ -172,6 +172,14 @@ class DaisyClassTest < Test::Unit::TestCase
     assert_equal ["Barable", "Test", "Foo"], class2.types
   end
 
+  def test_reflection_contracts
+    daisy_class = DaisyClass.new("Test")
+    contract = DaisyContract.new("Barable")
+    daisy_class.add_contract(contract)
+    class2 = DaisyClass.new("Foo", daisy_class.ruby_value)
+    assert_equal ["Barable"], class2.contracts
+  end
+
   def test_reflection_methods
     daisy_class = DaisyClass.new("Test")
     daisy_class.def :foo do |interpreter, receiver, args| end
