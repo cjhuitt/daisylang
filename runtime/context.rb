@@ -47,9 +47,9 @@ class Context
 
   def symbol(name, instance)
     if !instance.nil?
-        inst = symbol(instance, nil)
-        raise "Unknown symbol #{instance}" if inst.nil?
-        return inst.instance_data[name]
+      inst = symbol(instance, nil)
+      raise "Unknown symbol #{instance}" if inst.nil?
+      return inst.instance_data[name]
     end
     value = @symbols[name]
     return value if !value.nil?
