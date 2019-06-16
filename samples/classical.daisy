@@ -58,19 +58,19 @@ Class: Painting is Dimensional
 
 // A class that meets multiple contracts and delegates them
 Class: Distance is Equatable, Comperable
-    distance = Integer.create()
+    cms = Integer.create()
     
 //    delegate Equatable to distance
 //    delegate Comperable to distance
-//
-//    Function: setup( cm: 0, m: 0, ft: 0, in: 0 )
-//        // The user will almost certainly only specify one of these, but since
-//        // we total them, it doesn't matter if they are zeroed or not.
-//        distance = cm + 100 * m + 2 * in + 30 * ft
-//
-//    Function: Integer centimeters()
-//        return distance
-//
+
+    Function: init( cm: 0, m: 0, ft: 0, in: 0 )
+        // The user will almost certainly only specify one of these, but since
+        // we total them, it doesn't matter if they are zeroed or not.
+        distance = cm + 100 * m + 2 * in + 30 * ft
+
+    Function: Integer centimeters()
+        return cms
+
 //
 //// A class with an init function is called when the class's create function is
 //// called, with the same parameters.  A Cleanable class is cleaned up when the
