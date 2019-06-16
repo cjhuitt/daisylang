@@ -90,3 +90,7 @@ end
 class DefineClassNode < Struct.new(:name, :contracts, :body)
   include Visitable
 end
+
+class ArrayNode < Struct.new(:members)
+  include Visitable
+end

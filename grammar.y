@@ -48,6 +48,7 @@ rule
   | Operation                           { result = val[0] }
   | Define                              { result = val[0] }
   | Return                              { result = val[0] }
+  | Array                               { result = val[0] }
   | GetSymbol                           { result = val[0] }
   | SetSymbol                           { result = val[0] }
   | "(" Expression ")"                  { result = val[1] }
@@ -147,6 +148,15 @@ rule
 
   Return:
     RETURN Expression                   { result = ReturnNode.new(val[1]) }
+  ;
+
+  Array:
+    '[' ExpressionList ']'              { result = ArrayNode.new(val[1]) }
+  ;
+
+  ExpressionList:
+    Expression                          { result = [] << val[0] }
+  | ExpressionList ',' Expression       { result = val[0] << val[2] }
   ;
 
   If:
