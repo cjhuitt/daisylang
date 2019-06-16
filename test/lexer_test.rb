@@ -193,6 +193,10 @@ CODE
   def test_distinguishes_potentially_ambiguous_portions
     assert_equal [[:IDENTIFIER, "a"],
                   ["?", "?"]], Lexer.new.tokenize("a?")
+    assert_equal [[:IDENTIFIER, "b"],
+                  ['.', "."],
+                  [:IDENTIFIER, "a?"],
+                  ['()', "()"]], Lexer.new.tokenize("b.a?()")
     assert_equal [[:IDENTIFIER, "a?"],
                   ['()', "()"]], Lexer.new.tokenize("a?()")
     assert_equal [[:IDENTIFIER, "a?"],
