@@ -55,3 +55,6 @@ Constants["Integer"].add_contract(Constants["Stringifiable"].ruby_value)
 Constants["Integer"].def :toString do |interpreter, receiver, args|
   Constants["String"].new( "#{receiver.ruby_value}" )
 end
+Constants["Integer"].def :toHex do |interpreter, receiver, args|
+  Constants["String"].new( "%02x" % receiver.ruby_value )
+end
