@@ -33,6 +33,6 @@ class ContractTest < Test::Unit::TestCase
   def test_countable
     assert_not_nil RootContext.symbol("Countable", nil)
     assert_not_nil Constants["Countable"].runtime_class.lookup("empty?")
-    assert_not_nil Constants["Countable"].runtime_class.lookup("size")
+    assert_not_nil Constants["Countable"].runtime_class.lookup("count")
   end
 end
