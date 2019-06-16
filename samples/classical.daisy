@@ -14,13 +14,14 @@ Class: Color is Stringifiable
     Function: String toString()
         return "#" + red.toHex() + green.toHex() + blue.toHex() + alpha.toHex()
     
-//    Function: Color blended( other: Color )
-//        result = Color.create()
-//        result.red = (red + other.red) / 2
-//        result.green = (green + other.green) / 2
-//        result.blue = (blue + other.blue) / 2
-//        result.alpha = (alpha + other.alpha) / 2
-//
+    Function: Color blended( other: Color )
+        result = Color.create()
+        result.red = (red + other.red) / 2
+        result.green = (green + other.green) / 2
+        result.blue = (blue + other.blue) / 2
+        result.alpha = (alpha + other.alpha) / 2
+        return result
+
 //    Function: Color blend!( other: Color )
 //        red = (red + other.red) / 2
 //        green = (green + other.green) / 2
@@ -35,7 +36,10 @@ Class: Color is Stringifiable
 
 color = Color.create()
 print( color )
-print( Color.create( r: 255, g: 128, b: 64 ) )
+other = Color.create( r: 255, g: 128, b: 64 )
+print( other )
+print( color.blended( other ) )
+
 //print( color.fields() )
 //print( color.methods() )
 
