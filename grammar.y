@@ -4,7 +4,7 @@ token BLOCKSTART BLOCKEND
 token FUNCTION CLASS CONTRACT IS
 token IDENTIFIER FIELD
 token INTEGER STRING
-token IF UNLESS RETURN
+token IF UNLESS RETURN FOR IN
 token NEWLINE
 token NONETYPE
 token PASS TRUE FALSE NONE
@@ -44,6 +44,7 @@ rule
   Expression:
     Literal                             { result = val[0] }
   | If                                  { result = val[0] }
+  | Loop                                { result = val[0] }
   | Message                             { result = val[0] }
   | Operation                           { result = val[0] }
   | Define                              { result = val[0] }
@@ -163,6 +164,10 @@ rule
   If:
     IF Expression Block                 { result = IfNode.new(val[1], val[2]) }
   | UNLESS Expression Block             { result = UnlessNode.new(val[1], val[2]) }
+  ;
+
+  Loop:
+    FOR IDENTIFIER IN Expression Block  { result = ForNode.new(val[3], val[1], val[4]) }
   ;
 
   GetSymbol:

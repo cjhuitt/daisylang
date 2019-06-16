@@ -94,3 +94,7 @@ end
 class ArrayNode < Struct.new(:members)
   include Visitable
 end
+
+class ForNode < Struct.new(:container, :variable, :body)
+  include Visitable
+end

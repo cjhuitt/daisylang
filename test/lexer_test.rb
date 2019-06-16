@@ -238,6 +238,23 @@ CODE
     puts "#{Lexer.new.tokenize(code)}"
   end
 
+  def test_for_construct
+    code = <<-CODE
+for a in b
+    none
+
+CODE
+    expected = [
+      [:FOR, "for"],
+      [:IDENTIFIER, "a"], [:IN, "in"], 
+      [:IDENTIFIER, "b"],
+      [:BLOCKSTART, 1],
+        [:NONE, "none"],
+      [:BLOCKEND, 1], [:NEWLINE, "\n"]
+    ]
+    assert_equal expected, Lexer.new.tokenize(code)
+  end
+
   # To Test
   # Illegal Indentation (too much indentation)
   # More Keywords
