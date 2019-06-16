@@ -41,3 +41,9 @@ Constants["Comperable"].runtime_class.def :< do end
 Constants["Comperable"].runtime_class.def :<= do end
 Constants["Comperable"].runtime_class.def :> do end
 Constants["Comperable"].runtime_class.def :>= do end
+
+Constants["Verifiable"] = Constants["Contract"].new(DaisyContract.new("Verifiable"))
+RootContext.symbols["Verifiable"] = Constants["Verifiable"]
+Constants["Verifiable"].runtime_class.def :'?' do end
+Constants["None"].add_contract(Constants["Verifiable"].ruby_value)
+Constants["String"].add_contract(Constants["Verifiable"].ruby_value)

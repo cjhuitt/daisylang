@@ -59,6 +59,7 @@ Constants["Integer"].def :>= do |interpreter, receiver, args|
   Constants["Integer"].new(result)
 end
 
+Constants["Integer"].add_contract(Constants["Verifiable"].ruby_value)
 Constants["Integer"].def :'?' do |interpreter, receiver, args|
   receiver.ruby_value.nil? ? Constants["false"] : Constants["true"]
 end

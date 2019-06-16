@@ -34,5 +34,10 @@ class DaisyBooleanTest < Test::Unit::TestCase
     assert_not_nil Constants["Boolean"].lookup("!=")
   end
 
+  def test_verifiable
+    assert_true Constants["Boolean"].has_contract(Constants["Verifiable"].ruby_value)
+    assert_not_nil Constants["Boolean"].lookup("?")
+  end
+
 end
 

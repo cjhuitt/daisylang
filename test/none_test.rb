@@ -14,9 +14,15 @@ class DaisyNoneTest < Test::Unit::TestCase
     assert_not_nil Constants["None"].lookup("?")
   end
 
-  def test_pretty_print
+  def test_stringifiable
     assert_true Constants["None"].has_contract(Constants["Stringifiable"].ruby_value)
     assert_not_nil Constants["None"].lookup("toString")
   end
+
+  def test_verifiable
+    assert_true Constants["None"].has_contract(Constants["Verifiable"].ruby_value)
+    assert_not_nil Constants["None"].lookup("?")
+  end
+
 end
 

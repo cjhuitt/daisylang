@@ -17,6 +17,11 @@ class DaisyStringTest < Test::Unit::TestCase
     assert_not_nil Constants["String"].lookup("!=")
   end
 
+  def test_verifiable
+    assert_true Constants["String"].has_contract(Constants["Verifiable"].ruby_value)
+    assert_not_nil Constants["String"].lookup("?")
+  end
+
   def test_add_strings
     foo = Constants["String"].new("foo")
     bar = Constants["String"].new("bar")
