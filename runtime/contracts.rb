@@ -3,6 +3,7 @@ RootContext.symbols["Contract"] = Constants["Contract"]
 
 Constants["Stringifiable"] = Constants["Contract"].new(DaisyContract.new("Stringifiable"))
 RootContext.symbols["Stringifiable"] = Constants["Stringifiable"]
+Constants["Stringifiable"].runtime_class.def :toString do end
 Constants["Class"].add_contract(Constants["Stringifiable"].ruby_value)
 Constants["String"].add_contract(Constants["Stringifiable"].ruby_value)
 Constants["None"].add_contract(Constants["Stringifiable"].ruby_value)

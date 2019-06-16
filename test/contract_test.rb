@@ -12,6 +12,7 @@ class ContractTest < Test::Unit::TestCase
   end
 
   def test_pretty_print_exists
+    assert_not_nil Constants["Stringifiable"].runtime_class.lookup("toString")
     assert_true Constants["Contract"].has_contract(Constants["Stringifiable"].ruby_value)
     assert_not_nil Constants["Contract"].lookup("toString")
   end
