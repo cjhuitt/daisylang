@@ -85,6 +85,34 @@ CODE
     assert_equal Constants["false"], symbol
   end
 
+  def test_if_else_expression
+    code = <<-CODE
+a = 1
+if false
+    a = 2
+else
+    a = 3
+
+CODE
+    @interpreter.eval(code)
+    symbol = @interpreter.context.symbol("a", nil)
+    assert_equal 3, symbol.ruby_value
+  end
+
+  def test_unless_else_expression
+    code = <<-CODE
+a = 1
+unless true
+    a = 2
+else
+    a = 3
+
+CODE
+    @interpreter.eval(code)
+    symbol = @interpreter.context.symbol("a", nil)
+    assert_equal 3, symbol.ruby_value
+  end
+
   def test_can_handle_comment
     assert_nothing_raised do
       @interpreter.eval("// This shouldn't do anything")

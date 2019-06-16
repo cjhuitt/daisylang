@@ -103,6 +103,9 @@ class Interpreter
       if node.condition.accept(self).ruby_value
         debug_print("If node: triggered")
         node.body.accept(self)
+      elsif !node.else_body.nil?
+        debug_print("If node: else triggered")
+        node.else_body.accept(self)
       else
         debug_print("If node: nogo")
         Constants["none"]
@@ -113,6 +116,9 @@ class Interpreter
       if !node.condition.accept(self).ruby_value
         debug_print("Unless node: triggered")
         node.body.accept(self)
+      elsif !node.else_body.nil?
+        debug_print("Unless node: else triggered")
+        node.else_body.accept(self)
       else
         debug_print("Unless node: nogo")
         Constants["none"]
