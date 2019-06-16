@@ -54,6 +54,14 @@ end
 Constants["Class"].def :default do |interpreter, receiver, args|
   receiver.new
 end
+Constants["Class"].def :create do |interpreter, receiver, args|
+  obj = receiver.new
+  init = receiver.lookup("init")
+  if !init.nil?
+    init.call(interpreter, obj, args)
+  end
+  obj
+end
 Constants["Class"].def :toString do |interpreter, receiver, args|
   Constants["String"].new( receiver.name )
 end

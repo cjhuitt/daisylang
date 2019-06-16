@@ -89,6 +89,19 @@ class DaisyClassTest < Test::Unit::TestCase
 
   def test_creation_functions_exist
     assert_not_nil Constants["Class"].lookup("default")
+    assert_not_nil Constants["Class"].lookup("create")
+  end
+
+  def test_create_calls_init
+    foo = DaisyClass.new("Foo", Constants["Class"])
+    called = false
+    foo.def :init do |interpreter, receiver, args|
+      called = true
+    end
+    create = foo.lookup("create")
+    assert_not_nil create
+    a = create.call(nil, foo, [])
+    assert_true called
   end
 
   def test_pretty_print_exists
