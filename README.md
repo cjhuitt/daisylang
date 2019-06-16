@@ -40,8 +40,9 @@ A whole lot remains to make this go, but the highlights are
 + More contracts for built-in types
 + Contract checking, delegation
 + More reflection
-+ Else/While/Switch/Case
-+ Exception Handling
++ else/switch/case
++ continue/break
++ Exception handling
 + Most error handling during parsing, interpretation (type safety, etc)
 + Mutability and constness checks
 + RAII-style scoping
