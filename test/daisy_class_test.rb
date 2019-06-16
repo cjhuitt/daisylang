@@ -171,4 +171,11 @@ class DaisyClassTest < Test::Unit::TestCase
     class2 = DaisyClass.new("Foo", daisy_class.ruby_value)
     assert_equal ["Barable", "Test", "Foo"], class2.types
   end
+
+  def test_reflection_methods
+    daisy_class = DaisyClass.new("Test")
+    daisy_class.def :foo do |interpreter, receiver, args| end
+    class2 = DaisyClass.new("Bar", daisy_class.ruby_value)
+    assert_equal ["foo"], class2.daisy_methods
+  end
 end
