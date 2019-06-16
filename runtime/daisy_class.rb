@@ -56,6 +56,14 @@ class DaisyClass < DaisyObject
     end
   end
 
+  def types
+    types = []
+    types += @runtime_superclass.types if !@runtime_superclass.nil?
+    types += @contracts.keys
+    types << @name
+    types.uniq
+  end
+
   # Helper methods to use this class in ruby:
   def def(name, &block)
     @runtime_methods[name.to_s] = block
