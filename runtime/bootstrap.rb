@@ -55,7 +55,7 @@ Constants["Class"].def :default do |interpreter, receiver, args|
   receiver.new
 end
 Constants["Class"].def :toString do |interpreter, receiver, args|
-  Constants["String"].new( args.first[1].name )
+  Constants["String"].new( receiver.name )
 end
 
 RootContext.symbols["Object"] = Constants["Object"]
@@ -64,7 +64,7 @@ RootContext.symbols["Class"] = Constants["Class"]
 Constants["String"] = DaisyClass.new("String", Constants["Object"])
 RootContext.symbols["String"] = Constants["String"]
 Constants["String"].def :toString do |interpreter, receiver, args|
-  args.first[1]
+  receiver
 end
 Constants["String"].def :+ do |interpreter, receiver, args|
   Constants["String"].new( receiver.ruby_value + args.first[1].ruby_value )
@@ -84,7 +84,7 @@ Constants["none"] = Constants["None"].new(nil)
 Constants["Function"] = DaisyClass.new("Function", Constants["Object"])
 RootContext.symbols["Function"] = Constants["Function"]
 Constants["Function"].def :toString do |interpreter, receiver, args|
-  method = args.first[1].ruby_value
+  method = receiver.ruby_value
   params = method.params.map { |param| "#{param.label}: #{param.type}" }.join( " " )
   if params.empty?
     params = "()"

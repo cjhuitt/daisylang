@@ -13,5 +13,5 @@ RootContext.symbols["Sortable"] = Constants["Sortable"]
 
 Constants["Contract"].add_contract(Constants["Stringifiable"].ruby_value)
 Constants["Contract"].def :toString do |interpreter, receiver, args|
-  Constants["String"].new( "#{args.first[1].name}" )
+  Constants["String"].new( "#{receiver.name}" )
 end

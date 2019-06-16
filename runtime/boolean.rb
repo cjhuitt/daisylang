@@ -64,6 +64,6 @@ end
 
 Constants["Boolean"].add_contract(Constants["Stringifiable"].ruby_value)
 Constants["Boolean"].def :toString do |interpreter, receiver, args|
-  Constants["String"].new( "#{args.first[1].ruby_value}" )
+  Constants["String"].new( "#{receiver.ruby_value}" )
 end
 

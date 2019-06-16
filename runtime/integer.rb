@@ -53,10 +53,5 @@ end
 
 Constants["Integer"].add_contract(Constants["Stringifiable"].ruby_value)
 Constants["Integer"].def :toString do |interpreter, receiver, args|
-  if args.empty?
-    val = receiver.ruby_value
-  else
-    val = args.first[1].ruby_value
-  end
-  Constants["String"].new( "#{val}" )
+  Constants["String"].new( "#{receiver.ruby_value}" )
 end
