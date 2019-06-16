@@ -60,18 +60,18 @@ Class: Painting is Dimensional
 Class: Distance is Equatable, Comperable
     cms = Integer.create()
     
-//    delegate Equatable to distance
-//    delegate Comperable to distance
-
+    //delegate Equatable to distance
+    //delegate Comperable to distance
+    
     Function: init( cm: 0, m: 0, ft: 0, in: 0 )
         // The user will almost certainly only specify one of these, but since
         // we total them, it doesn't matter if they are zeroed or not.
         distance = cm + 100 * m + 2 * in + 30 * ft
-
+    
     Function: Integer centimeters()
         return cms
 
-//
+
 //// A class with an init function is called when the class's create function is
 //// called, with the same parameters.  A Cleanable class is cleaned up when the
 //// last reference to it goes out of scope, allowing RAII.
