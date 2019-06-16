@@ -43,7 +43,7 @@ rule
   # Every type of expression supported by our language is defined here.
   Expression:
     Literal                             { result = val[0] }
-  | If                                  { result = val[0] }
+  | ConditionalSet                      { result = val[0] }
   | Loop                                { result = val[0] }
   | Message                             { result = val[0] }
   | Operation                           { result = val[0] }
@@ -161,14 +161,18 @@ rule
   | ExpressionList ',' Expression       { result = val[0] << val[2] }
   ;
 
-  If:
-    IF Expression Block                 { result = IfNode.new(val[1], val[2], nil) }
-  | UNLESS Expression Block             { result = UnlessNode.new(val[1], val[2], nil) }
+  ConditionalSet:
+    IF ConditionBlock                   { result = IfNode.new(val[1][0], val[1][1], nil) }
+  | UNLESS ConditionBlock               { result = UnlessNode.new(val[1][0], val[1][1], nil) }
+  ;
+
+  ConditionBlock:
+    Expression Block                    { result = val }
   ;
 
   Loop:
-    FOR IDENTIFIER IN Expression Block  { result = ForNode.new(val[3], val[1], val[4]) }
-  | WHILE Expression Block              { result = WhileNode.new(val[1], val[2]) }
+    FOR IDENTIFIER IN ConditionBlock    { result = ForNode.new(val[3][0], val[1], val[3][1]) }
+  | WHILE ConditionBlock                { result = WhileNode.new(val[1][0], val[1][1]) }
   ;
 
   GetSymbol:
