@@ -82,6 +82,13 @@ end
 Constants["Class"].def :toString do |interpreter, receiver, args|
   Constants["String"].new( receiver.name )
 end
+Constants["Class"].def :methods do |interpreter, receiver, args|
+  obj = receiver.ruby_value
+  types = obj.daisy_methods.map do |type|
+    Constants["String"].new(type)
+  end
+  Constants["Array"].new(types)
+end
 
 RootContext.symbols["Object"] = Constants["Object"]
 RootContext.symbols["Class"] = Constants["Class"]

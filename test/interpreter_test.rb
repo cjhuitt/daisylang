@@ -33,6 +33,7 @@ class DaisyInterpreterTest < Test::Unit::TestCase
   end
 
   def test_define_method
+    # TODO: This should not be defined on all objects?
     code = <<-CODE
 Function: String Greeting()
     return "Hey"
@@ -349,6 +350,27 @@ CODE
     sum = @interpreter.context.symbol("sum", nil)
     assert_equal Constants["Integer"], sum.runtime_class
     assert_equal 6, sum.ruby_value
+  end
+
+  def test_getting_methods
+    code = <<-CODE
+methods = Boolean.methods()
+CODE
+    @interpreter.eval(code)
+    methods = @interpreter.context.symbol("methods", nil)
+    assert_equal Constants["Array"], methods.runtime_class
+    assert_equal Constants["String"], methods.ruby_value.first.runtime_class
+    # TODO This contains some methods that it should
+    # TODO This should return function objects, not just names
+    #      Once I figure out how to expose the built-ins as function objects
+    assert_equal 15, methods.ruby_value.size
+    assert_equal "==", methods.ruby_value[6].ruby_value
+    assert_equal "!=", methods.ruby_value[7].ruby_value
+    assert_equal "!", methods.ruby_value[10].ruby_value
+    assert_equal "?", methods.ruby_value[11].ruby_value
+    assert_equal "&&", methods.ruby_value[12].ruby_value
+    assert_equal "||", methods.ruby_value[13].ruby_value
+    assert_equal "toString", methods.ruby_value[14].ruby_value
   end
 
 end

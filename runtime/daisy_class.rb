@@ -64,6 +64,13 @@ class DaisyClass < DaisyObject
     types.uniq
   end
 
+  def daisy_methods
+    methods = []
+    methods += @runtime_superclass.daisy_methods if !@runtime_superclass.nil?
+    methods += @runtime_methods.keys
+    methods.uniq
+  end
+
   # Helper methods to use this class in ruby:
   def def(name, &block)
     @runtime_methods[name.to_s] = block
