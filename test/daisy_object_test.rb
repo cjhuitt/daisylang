@@ -31,6 +31,15 @@ class DaisyObjectTest < Test::Unit::TestCase
     end
   end
 
+  def test_copy_makes_deep_copy
+    foo = DaisyObject.new(Constants["Integer"], 1)
+    foo.instance_data["baz"] = true
+    bar = foo.copy
+    foo.instance_data["baz"] = false
+    assert_true bar.instance_data["baz"]
+    assert_false foo.instance_data["baz"]
+  end
+
   def test_class_in_root_context
     assert_not_nil RootContext.symbol("Object", nil)
   end

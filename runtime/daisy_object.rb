@@ -17,6 +17,12 @@ class DaisyObject
     unknown_message(message, args)
   end
 
+  def copy
+    cp = DaisyObject.new(@runtime_class, @ruby_value)
+    cp.instance_data = @instance_data.clone
+    cp
+  end
+
   def unknown_message(message, args)
     # Todo: This should error-handle via Daisy code paths, not Ruby
     raise "Received unknown message #{message} for #{@runtime_class.name}"
