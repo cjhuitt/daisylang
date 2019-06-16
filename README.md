@@ -40,7 +40,7 @@ A whole lot remains to make this go, but the highlights are
 + More contracts for built-in types
 + Contract checking, delegation
 + More reflection
-+ else/switch/case
++ switch/case
 + continue/break
 + Exception handling
 + Most error handling during parsing, interpretation (type safety, etc)
