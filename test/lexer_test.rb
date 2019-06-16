@@ -225,6 +225,14 @@ CODE
                   ['.', "."],
                   [:IDENTIFIER, "a!"],
                   ['()', "()"]], Lexer.new.tokenize("b.a!()")
+    assert_equal [[:FOR, "for"],
+                  [:IDENTIFIER, "a"],
+                  [:IN, "in"],
+                  [:IDENTIFIER, "b"]], Lexer.new.tokenize("for a in b")
+    assert_equal [[:IDENTIFIER, "from"], ['( ', "( "],
+                  [:IDENTIFIER, "in"], [':', ": "],
+                  [:INTEGER, 0],
+                  [' )', " )"]], Lexer.new.tokenize("from( in: 0 )")
   end
 
   def x_test_print_tokens
