@@ -4,7 +4,7 @@ token BLOCKSTART BLOCKEND
 token METHOD CLASS CONTRACT IS
 token IDENTIFIER FIELD
 token INTEGER STRING
-token IF UNLESS RETURN FOR IN WHILE
+token IF UNLESS RETURN FOR IN WHILE ELSE
 token NEWLINE
 token NONETYPE
 token PASS TRUE FALSE NONE
@@ -163,7 +163,13 @@ rule
 
   ConditionalSet:
     IF ConditionBlock                   { result = IfNode.new(val[1][0], val[1][1], nil) }
+  | IF ConditionBlock ElseBlock         { result = IfNode.new(val[1][0], val[1][1], val[2]) }
   | UNLESS ConditionBlock               { result = UnlessNode.new(val[1][0], val[1][1], nil) }
+  | UNLESS ConditionBlock ElseBlock     { result = UnlessNode.new(val[1][0], val[1][1], val[2]) }
+  ;
+
+  ElseBlock:
+    ELSE Block                          { result = val[1] }
   ;
 
   ConditionBlock:

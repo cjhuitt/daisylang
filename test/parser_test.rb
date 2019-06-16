@@ -140,17 +140,19 @@ CODE
     code = <<-CODE
 unless true
     return 1
-return 2
-CODE
+else
+    return 2
 
+CODE
     expected = Nodes.new([
       UnlessNode.new(
         TrueNode.new(), Nodes.new([
           ReturnNode.new(IntegerNode.new(1))
         ]),
-        nil
-      ),
-      ReturnNode.new(IntegerNode.new(2))
+        Nodes.new([
+          ReturnNode.new(IntegerNode.new(2))
+        ])
+      )
     ])
     assert_equal expected, Parser.new.parse(code)
   end
@@ -159,17 +161,19 @@ CODE
     code = <<-CODE
 if false
     return 1
-return 2
-CODE
+else
+    return 2
 
+CODE
     expected = Nodes.new([
       IfNode.new(
         FalseNode.new(), Nodes.new([
           ReturnNode.new(IntegerNode.new(1))
         ]),
-        nil
-      ),
-      ReturnNode.new(IntegerNode.new(2))
+        Nodes.new([
+          ReturnNode.new(IntegerNode.new(2))
+        ])
+      )
     ])
     assert_equal expected, Parser.new.parse(code)
   end
