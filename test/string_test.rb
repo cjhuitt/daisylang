@@ -10,5 +10,14 @@ class DaisyStringTest < Test::Unit::TestCase
     assert_true Constants["String"].has_contract(Constants["Stringifiable"].ruby_value)
     assert_not_nil Constants["String"].lookup("toString")
   end
+
+  def test_add_strings
+    foo = Constants["String"].new("foo")
+    bar = Constants["String"].new("bar")
+    method = foo.runtime_class.lookup("+")
+    foobar = method.call(nil, foo, [[nil, bar]])
+    assert_equal Constants["String"], foobar.runtime_class
+    assert_equal "foobar", foobar.ruby_value
+  end
 end
 

@@ -66,6 +66,9 @@ RootContext.symbols["String"] = Constants["String"]
 Constants["String"].def :toString do |interpreter, receiver, args|
   args.first[1]
 end
+Constants["String"].def :+ do |interpreter, receiver, args|
+  Constants["String"].new( receiver.ruby_value + args.first[1].ruby_value )
+end
 
 Constants["None"] = DaisyClass.new("None", Constants["Object"])
 RootContext.symbols["None"] = Constants["None"]
