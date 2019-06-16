@@ -360,17 +360,22 @@ CODE
     methods = @interpreter.context.symbol("methods", nil)
     assert_equal Constants["Array"], methods.runtime_class
     assert_equal Constants["String"], methods.ruby_value.first.runtime_class
-    # TODO This contains some methods that it should
+    # TODO This contains some methods that it should not.
+    #      The list permutations below allow for a robust test while other 
+    #      methods are added
     # TODO This should return function objects, not just names
     #      Once I figure out how to expose the built-ins as function objects
-    assert_equal 15, methods.ruby_value.size
-    assert_equal "==", methods.ruby_value[6].ruby_value
-    assert_equal "!=", methods.ruby_value[7].ruby_value
-    assert_equal "!", methods.ruby_value[10].ruby_value
-    assert_equal "?", methods.ruby_value[11].ruby_value
-    assert_equal "&&", methods.ruby_value[12].ruby_value
-    assert_equal "||", methods.ruby_value[13].ruby_value
-    assert_equal "toString", methods.ruby_value[14].ruby_value
+    assert_true methods.ruby_value.size >= 7
+    list = methods.ruby_value.map do |method|
+      method.ruby_value
+    end
+    assert_true list.include? "=="
+    assert_true list.include? "!="
+    assert_true list.include? "!"
+    assert_true list.include? "?"
+    assert_true list.include? "&&"
+    assert_true list.include? "||"
+    assert_true list.include? "toString"
   end
 
 end
