@@ -39,23 +39,23 @@ print( Color.create( r: 255, g: 128, b: 64 ) )
 //print( color.fields() )
 //print( color.methods() )
 
-//// A contract
-//Contract: Dimensional
-//    Function: Integer width()
-//    Function: Integer height()
-//
-//// A class fulfilling the contract
-//Class: Painting is Dimensional
-//    width = Integer.create()
-//    height = Integer.create()
-//    artist = String.create()
-//    primary_color = Color.create()
-//
-//    Function: Integer width()
-//        return width
-//
+// A contract
+Contract: Dimensional
+    Function: Integer width()
+    Function: Integer height()
+
+// A class fulfilling the contract
+Class: Painting is Dimensional
+    width = Integer.create()
+    height = Integer.create()
+    artist = String.create()
+    primary_color = Color.create()
+    
+    Function: Integer width()
+        return width
+
 //    using height#self as height()
-//
+
 //// A class that meets multiple contracts and delegates them
 //Class: Distance is Comperable, Sortable
 //    distance = Integer.create()
@@ -72,10 +72,10 @@ print( Color.create( r: 255, g: 128, b: 64 ) )
 //        return distance
 //
 //
-// A class with an init function is called when the class's create function
-// is called, with the same parameters.  A Dirty class is cleaned up when
-// the last reference to it goes out of scope, allowing RAII.
-//Class: Socket is Dirty
+// A class with an init function is called when the class's create function is
+// called, with the same parameters.  A Cleanable class is cleaned up when the
+// last reference to it goes out of scope, allowing RAII.
+//Class: Socket is Cleanable
 //    device = String.create()
 //    is_open = false
 //
