@@ -10,3 +10,8 @@ Constants["Array"].def :toString do |interpreter, receiver, args|
   }
   Constants["String"].new( "[#{strings.join(", ")}]" )
 end
+
+Constants["Array"].def :+ do |interpreter, receiver, args|
+  result = receiver.ruby_value + args.first[1].ruby_value
+  Constants["Array"].new(result)
+end
