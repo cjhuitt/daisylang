@@ -36,8 +36,8 @@ print( color.blended( other ) )
 color.blend!( other )
 print( color )
 
-//print( color.fields() )
-//print( color.methods() )
+//print( Color.fields() )
+print( color.type().methods() )
 
 // A contract
 Contract: Dimensional
