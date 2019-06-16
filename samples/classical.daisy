@@ -1,12 +1,12 @@
 // Base class (implicitly inherits from Object)
 Class: Color is Stringifiable
-    red = 2//Integer.default()
+    red = 15//Integer.default()
     green = 3//Integer.default()
     blue = 4//Integer.default()
-    alpha = 5//Integer.default()
+    alpha = 115//Integer.default()
     
     Function: String toString()
-        return red.toString() + green.toString() + blue.toString() + alpha.toString()
+        return "#" + red.toHex() + green.toHex() + blue.toHex() + alpha.toHex()
     
 //    Function: Color blended( other: Color )
 //        result = Color.default()
