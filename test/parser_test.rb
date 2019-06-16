@@ -408,4 +408,23 @@ CODE
     assert_equal expected, Parser.new.parse("[1, b]")
   end
 
+  def test_for_loop
+    code = <<-CODE
+for a in b
+    none
+
+CODE
+
+    expected = Nodes.new([
+      ForNode.new(
+        GetSymbolNode.new("b"),
+        "a",
+        Nodes.new([
+          NoneNode.new
+        ])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end
