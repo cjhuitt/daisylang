@@ -151,7 +151,8 @@ rule
   ;
 
   Array:
-    '[' ExpressionList ']'              { result = ArrayNode.new(val[1]) }
+    '[' ']'                             { result = ArrayNode.new([]) }
+  | '[' ExpressionList ']'              { result = ArrayNode.new(val[1]) }
   ;
 
   ExpressionList:
