@@ -19,6 +19,10 @@ class DaisyArrayTest < Test::Unit::TestCase
     assert_not_nil Constants["Array"].lookup("+")
   end
 
+  def test_verifiable
+    assert_not_nil Constants["Array"].lookup("?")
+  end
+
 #  def test_equatable
 #    assert_true Constants["Array"].has_contract(Constants["Equatable"].ruby_value)
 #    assert_not_nil Constants["Array"].lookup("==")
