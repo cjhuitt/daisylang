@@ -1,0 +1,89 @@
+// Base class (implicitly inherits from Object)
+Class: Color is Stringifiable
+    red = 0
+    green = 0
+    blue = 0
+    alpha = 0
+    
+    Function: None init( r: 0, g: 0, b: 0, a: 0 )
+        red = r
+        green = g
+        blue = b
+        alpha = a
+    
+    Function: String toString()
+        return "#" + red.toHex() + green.toHex() + blue.toHex() + alpha.toHex()
+    
+    Function: Color blended( other: Color )
+        result = Color.create()
+        result.red = (red + other.red) / 2
+        result.green = (green + other.green) / 2
+        result.blue = (blue + other.blue) / 2
+        result.alpha = (alpha + other.alpha) / 2
+        return result
+    
+    Function: Color blend!( other: Color )
+        red = (red + other.red) / 2
+        green = (green + other.green) / 2
+        blue = (blue + other.blue) / 2
+        alpha = (alpha + other.alpha) / 2
+
+color = Color.create()
+print( color )
+other = Color.create( r: 255, g: 128, b: 64 )
+print( other )
+print( color.blended( other ) )
+color.blend!( other )
+print( color )
+
+//print( color.fields() )
+//print( color.methods() )
+
+// A contract
+Contract: Dimensional
+    Function: Integer width()
+    Function: Integer height()
+
+// A class fulfilling the contract
+Class: Painting is Dimensional
+    width = Integer.create()
+    height = Integer.create()
+    artist = String.create()
+    primary_color = Color.create()
+    
+    Function: Integer width()
+        return width
+    
+//    using height#self as height()
+
+// A class that meets multiple contracts and delegates them
+Class: Distance is Equatable, Comperable
+    cms = Integer.create()
+    
+//    delegate Equatable to distance
+//    delegate Comperable to distance
+
+    Function: init( cm: 0, m: 0, ft: 0, in: 0 )
+        // The user will almost certainly only specify one of these, but since
+        // we total them, it doesn't matter if they are zeroed or not.
+        distance = cm + 100 * m + 2 * in + 30 * ft
+
+    Function: Integer centimeters()
+        return cms
+
+//
+//// A class with an init function is called when the class's create function is
+//// called, with the same parameters.  A Cleanable class is cleaned up when the
+//// last reference to it goes out of scope, allowing RAII.
+//Class: Socket is Cleanable
+//    device = String.create()
+//    is_open = false
+//
+//    Function: None init( dev: String )
+//        device = dev
+//        if open( device )
+//            is_open = true
+//
+//    Function: None cleanup()
+//        if is_open
+//            close( device )

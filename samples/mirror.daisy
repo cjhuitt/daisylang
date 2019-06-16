@@ -12,9 +12,8 @@ unless true.isa?( None )
 
 print( true.isa?( Function ) )
 
-// Contracts to come:
-//if 1.is?( Sortable )
-//    print( "Recognizes met contract" )
-//unless Class.is?( Sortable )
-//    print( "Recognizes when not meeting a contract" )
+if 1.is?( Comperable )
+    print( "Recognizes met contract" )
+unless Class.is?( Comperable )
+    print( "Recognizes when not meeting a contract" )
 

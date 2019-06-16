@@ -72,13 +72,21 @@ class UnlessNode < ConditionalNode
   include Visitable
 end
 
-class GetSymbolNode < Struct.new(:id)
+class GetSymbolNode < Struct.new(:id, :instance)
   include Visitable
 end
-class SetSymbolNode < Struct.new(:id, :value)
+class SetSymbolNode < Struct.new(:id, :value, :instance)
   include Visitable
 end
 
 class CommentNode < Struct.new(:text)
+  include Visitable
+end
+
+class DefineContractNode < Struct.new(:name, :body)
+  include Visitable
+end
+
+class DefineClassNode < Struct.new(:name, :contracts, :body)
   include Visitable
 end

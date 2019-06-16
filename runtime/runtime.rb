@@ -1,6 +1,8 @@
 require 'daisy_class'
+require 'daisy_contract'
 require 'daisy_method'
 require 'context'
 require 'bootstrap'
+require 'contracts'
 require 'boolean'
 require 'integer'

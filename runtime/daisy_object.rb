@@ -1,10 +1,11 @@
 # The base object everything inherits from
 class DaisyObject
-  attr_accessor :runtime_class, :ruby_value
+  attr_accessor :runtime_class, :ruby_value, :instance_data
 
   def initialize(runtime_class, ruby_value=self)
     @runtime_class = runtime_class
     @ruby_value = ruby_value
+    @instance_data = {}
   end
 
   def dispatch(context, message, args)
@@ -16,8 +17,15 @@ class DaisyObject
     unknown_message(message, args)
   end
 
+  def copy
+    return self if @instance_data.nil? || @instance_data.empty?
+    cp = DaisyObject.new(@runtime_class, @ruby_value)
+    cp.instance_data = @instance_data.clone
+    cp
+  end
+
   def unknown_message(message, args)
     # Todo: This should error-handle via Daisy code paths, not Ruby
-    raise "Received unknown message #{message} for #{@runtime_class.class_name}"
+    raise "Received unknown message #{message} for #{@runtime_class.name}"
   end
 end

@@ -75,9 +75,33 @@ class Lexer
           i += str.size + 2
         elsif sub.start_with? "Function: "
           tokens << [:FUNCTION, "Function:"]
-          debug_out("Extracted Function: (Definition start)")
+          debug_out("Extracted Function: (Definition)")
           i += "Function: ".size
-        elsif identifier = sub[/\A(\w+\?)\(/, 1]
+        elsif sub.start_with? "Class: "
+          tokens << [:CLASS, "Class:"]
+          debug_out("Extracted Class: (Definition)")
+          i += "Class: ".size
+        elsif sub.start_with? "Contract: "
+          tokens << [:CONTRACT, "Contract:"]
+          debug_out("Extracted Contract: (Definition)")
+          i += "Function: ".size
+        elsif sub.start_with? "is "
+          tokens << [:IS, "is"]
+          debug_out("Extracted is (Keyword)")
+          i += "is ".size
+        elsif identifier = sub[/\A(\w+\.\w+)(\)|\s|$)/, 1]
+          id = sub[/\A(\w+)/, 1]
+          tokens << [:IDENTIFIER, id]
+          debug_out("Extracted #{id} (Identifier)")
+          i += id.size
+
+          i += 1 # period
+
+          id = sub[/\A(\w+)\.(\w+)/, 2]
+          tokens << [:FIELD, id]
+          debug_out("Extracted #{id} (Field)")
+          i += id.size
+        elsif identifier = sub[/\A(\w+[\?!])\(/, 1]
           tokens << [:IDENTIFIER, identifier]
           debug_out("Extracted #{identifier} (Identifier)")
           i += identifier.size

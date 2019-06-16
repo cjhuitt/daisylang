@@ -1,19 +1,26 @@
 require 'daisy_object'
 
 class DaisyClass < DaisyObject
-  attr_accessor :runtime_methods, :runtime_superclass
-  attr_reader :class_name
+  attr_accessor :runtime_methods, :runtime_superclass, :contracts, :fields
+  attr_reader :name
 
-  def initialize(class_name, superclass=nil)
+  def initialize(name, superclass=nil)
     super(Constants["Class"])
-    @class_name = class_name
+    @name = name
     @runtime_methods = {}
+    @contracts = {}
+    @fields = {}
     @runtime_superclass = superclass
   end
 
   def is_type(type)
     return self == type ||
       (!@runtime_superclass.nil? && @runtime_superclass.is_type(type))
+  end
+
+  def has_contract(contract)
+    return @contracts.key?(contract.name) ||
+      (!@runtime_superclass.nil? && @runtime_superclass.has_contract(contract))
   end
 
   def lookup(message)
@@ -28,12 +35,42 @@ class DaisyClass < DaisyObject
     @runtime_methods["dispatch"]
   end
 
+  def add_method(method)
+    runtime_methods[method.name] = method
+  end
+
+  def add_contract(contract)
+    contracts[contract.name] = contract
+  end
+
+  def assign_field(name, value)
+    @fields[name] = value
+  end
+
+  def field(name)
+    value = @fields[name]
+    if !value.nil? || @runtime_superclass.nil?
+      value
+    else
+      @runtime_superclass.field(name)
+    end
+  end
+
   # Helper methods to use this class in ruby:
   def def(name, &block)
     @runtime_methods[name.to_s] = block
   end
 
   def new(value=nil)
-    DaisyObject.new(self, value)
+    instance = DaisyObject.new(self, value)
+    add_fields_to(instance)
+  end
+
+  def add_fields_to(instance)
+    @fields.each do |name, field|
+      instance.instance_data[name] = field
+    end
+    @runtime_superclass.add_fields_to(instance) if !@runtime_superclass.nil?
+    instance
   end
 end

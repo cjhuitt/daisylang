@@ -48,8 +48,8 @@ class DaisyMethodTest < Test::Unit::TestCase
     method = DaisyMethod.new("foo", Constants["None"], params, body)
     interp = Interpreter.new
     method.call(interp, method, {})
-    assert_equal a, body.context.symbol("a")
-    assert_equal b, body.context.symbol("b")
+    assert_equal a, body.context.symbol("a", nil)
+    assert_equal b, body.context.symbol("b", nil)
   end
 
   def test_adds_arg_values_to_context
@@ -63,8 +63,8 @@ class DaisyMethodTest < Test::Unit::TestCase
     interp = Interpreter.new
     args = { "a" => Constants["false"] }
     method.call(interp, method, args)
-    assert_equal Constants["false"], body.context.symbol("a")
-    assert_equal b, body.context.symbol("b")
+    assert_equal Constants["false"], body.context.symbol("a", nil)
+    assert_equal b, body.context.symbol("b", nil)
   end
 
   def test_does_not_add_args_for_nonexistant_params_to_context
@@ -74,7 +74,7 @@ class DaisyMethodTest < Test::Unit::TestCase
     interp = Interpreter.new
     args = { "a" => Constants["false"] }
     method.call(interp, method, args)
-    assert_equal nil, body.context.symbol("a")
+    assert_equal nil, body.context.symbol("a", nil)
   end
 
   def test_returns_value_from_body
@@ -87,10 +87,18 @@ class DaisyMethodTest < Test::Unit::TestCase
   end
 
   def test_class_in_root_context
-    assert_not_nil RootContext.symbol("Function")
+    assert_not_nil RootContext.symbol("Function", nil)
   end
 
-  def test_pretty_print_exists
-    assert_not_nil Constants["Function"].lookup("printable")
+  def test_stringifiable
+    assert_true Constants["Function"].has_contract(Constants["Stringifiable"].ruby_value)
+    assert_not_nil Constants["Function"].lookup("toString")
   end
+
+  def test_equatable
+    assert_true Constants["Function"].has_contract(Constants["Equatable"].ruby_value)
+    assert_not_nil Constants["Function"].lookup("==")
+    assert_not_nil Constants["Function"].lookup("!=")
+  end
+
 end

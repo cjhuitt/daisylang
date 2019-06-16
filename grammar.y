@@ -1,8 +1,8 @@
 class Parser
 
 token BLOCKSTART BLOCKEND
-token FUNCTION
-token IDENTIFIER
+token FUNCTION CLASS CONTRACT IS
+token IDENTIFIER FIELD
 token INTEGER STRING
 token IF UNLESS RETURN
 token NEWLINE
@@ -110,6 +110,10 @@ rule
   Define:
     FUNCTION Typename IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[2], val[1], val[3], val[4]) }
   | FUNCTION IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[1], NoneNode.new, val[2], val[3]) }
+  | CLASS IDENTIFIER Block              { result = DefineClassNode.new(val[1], [], val[2]) }
+  | CLASS IDENTIFIER IS Contracts Block { result = DefineClassNode.new(val[1], val[3], val[4]) }
+  | CONTRACT IDENTIFIER Block           { result = DefineContractNode.new(val[1], val[2]) }
+  | FUNCTION Typename IDENTIFIER ParameterList     { result = DefineMessageNode.new(val[2], val[1], val[3], NoneNode.new) }
   ;
 
   ParameterList:
@@ -128,6 +132,15 @@ rule
   | IDENTIFIER ":" IDENTIFIER           { result = ParameterNode.new(val[0], nil, val[2]) }
   ;
 
+  Contracts:
+    Contract                            { result = [val[0]] }
+  | Contracts "," Contract              { result = val[0] << val[2] }
+  ;
+
+  Contract:
+    IDENTIFIER                          { result = val[0] }
+  ;
+
   Block:
     BLOCKSTART Expressions BLOCKEND     { result = val[1] }
   ;
@@ -142,11 +155,13 @@ rule
   ;
 
   GetSymbol:
-    IDENTIFIER                          { result = GetSymbolNode.new(val[0]) }
+    IDENTIFIER                          { result = GetSymbolNode.new(val[0], nil) }
+  | IDENTIFIER FIELD                    { result = GetSymbolNode.new(val[1], val[0]) }
   ;
 
   SetSymbol:
-    IDENTIFIER "=" Expression           { result = SetSymbolNode.new(val[0], val[2]) }
+    IDENTIFIER "=" Expression           { result = SetSymbolNode.new(val[0], val[2], nil) }
+  | IDENTIFIER FIELD "=" Expression     { result = SetSymbolNode.new(val[1], val[3], val[0]) }
   ;
 
   Comment:

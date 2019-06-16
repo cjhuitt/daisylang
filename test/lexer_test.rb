@@ -52,6 +52,10 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:IDENTIFIER, "None"]], Lexer.new.tokenize("None")
     assert_equal [[:IDENTIFIER, "Function"]], Lexer.new.tokenize("Function")
     assert_equal [[:FUNCTION, "Function:"]], Lexer.new.tokenize("Function: ")
+    assert_equal [[:IDENTIFIER, "Class"]], Lexer.new.tokenize("Class")
+    assert_equal [[:CONTRACT, "Contract:"]], Lexer.new.tokenize("Contract: ")
+    assert_equal [[:IDENTIFIER, "Contract"]], Lexer.new.tokenize("Contract")
+    assert_equal [[:CLASS, "Class:"]], Lexer.new.tokenize("Class: ")
   end
 
   def test_recognizes_simple_operators
@@ -159,6 +163,24 @@ CODE
     assert_equal expected, Lexer.new.tokenize("a.b()")
   end
 
+  def test_member_variable
+    expected = [
+      [:IDENTIFIER, "a"], [:FIELD, "b"]
+    ]
+    assert_equal expected, Lexer.new.tokenize("a.b")
+  end
+
+  def test_member_variable_in_subexpression
+    expected = [
+      ['(', "("],
+      [:IDENTIFIER, "a"], [:FIELD, "b"],
+      ['+', " + "],
+      [:IDENTIFIER, "a"], [:FIELD, "b"],
+      [')', ")"]
+    ]
+    assert_equal expected, Lexer.new.tokenize("(a.b + a.b)")
+  end
+
   def test_call_method_with_multiple_parameters
     code = <<-CODE
 Greet( name: "Caleb", greeting: "Hey" )
@@ -182,12 +204,25 @@ CODE
   def test_distinguishes_potentially_ambiguous_portions
     assert_equal [[:IDENTIFIER, "a"],
                   ["?", "?"]], Lexer.new.tokenize("a?")
+    assert_equal [[:IDENTIFIER, "b"],
+                  ['.', "."],
+                  [:IDENTIFIER, "a?"],
+                  ['()', "()"]], Lexer.new.tokenize("b.a?()")
     assert_equal [[:IDENTIFIER, "a?"],
                   ['()', "()"]], Lexer.new.tokenize("a?()")
     assert_equal [[:IDENTIFIER, "a?"],
                   ['( ', "( "],
                   [:IDENTIFIER, "b"],
                   [' )', " )"]], Lexer.new.tokenize("a?( b )")
+    assert_equal [[:IS, "is"]], Lexer.new.tokenize("is ")
+    assert_equal [[:IDENTIFIER, "is"],
+                  ["?", "?"]], Lexer.new.tokenize("is?")
+    assert_equal [["!", "!"],
+                  [:IDENTIFIER, "a"]], Lexer.new.tokenize("!a")
+    assert_equal [[:IDENTIFIER, "b"],
+                  ['.', "."],
+                  [:IDENTIFIER, "a!"],
+                  ['()', "()"]], Lexer.new.tokenize("b.a!()")
   end
 
   def x_test_print_tokens
