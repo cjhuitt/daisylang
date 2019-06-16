@@ -23,6 +23,12 @@ end
 Constants["Object"].def :type do |interpreter, receiver, args|
   receiver.runtime_class
 end
+Constants["Object"].def :types do |interpreter, receiver, args|
+  types = receiver.runtime_class.types.map do |type|
+    interpreter.context.symbol(type, nil)
+  end
+  Constants["Array"].new(types)
+end
 Constants["Object"].def :'isa?' do |interpreter, receiver, args|
   if receiver.runtime_class.is_type( args.first[1] )
     Constants["true"]
