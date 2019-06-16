@@ -31,3 +31,10 @@ end
 Constants["Array"].def :count do |interpreter, receiver, args|
   Constants["Integer"].new(receiver.ruby_value.count)
 end
+
+Constants["Array"].def :append! do |interpreter, receiver, args|
+  args.each do |arg|
+    receiver.ruby_value << arg[1].ruby_value
+  end
+  receiver
+end

@@ -26,5 +26,22 @@ class DaisyArrayTest < Test::Unit::TestCase
     assert_not_nil Constants["Array"].lookup("count")
   end
 
+  def test_append_single_value
+    append = Constants["Array"].lookup("append!")
+    assert_not_nil append
+    arr = Constants["Array"].new([1])
+    append.call(nil, arr, [[nil, Constants["Integer"].new(2)]])
+    assert_equal [1, 2], arr.ruby_value
+  end
+
+  def test_append_multiple_values
+    append = Constants["Array"].lookup("append!")
+    assert_not_nil append
+    arr = Constants["Array"].new([1])
+    append.call(nil, arr, [[nil, Constants["Integer"].new(2)],
+                           [nil, Constants["Integer"].new(3)]])
+    assert_equal [1, 2, 3], arr.ruby_value
+  end
+
 end
 
