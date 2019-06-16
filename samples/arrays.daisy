@@ -7,10 +7,7 @@ print( foobar.count() )
 print( foobar )
 //for entry in foobar
 //    print( entry )
-//
-//names = String[]
-//names.append!( "Daisy" )
-//
-//tokens = Stringifiable[]
-//tokens.append!( [Class, Contract, Function, Array] )
-//print( tokens )
+
+tokens = []
+tokens.append!( Class, Contract, Function, Array )
+print( tokens )
