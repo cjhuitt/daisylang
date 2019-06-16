@@ -282,12 +282,12 @@ Class: Foo
     Function: None init( val: Integer )
         a = val
     
-    Function: None assign( other: Foo )
+    Function: None assign!( other: Foo )
         a = other.a
 
 foo = Foo.create( 5 )
 bar = Foo.create( 7 )
-foo.assign( bar )
+foo.assign!( bar )
 
 CODE
     @interpreter.eval(code)
@@ -305,6 +305,37 @@ CODE
 
     assert_equal bar_a.ruby_value, foo_a.ruby_value
     assert_equal 7, foo_a.ruby_value
+  end
+
+  def test_assign_copies
+    code = <<-CODE
+Class: Foo
+    a = 2
+    Function: None init( val: Integer )
+        a = val
+    
+    Function: None assign!( val: Integer )
+        a = val
+
+foo = Foo.create( 5 )
+bar = foo
+foo.assign!( 2 )
+
+CODE
+    @interpreter.eval(code)
+    foo = @interpreter.context.symbol("foo", nil)
+    assert_not_nil foo
+    foo_a = foo.instance_data["a"]
+    assert_not_nil foo_a
+    assert_equal Constants["Integer"], foo_a.runtime_class
+    assert_equal 2, foo_a.ruby_value
+
+    bar = @interpreter.context.symbol("bar", nil)
+    assert_not_nil bar
+    bar_a = bar.instance_data["a"]
+    assert_not_nil bar_a
+    assert_equal Constants["Integer"], bar_a.runtime_class
+    assert_equal 5, bar_a.ruby_value
   end
 
 end

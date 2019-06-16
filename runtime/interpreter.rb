@@ -137,7 +137,7 @@ class Interpreter
     def visit_SetSymbolNode(node)
       debug_print("Setting value for #{node.id}")
       val = node.value.accept(self)
-      @context.assign_symbol(node.id, node.instance, val)
+      @context.assign_symbol(node.id, node.instance, val.copy)
       val
     end
 
