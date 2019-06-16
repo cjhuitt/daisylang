@@ -37,7 +37,7 @@ class Lexer
 
   private
     KEYWORDS = ["pass", "return", "if", "true", "false",
-                "none", "unless"]
+                "none", "unless", "while"]
 
     def tokenize_line(line)
       tokens = []

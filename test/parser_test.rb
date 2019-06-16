@@ -414,11 +414,27 @@ for a in b
     none
 
 CODE
-
     expected = Nodes.new([
       ForNode.new(
         GetSymbolNode.new("b"),
         "a",
+        Nodes.new([
+          NoneNode.new
+        ])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_while_loop
+    code = <<-CODE
+while false
+    none
+
+CODE
+    expected = Nodes.new([
+      WhileNode.new(
+        FalseNode.new,
         Nodes.new([
           NoneNode.new
         ])
