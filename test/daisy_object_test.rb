@@ -44,11 +44,11 @@ class DaisyObjectTest < Test::Unit::TestCase
     assert_not_nil RootContext.symbol("Object", nil)
   end
 
-  def test_print_function_exists
+  def test_print_method_exists
     assert_not_nil Constants["Object"].lookup("print")
   end
 
-  def test_reflection_functions_exists
+  def test_reflection_methods_exist
     assert_not_nil Constants["Object"].lookup("type")
     assert_not_nil Constants["Object"].lookup("isa?")
   end

@@ -1,7 +1,7 @@
 class Parser
 
 token BLOCKSTART BLOCKEND
-token FUNCTION CLASS CONTRACT IS
+token METHOD CLASS CONTRACT IS
 token IDENTIFIER FIELD
 token INTEGER STRING
 token IF UNLESS RETURN FOR IN WHILE
@@ -110,12 +110,12 @@ rule
   ;
 
   Define:
-    FUNCTION Typename IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[2], val[1], val[3], val[4]) }
-  | FUNCTION IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[1], NoneNode.new, val[2], val[3]) }
+    METHOD Typename IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[2], val[1], val[3], val[4]) }
+  | METHOD IDENTIFIER ParameterList Block { result = DefineMessageNode.new(val[1], NoneNode.new, val[2], val[3]) }
   | CLASS IDENTIFIER Block              { result = DefineClassNode.new(val[1], [], val[2]) }
   | CLASS IDENTIFIER IS Contracts Block { result = DefineClassNode.new(val[1], val[3], val[4]) }
   | CONTRACT IDENTIFIER Block           { result = DefineContractNode.new(val[1], val[2]) }
-  | FUNCTION Typename IDENTIFIER ParameterList     { result = DefineMessageNode.new(val[2], val[1], val[3], NoneNode.new) }
+  | METHOD Typename IDENTIFIER ParameterList { result = DefineMessageNode.new(val[2], val[1], val[3], NoneNode.new) }
   ;
 
   ParameterList:

@@ -51,8 +51,8 @@ class LexerTest < Test::Unit::TestCase
   def test_recognizes_identifiers
     assert_equal [[:IDENTIFIER, "Integer"]], Lexer.new.tokenize("Integer")
     assert_equal [[:IDENTIFIER, "None"]], Lexer.new.tokenize("None")
-    assert_equal [[:IDENTIFIER, "Function"]], Lexer.new.tokenize("Function")
-    assert_equal [[:FUNCTION, "Function:"]], Lexer.new.tokenize("Function: ")
+    assert_equal [[:IDENTIFIER, "Method"]], Lexer.new.tokenize("Method")
+    assert_equal [[:METHOD, "Method:"]], Lexer.new.tokenize("Method: ")
     assert_equal [[:IDENTIFIER, "Class"]], Lexer.new.tokenize("Class")
     assert_equal [[:CONTRACT, "Contract:"]], Lexer.new.tokenize("Contract: ")
     assert_equal [[:IDENTIFIER, "Contract"]], Lexer.new.tokenize("Contract")
@@ -125,14 +125,14 @@ class LexerTest < Test::Unit::TestCase
     assert_equal expected, Lexer.new.tokenize("    \n(")
   end
 
-  def test_function
+  def test_method
     code = <<-CODE
-Function: Integer Summation( n: Integer )
+Method: Integer Summation( n: Integer )
     return n * (n - 1) / 2
 
 CODE
     expected = [
-      [:FUNCTION, "Function:"], [:IDENTIFIER, "Integer"],
+      [:METHOD, "Method:"], [:IDENTIFIER, "Integer"],
           [:IDENTIFIER, "Summation"], ['( ', "( "],
           [:IDENTIFIER, "n"], [':', ": "],
           [:IDENTIFIER, "Integer"], [' )', " )"], [:NEWLINE, "\n"],
@@ -238,7 +238,7 @@ CODE
 
   def x_test_print_tokens
     code = <<-CODE
-Function: Integer fibonacci( n: Integer )
+Method: Integer fibonacci( n: Integer )
     if n <= 2
         return 1
     return fibonacci( n - 1 ) + fibonacci( n - 2 )

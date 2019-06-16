@@ -85,7 +85,7 @@ class Interpreter
       returning = @context.symbol(node.return_type, nil)
       params = node.parameters.map { |param| param.accept(self) }
       method = DaisyMethod.new(node.name, returning, params, node.body)
-      @context.assign_symbol(node.name, nil, Constants["Function"].new(method))
+      @context.assign_symbol(node.name, nil, Constants["Method"].new(method))
       @context.add_method( method )
     end
 

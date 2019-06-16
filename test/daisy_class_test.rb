@@ -87,7 +87,7 @@ class DaisyClassTest < Test::Unit::TestCase
     assert_not_nil Constants["Class"].lookup("!=")
   end
 
-  def test_creation_function_exists
+  def test_creation_method_exists
     assert_not_nil Constants["Class"].lookup("create")
   end
 
