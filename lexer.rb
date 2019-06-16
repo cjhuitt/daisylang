@@ -37,7 +37,7 @@ class Lexer
 
   private
     KEYWORDS = ["pass", "return", "if", "true", "false",
-                "none", "unless", "for", "in"]
+                "none", "unless"]
 
     def tokenize_line(line)
       tokens = []
@@ -101,6 +101,18 @@ class Lexer
           tokens << [:FIELD, id]
           debug_out("Extracted #{id} (Field)")
           i += id.size
+        elsif identifier = sub[/\Afor (\w+) in/, 1]
+          tokens << [:FOR, "for"]
+          debug_out("Extracted for (Keyword)")
+          i += 4 # "for "
+
+          tokens << [:IDENTIFIER, identifier]
+          debug_out("Extracted #{identifier} (Identifier)")
+          i += identifier.size
+
+          tokens << [:IN, "in"]
+          debug_out("Extracted in (Keyword)")
+          i += 3 # "in "
         elsif identifier = sub[/\A(\w+[\?!])\(/, 1]
           tokens << [:IDENTIFIER, identifier]
           debug_out("Extracted #{identifier} (Identifier)")

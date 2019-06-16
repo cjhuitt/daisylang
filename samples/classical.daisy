@@ -63,10 +63,10 @@ Class: Distance is Equatable, Comperable
     //delegate Equatable to distance
     //delegate Comperable to distance
     
-    Function: init( cm: 0, m: 0, ft: 0, in: 0 )
+    Function: init( cm: 0, m: 0, ft: 0, inches: 0 )
         // The user will almost certainly only specify one of these, but since
         // we total them, it doesn't matter if they are zeroed or not.
-        distance = cm + 100 * m + 2 * in + 30 * ft
+        distance = cm + 100 * m + 2 * inches + 30 * ft
     
     Function: Integer centimeters()
         return cms
