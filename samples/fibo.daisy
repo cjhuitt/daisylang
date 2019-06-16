@@ -1,7 +1,29 @@
-Function: Integer fibonacci( n: Integer )
+Function: Integer recursive_fibonacci( n: Integer )
     if n <= 2
         return 1
-    return fibonacci( n - 1 ) + fibonacci( n - 2 )
+    return recursive_fibonacci( n - 1 ) + recursive_fibonacci( n - 2 )
+
+print( recursive_fibonacci( 1 ) )
+print( recursive_fibonacci( 2 ) )
+print( recursive_fibonacci( 3 ) )
+print( recursive_fibonacci( 4 ) )
+print( recursive_fibonacci( 5 ) )
+print( recursive_fibonacci( 6 ) )
+print( recursive_fibonacci( 7 ) )
+print( recursive_fibonacci( 8 ) )
+print( recursive_fibonacci( 9 ) )
+print( recursive_fibonacci( 10 ) )
+
+Function: Integer fibonacci( n: Integer )
+    previous = 1
+    latest = 1
+    position = 2
+    while position < n
+        temp = previous + latest
+        previous = latest
+        latest = temp
+        position = position + 1
+    return latest
 
 print( fibonacci( 1 ) )
 print( fibonacci( 2 ) )
@@ -13,3 +35,4 @@ print( fibonacci( 7 ) )
 print( fibonacci( 8 ) )
 print( fibonacci( 9 ) )
 print( fibonacci( 10 ) )
+
