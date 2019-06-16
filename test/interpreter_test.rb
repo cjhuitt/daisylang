@@ -190,4 +190,24 @@ CODE
     assert_equal 2, field.ruby_value
   end
 
+  def test_instance_can_change_fields
+    code = <<-CODE
+Class: Foo
+    a = 2
+    Function: None change()
+        a = 5
+
+foo = Foo.default()
+foo.change()
+
+CODE
+    @interpreter.eval(code)
+    foo = @interpreter.context.symbol("foo")
+    assert_not_nil foo
+    a = foo.instance_data["a"]
+    assert_not_nil a
+    assert_equal Constants["Integer"], a.runtime_class
+    assert_equal 5, a.ruby_value
+  end
+
 end
