@@ -217,6 +217,12 @@ CODE
     assert_equal [[:IS, "is"]], Lexer.new.tokenize("is ")
     assert_equal [[:IDENTIFIER, "is"],
                   ["?", "?"]], Lexer.new.tokenize("is?")
+    assert_equal [["!", "!"],
+                  [:IDENTIFIER, "a"]], Lexer.new.tokenize("!a")
+    assert_equal [[:IDENTIFIER, "b"],
+                  ['.', "."],
+                  [:IDENTIFIER, "a!"],
+                  ['()', "()"]], Lexer.new.tokenize("b.a!()")
   end
 
   def x_test_print_tokens

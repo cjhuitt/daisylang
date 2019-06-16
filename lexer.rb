@@ -101,7 +101,7 @@ class Lexer
           tokens << [:FIELD, id]
           debug_out("Extracted #{id} (Field)")
           i += id.size
-        elsif identifier = sub[/\A(\w+\?)\(/, 1]
+        elsif identifier = sub[/\A(\w+[\?!])\(/, 1]
           tokens << [:IDENTIFIER, identifier]
           debug_out("Extracted #{identifier} (Identifier)")
           i += identifier.size

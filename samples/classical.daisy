@@ -21,13 +21,13 @@ Class: Color is Stringifiable
         result.blue = (blue + other.blue) / 2
         result.alpha = (alpha + other.alpha) / 2
         return result
+    
+    Function: Color blend!( other: Color )
+        red = (red + other.red) / 2
+        green = (green + other.green) / 2
+        blue = (blue + other.blue) / 2
+        alpha = (alpha + other.alpha) / 2
 
-//    Function: Color blend!( other: Color )
-//        red = (red + other.red) / 2
-//        green = (green + other.green) / 2
-//        blue = (blue + other.blue) / 2
-//        alpha = (alpha + other.alpha) / 2
-//
 //    Function: Color =( other: Color )
 //        red = other.red
 //        green = other.green
@@ -39,6 +39,8 @@ print( color )
 other = Color.create( r: 255, g: 128, b: 64 )
 print( other )
 print( color.blended( other ) )
+color.blend!( other )
+print( color )
 
 //print( color.fields() )
 //print( color.methods() )
