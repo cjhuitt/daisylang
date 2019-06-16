@@ -2,6 +2,8 @@ print( true.type() )
 print( false.type() )
 if Boolean.type() != Class
     print( "A class's type should NOT be itself" )
+print( Boolean.types() )
+print( true.types() )
 
 if true.isa?( Boolean )
     print( "Recognizes own class" )
