@@ -30,6 +30,7 @@ class Context
         @symbols[name] = value
       elsif !instance.nil?
         sym = symbol(instance)
+        raise "Unknown field #{name} in #{sym.runtime_class.name}" if !sym.instance_data.key?(name)
         sym.instance_data[name] = value
       elsif !@current_self.instance_data.nil? && @current_self.instance_data.key?(name)
         @current_self.instance_data[name] = value

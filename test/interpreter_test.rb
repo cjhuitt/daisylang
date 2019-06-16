@@ -229,7 +229,7 @@ CODE
     assert_equal 5, a.ruby_value
   end
 
-  def test_can_obtain_instance_member
+  def test_can_assign_to_instance_member
     code = <<-CODE
 Class: Foo
     a = 2
@@ -256,6 +256,23 @@ CODE
     assert_not_nil bar_a
     assert_equal Constants["Integer"], bar_a.runtime_class
     assert_equal 5, bar_a.ruby_value
+  end
+
+  def test_can_not_assign_to_symbols_that_are_not_already_defined
+    code = <<-CODE
+Class: Foo
+    a = 2
+    Function: None change( other: Foo )
+        other.b = 5
+
+foo = Foo.create()
+bar = Foo.create()
+foo.change( bar )
+
+CODE
+    assert_raise do
+      @interpreter.eval(code)
+    end
   end
 
 end
