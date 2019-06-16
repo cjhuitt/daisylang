@@ -119,6 +119,13 @@ class Interpreter
       end
     end
 
+    def visit_WhileNode(node)
+      while node.condition.accept(self).ruby_value
+        debug_print("While node: triggered")
+        node.body.accept(self)
+      end
+    end
+
     def visit_ForNode(node)
       debug_print("For node on #{node.container}")
       container = node.container.accept(self)

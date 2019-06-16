@@ -391,4 +391,19 @@ CODE
     assert_true contracts.ruby_value.include? Constants["Verifiable"]
   end
 
+  def test_while_construct
+    code = <<-CODE
+sum = 0
+count = 0
+while count <= 3
+    sum = sum + count
+    count = count + 1
+
+CODE
+    @interpreter.eval(code)
+    sum = @interpreter.context.symbol("sum", nil)
+    assert_equal Constants["Integer"], sum.runtime_class
+    assert_equal 6, sum.ruby_value
+  end
+
 end
