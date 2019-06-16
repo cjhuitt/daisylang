@@ -1,10 +1,10 @@
 foo = [1, 1, 2, 3]
-print( foo )
-//bar = [2 + 3, 3 + 5, 5 + 8]
-//foobar = foo + bar
-//print( foobar.empty? )
-//print( foobar.size )
-//print( foobar )
+bar = [2 + 3, 3 + 5, 5 + 8]
+foobar = foo + bar
+//print( foobar? )
+//print( foobar.empty?() )
+//print( foobar.size() )
+print( foobar )
 //for entry in foobar
 //    print( entry )
 //
