@@ -170,6 +170,17 @@ CODE
     assert_equal expected, Lexer.new.tokenize("a.b")
   end
 
+  def test_member_variable_in_subexpression
+    expected = [
+      ['(', "("],
+      [:IDENTIFIER, "a"], [:FIELD, "b"],
+      ['+', " + "],
+      [:IDENTIFIER, "a"], [:FIELD, "b"],
+      [')', ")"]
+    ]
+    assert_equal expected, Lexer.new.tokenize("(a.b + a.b)")
+  end
+
   def test_call_method_with_multiple_parameters
     code = <<-CODE
 Greet( name: "Caleb", greeting: "Hey" )
