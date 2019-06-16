@@ -1,16 +1,13 @@
-Contract: Stringifiable
-    Function: String toString()
-
 // Base class (implicitly inherits from Object)
 Class: Color is Stringifiable
-    red = Integer.default()
+    red = 2//Integer.default()
     green = Integer.default()
     blue = Integer.default()
     alpha = Integer.default()
     
     Function: String toString()
-        return red.toString() + green.toString() + blue.toString() + alpha.toString()
-
+        return red.toString()// + green.toString() + blue.toString() + alpha.toString()
+    
 //    Function: Color blended( other: Color )
 //        result = Color.default()
 //        result.red = (red + other.red) / 2
