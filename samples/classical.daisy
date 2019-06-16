@@ -28,12 +28,6 @@ Class: Color is Stringifiable
         blue = (blue + other.blue) / 2
         alpha = (alpha + other.alpha) / 2
 
-//    Function: Color =( other: Color )
-//        red = other.red
-//        green = other.green
-//        blue = other.blue
-//        alpha = other.alpha
-
 color = Color.create()
 print( color )
 other = Color.create( r: 255, g: 128, b: 64 )
