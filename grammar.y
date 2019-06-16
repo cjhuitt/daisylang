@@ -4,7 +4,7 @@ token BLOCKSTART BLOCKEND
 token FUNCTION CLASS CONTRACT IS
 token IDENTIFIER FIELD
 token INTEGER STRING
-token IF UNLESS RETURN FOR IN
+token IF UNLESS RETURN FOR IN WHILE
 token NEWLINE
 token NONETYPE
 token PASS TRUE FALSE NONE
@@ -168,6 +168,7 @@ rule
 
   Loop:
     FOR IDENTIFIER IN Expression Block  { result = ForNode.new(val[3], val[1], val[4]) }
+  | WHILE Expression Block              { result = WhileNode.new(val[1], val[2]) }
   ;
 
   GetSymbol:
