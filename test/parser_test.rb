@@ -143,18 +143,14 @@ unless true
 return 2
 CODE
 
-    expected = Nodes.new(
-      [
-        UnlessNode.new(
-          TrueNode.new(), Nodes.new(
-            [
-              ReturnNode.new(IntegerNode.new(1))
-            ]
-          )
-        ),
-        ReturnNode.new(IntegerNode.new(2))
-      ]
-    )
+    expected = Nodes.new([
+      UnlessNode.new(
+        TrueNode.new(), Nodes.new([
+          ReturnNode.new(IntegerNode.new(1))
+        ])
+      ),
+      ReturnNode.new(IntegerNode.new(2))
+    ])
     assert_equal expected, Parser.new.parse(code)
   end
 
@@ -165,18 +161,14 @@ if false
 return 2
 CODE
 
-    expected = Nodes.new(
-      [
-        IfNode.new(
-          FalseNode.new(), Nodes.new(
-            [
-              ReturnNode.new(IntegerNode.new(1))
-            ]
-          )
-        ),
-        ReturnNode.new(IntegerNode.new(2))
-      ]
-    )
+    expected = Nodes.new([
+      IfNode.new(
+        FalseNode.new(), Nodes.new([
+          ReturnNode.new(IntegerNode.new(1))
+        ])
+      ),
+      ReturnNode.new(IntegerNode.new(2))
+    ])
     assert_equal expected, Parser.new.parse(code)
   end
 
