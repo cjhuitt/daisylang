@@ -51,9 +51,6 @@ Constants["Class"].def :!= do |interpreter, receiver, args|
     Constants["true"]
   end
 end
-Constants["Class"].def :default do |interpreter, receiver, args|
-  receiver.new
-end
 Constants["Class"].def :create do |interpreter, receiver, args|
   obj = receiver.new
   init = receiver.lookup("init")

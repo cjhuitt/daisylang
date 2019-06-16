@@ -152,7 +152,7 @@ CODE
   def test_define_class_with_fields
     code = <<-CODE
 Class: Foo
-    a = Integer.default()
+    a = Integer.create()
     Function: String toString()
         return a.toString()
 
@@ -174,7 +174,7 @@ Class: Foo
     Function: String bar()
         return a.toString()
 
-foo = Foo.default()
+foo = Foo.create()
 foo.bar()
 
 CODE
@@ -197,7 +197,7 @@ Class: Foo
     Function: None change()
         a = 5
 
-foo = Foo.default()
+foo = Foo.create()
 foo.change()
 
 CODE

@@ -1,15 +1,15 @@
 // Base class (implicitly inherits from Object)
 Class: Color is Stringifiable
-    red = 15//Integer.default()
-    green = 3//Integer.default()
-    blue = 4//Integer.default()
-    alpha = 115//Integer.default()
+    red = 15//Integer.create()
+    green = 3//Integer.create()
+    blue = 4//Integer.create()
+    alpha = 115//Integer.create()
     
     Function: String toString()
         return "#" + red.toHex() + green.toHex() + blue.toHex() + alpha.toHex()
     
 //    Function: Color blended( other: Color )
-//        result = Color.default()
+//        result = Color.create()
 //        result.red = (red + other.red) / 2
 //        result.green = (green + other.green) / 2
 //        result.blue = (blue + other.blue) / 2
@@ -27,7 +27,7 @@ Class: Color is Stringifiable
 //        blue = other.blue
 //        alpha = other.alpha
 
-color = Color.default()
+color = Color.create()
 print( color )
 //print( color.fields() )
 //print( color.methods() )
@@ -39,10 +39,10 @@ print( color )
 //
 //// A class fulfilling the contract
 //Class: Painting is Dimensional
-//    width = Integer.default()
-//    height = Integer.default()
-//    artist = String.default()
-//    primary_color = Color.default()
+//    width = Integer.create()
+//    height = Integer.create()
+//    artist = String.create()
+//    primary_color = Color.create()
 //
 //    Function: Integer width()
 //        return width
@@ -51,7 +51,7 @@ print( color )
 //
 //// A class that meets multiple contracts and delegates them
 //Class: Distance is Comperable, Sortable
-//    distance = Integer.default()
+//    distance = Integer.create()
 //
 //    delegate Sortable to distance
 //    delegate Comperable to distance
@@ -69,7 +69,7 @@ print( color )
 // is called, with the same parameters.  A Dirty class is cleaned up when
 // the last reference to it goes out of scope, allowing RAII.
 //Class: Socket is Dirty
-//    device = String.default()
+//    device = String.create()
 //    is_open = false
 //
 //    Function: None init( dev: String )
