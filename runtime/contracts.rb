@@ -1,7 +1,7 @@
 Constants["Contract"] = DaisyClass.new("Contract", Constants["Object"])
 RootContext.symbols["Contract"] = Constants["Contract"]
 
-Constants["Stringifiable"] = Constants["Contract"].new(DaisyContract.new("Stringifiable"))
+Constants["Stringifiable"] = DaisyContract.new("Stringifiable")
 RootContext.symbols["Stringifiable"] = Constants["Stringifiable"]
 Constants["Stringifiable"].runtime_class.def :toString do end
 Constants["Class"].add_contract(Constants["Stringifiable"].ruby_value)
@@ -14,7 +14,7 @@ Constants["Contract"].def :toString do |interpreter, receiver, args|
   Constants["String"].new( "#{receiver.name}" )
 end
 
-Constants["Equatable"] = Constants["Contract"].new(DaisyContract.new("Equatable"))
+Constants["Equatable"] = DaisyContract.new("Equatable")
 RootContext.symbols["Equatable"] = Constants["Equatable"]
 Constants["Equatable"].runtime_class.def :== do end
 Constants["Equatable"].runtime_class.def :!= do end
@@ -35,20 +35,20 @@ Constants["Contract"].def :!= do |interpreter, receiver, args|
   Constants["true"]
 end
 
-Constants["Comperable"] = Constants["Contract"].new(DaisyContract.new("Comperable"))
+Constants["Comperable"] = DaisyContract.new("Comperable")
 RootContext.symbols["Comperable"] = Constants["Comperable"]
 Constants["Comperable"].runtime_class.def :< do end
 Constants["Comperable"].runtime_class.def :<= do end
 Constants["Comperable"].runtime_class.def :> do end
 Constants["Comperable"].runtime_class.def :>= do end
 
-Constants["Verifiable"] = Constants["Contract"].new(DaisyContract.new("Verifiable"))
+Constants["Verifiable"] = DaisyContract.new("Verifiable")
 RootContext.symbols["Verifiable"] = Constants["Verifiable"]
 Constants["Verifiable"].runtime_class.def :'?' do end
 Constants["None"].add_contract(Constants["Verifiable"].ruby_value)
 Constants["String"].add_contract(Constants["Verifiable"].ruby_value)
 
-Constants["Countable"] = Constants["Contract"].new(DaisyContract.new("Countable"))
+Constants["Countable"] = DaisyContract.new("Countable")
 RootContext.symbols["Countable"] = Constants["Countable"]
 Constants["Countable"].runtime_class.def :empty? do end
 Constants["Countable"].runtime_class.def :count do end
