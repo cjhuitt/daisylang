@@ -338,4 +338,17 @@ CODE
     assert_equal 5, bar_a.ruby_value
   end
 
+  def test_for_construct
+    code = <<-CODE
+sum = 0
+for a in [1, 2, 3]
+    sum = sum + a
+
+CODE
+    @interpreter.eval(code)
+    sum = @interpreter.context.symbol("sum", nil)
+    assert_equal Constants["Integer"], sum.runtime_class
+    assert_equal 6, sum.ruby_value
+  end
+
 end

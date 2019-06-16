@@ -119,6 +119,15 @@ class Interpreter
       end
     end
 
+    def visit_ForNode(node)
+      debug_print("For node on #{node.container}")
+      container = node.container.accept(self)
+      container.ruby_value.each do |item|
+        @context.assign_symbol(node.variable, nil, item)
+        node.body.accept(self)
+      end
+    end
+
     def visit_ReturnNode(node)
       val = node.expression.accept(self)
       debug_print("Return node #{val}")
