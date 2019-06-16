@@ -390,6 +390,14 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_define_empty_array
+    expected = Nodes.new([
+      ArrayNode.new([
+      ])
+    ])
+    assert_equal expected, Parser.new.parse("[]")
+  end
+
   def test_define_array
     expected = Nodes.new([
       ArrayNode.new([
