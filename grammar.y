@@ -162,8 +162,8 @@ rule
   ;
 
   If:
-    IF Expression Block                 { result = IfNode.new(val[1], val[2]) }
-  | UNLESS Expression Block             { result = UnlessNode.new(val[1], val[2]) }
+    IF Expression Block                 { result = IfNode.new(val[1], val[2], nil) }
+  | UNLESS Expression Block             { result = UnlessNode.new(val[1], val[2], nil) }
   ;
 
   Loop:

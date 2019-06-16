@@ -64,7 +64,7 @@ class SymbolNode < Struct.new(:label, :type, :value)
 end
 class ParameterNode < SymbolNode; end
 
-class ConditionalNode < Struct.new(:condition, :body); end
+class ConditionalNode < Struct.new(:condition, :body, :else_body); end
 class IfNode < ConditionalNode
   include Visitable
 end
@@ -99,6 +99,6 @@ class ForNode < Struct.new(:container, :variable, :body)
   include Visitable
 end
 
-class WhileNode < ConditionalNode
+class WhileNode < Struct.new(:condition, :body)
   include Visitable
 end
