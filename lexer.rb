@@ -73,10 +73,10 @@ class Lexer
         elsif str = sub[/\A"([^"]*)/, 1]
           @string_accumulator = str
           i += str.size + 2
-        elsif sub.start_with? "Function: "
-          tokens << [:FUNCTION, "Function:"]
-          debug_out("Extracted Function: (Definition)")
-          i += "Function: ".size
+        elsif sub.start_with? "Method: "
+          tokens << [:METHOD, "Method:"]
+          debug_out("Extracted Method: (Definition)")
+          i += "Method: ".size
         elsif sub.start_with? "Class: "
           tokens << [:CLASS, "Class:"]
           debug_out("Extracted Class: (Definition)")
@@ -84,7 +84,7 @@ class Lexer
         elsif sub.start_with? "Contract: "
           tokens << [:CONTRACT, "Contract:"]
           debug_out("Extracted Contract: (Definition)")
-          i += "Function: ".size
+          i += "Contract: ".size
         elsif sub.start_with? "is "
           tokens << [:IS, "is"]
           debug_out("Extracted is (Keyword)")

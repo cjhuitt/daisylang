@@ -35,13 +35,13 @@ class DaisyInterpreterTest < Test::Unit::TestCase
   def test_define_method
     # TODO: This should not be defined on all objects?
     code = <<-CODE
-Function: String Greeting()
+Method: String Greeting()
     return "Hey"
 
 CODE
     @interpreter.eval(code)
     symbol = @interpreter.context.symbol("Greeting", nil)
-    assert_equal Constants["Function"], symbol.runtime_class
+    assert_equal Constants["Method"], symbol.runtime_class
     method = symbol.ruby_value
     assert_equal "Greeting", method.name
     assert_equal Constants["String"], method.return_type
@@ -50,7 +50,7 @@ CODE
 
   def test_send_message
     code = <<-CODE
-Function: String Greeting()
+Method: String Greeting()
     return "Hey"
 
 retval = Greeting()
@@ -101,7 +101,7 @@ CODE
   def test_define_contract
     code = <<-CODE
 Contract: Foo
-    Function: None bar()
+    Method: None bar()
 
 CODE
     @interpreter.eval(code)
@@ -120,7 +120,7 @@ CODE
   def test_define_class_with_method
     code = <<-CODE
 Class: Foo
-    Function: None bar()
+    Method: None bar()
 
 CODE
     @interpreter.eval(code)
@@ -138,7 +138,7 @@ CODE
   def test_define_class_with_contracts
     code = <<-CODE
 Class: Foo is Stringifiable, Comperable
-    Function: None bar()
+    Method: None bar()
 
 CODE
     @interpreter.eval(code)
@@ -154,7 +154,7 @@ CODE
     code = <<-CODE
 Class: Foo
     a = Integer.create()
-    Function: String toString()
+    Method: String toString()
         return a.toString()
 
 CODE
@@ -172,7 +172,7 @@ CODE
     code = <<-CODE
 Class: Foo
     a = 2
-    Function: String bar()
+    Method: String bar()
         return a.toString()
 
 foo = Foo.create()
@@ -195,7 +195,7 @@ CODE
     code = <<-CODE
 Class: Foo
     a = 2
-    Function: None change()
+    Method: None change()
         a = 5
 
 foo = Foo.create()
@@ -215,7 +215,7 @@ CODE
     code = <<-CODE
 Class: Foo
     a = 2
-    Function: None init()
+    Method: None init()
         a = 5
 
 foo = Foo.create()
@@ -234,7 +234,7 @@ CODE
     code = <<-CODE
 Class: Foo
     a = 2
-    Function: None change( other: Foo )
+    Method: None change( other: Foo )
         other.a = 5
 
 foo = Foo.create()
@@ -263,7 +263,7 @@ CODE
     code = <<-CODE
 Class: Foo
     a = 2
-    Function: None change( other: Foo )
+    Method: None change( other: Foo )
         other.b = 5
 
 foo = Foo.create()
@@ -280,10 +280,10 @@ CODE
     code = <<-CODE
 Class: Foo
     a = 2
-    Function: None init( val: Integer )
+    Method: None init( val: Integer )
         a = val
     
-    Function: None assign!( other: Foo )
+    Method: None assign!( other: Foo )
         a = other.a
 
 foo = Foo.create( 5 )
@@ -312,10 +312,10 @@ CODE
     code = <<-CODE
 Class: Foo
     a = 2
-    Function: None init( val: Integer )
+    Method: None init( val: Integer )
         a = val
     
-    Function: None assign!( val: Integer )
+    Method: None assign!( val: Integer )
         a = val
 
 foo = Foo.create( 5 )
@@ -363,8 +363,8 @@ CODE
     # TODO This contains some methods that it should not.
     #      The list permutations below allow for a robust test while other 
     #      methods are added
-    # TODO This should return function objects, not just names
-    #      Once I figure out how to expose the built-ins as function objects
+    # TODO This should return method objects, not just names
+    #      Once I figure out how to expose the built-ins as method objects
     assert_true methods.ruby_value.size >= 7
     list = methods.ruby_value.map do |method|
       method.ruby_value

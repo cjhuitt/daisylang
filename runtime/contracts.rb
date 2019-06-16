@@ -7,7 +7,7 @@ Constants["Stringifiable"].runtime_class.def :toString do end
 Constants["Class"].add_contract(Constants["Stringifiable"].ruby_value)
 Constants["String"].add_contract(Constants["Stringifiable"].ruby_value)
 Constants["None"].add_contract(Constants["Stringifiable"].ruby_value)
-Constants["Function"].add_contract(Constants["Stringifiable"].ruby_value)
+Constants["Method"].add_contract(Constants["Stringifiable"].ruby_value)
 
 Constants["Contract"].add_contract(Constants["Stringifiable"].ruby_value)
 Constants["Contract"].def :toString do |interpreter, receiver, args|
@@ -21,7 +21,7 @@ Constants["Equatable"].runtime_class.def :!= do end
 Constants["Object"].add_contract(Constants["Equatable"].ruby_value)
 Constants["Class"].add_contract(Constants["Equatable"].ruby_value)
 Constants["String"].add_contract(Constants["Equatable"].ruby_value)
-Constants["Function"].add_contract(Constants["Equatable"].ruby_value)
+Constants["Method"].add_contract(Constants["Equatable"].ruby_value)
 
 Constants["Contract"].add_contract(Constants["Equatable"].ruby_value)
 Constants["Contract"].def :== do |interpreter, receiver, args|

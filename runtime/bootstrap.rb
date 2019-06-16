@@ -122,9 +122,9 @@ end
 
 Constants["none"] = Constants["None"].new(nil)
 
-Constants["Function"] = DaisyClass.new("Function", Constants["Object"])
-RootContext.symbols["Function"] = Constants["Function"]
-Constants["Function"].def :toString do |interpreter, receiver, args|
+Constants["Method"] = DaisyClass.new("Method", Constants["Object"])
+RootContext.symbols["Method"] = Constants["Method"]
+Constants["Method"].def :toString do |interpreter, receiver, args|
   method = receiver.ruby_value
   params = method.params.map { |param| "#{param.label}: #{param.type}" }.join( " " )
   if params.empty?
@@ -132,14 +132,14 @@ Constants["Function"].def :toString do |interpreter, receiver, args|
   else
     params = "( " + params + " )"
   end
-  Constants["String"].new( "Function #{method.return_type.name} #{method.name}#{params}" )
+  Constants["String"].new( "Method #{method.return_type.name} #{method.name}#{params}" )
 end
-Constants["Function"].def :== do |interpreter, receiver, args|
+Constants["Method"].def :== do |interpreter, receiver, args|
   other = args.first[1]
   return Constants["true"] if receiver.ruby_value == other.ruby_value
   Constants["false"]
 end
-Constants["Function"].def :!= do |interpreter, receiver, args|
+Constants["Method"].def :!= do |interpreter, receiver, args|
   other = args.first[1]
   return Constants["false"] if receiver.ruby_value == other.ruby_value
   Constants["true"]
