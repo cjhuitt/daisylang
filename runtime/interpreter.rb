@@ -68,10 +68,8 @@ class Interpreter
       unless value.nil?
         if value.is_a? String
           value = @context.symbol(value)
-        end
-        if value.nil?
-          node.type = node.value
-          node.value = nil
+        else
+          value = value.accept(self)
         end
       end
       type = @context.symbol(node.type)
@@ -85,7 +83,7 @@ class Interpreter
     def visit_DefineMessageNode(node)
       debug_print("Define message #{node.name} with #{node.parameters}")
       returning = @context.symbol(node.return_type)
-      params = node.parameters.each { |param| param.accept(self) }
+      params = node.parameters.map { |param| param.accept(self) }
       method = DaisyMethod.new(node.name, returning, params, node.body)
       @context.assign_symbol(node.name, Constants["Function"].new(method))
       @context.add_method( method )

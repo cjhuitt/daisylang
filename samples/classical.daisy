@@ -1,9 +1,15 @@
 // Base class (implicitly inherits from Object)
 Class: Color is Stringifiable
-    red = 15//Integer.create()
-    green = 3//Integer.create()
-    blue = 4//Integer.create()
-    alpha = 115//Integer.create()
+    red = 0
+    green = 0
+    blue = 0
+    alpha = 0
+    
+    Function: None init( r: 0, g: 0, b: 0, a: 0 )
+        red = r
+        green = g
+        blue = b
+        alpha = a
     
     Function: String toString()
         return "#" + red.toHex() + green.toHex() + blue.toHex() + alpha.toHex()
@@ -29,6 +35,7 @@ Class: Color is Stringifiable
 
 color = Color.create()
 print( color )
+print( Color.create( r: 255, g: 128, b: 64 ) )
 //print( color.fields() )
 //print( color.methods() )
 
