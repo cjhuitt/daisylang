@@ -36,6 +36,11 @@ class DaisyIntegerTest < Test::Unit::TestCase
     assert_not_nil Constants["Integer"].lookup("!=")
   end
 
+  def test_verifiable
+    assert_true Constants["Integer"].has_contract(Constants["Verifiable"].ruby_value)
+    assert_not_nil Constants["Integer"].lookup("?")
+  end
+
   def test_convert_output
     assert_not_nil Constants["Integer"].lookup("toHex")
   end

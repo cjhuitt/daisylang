@@ -38,6 +38,7 @@ Constants["Boolean"].def :! do |interpreter, receiver, args|
   end
 end
 
+Constants["Boolean"].add_contract(Constants["Verifiable"].ruby_value)
 Constants["Boolean"].def :'?' do |interpreter, receiver, args|
   receiver
 end
