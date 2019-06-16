@@ -191,7 +191,7 @@ class Interpreter
     def visit_ArrayNode(node)
       debug_print("ArrayNode #{node.members.size}")
       evaluated_members = node.members.map { |member| member.accept(self) }
-      Constants["none"]
+      Constants["Array"].new(evaluated_members)
     end
 end
 
