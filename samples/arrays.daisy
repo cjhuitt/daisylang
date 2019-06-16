@@ -1,13 +1,13 @@
 foo = [1, 1, 2, 3]
 bar = [2 + 3, 3 + 5, 5 + 8]
 foobar = foo + bar
-print( foobar? )
-print( foobar.empty?() )
-print( foobar.count() )
-print( foobar )
-//for entry in foobar
-//    print( entry )
+if foobar?
+    if foobar.empty?()
+        print( "Nothing got added?!" )
+    print( foobar.count().toString() + " items: " + foobar.toString() )
 
 tokens = []
 tokens.append!( Class, Contract, Function, Array )
-print( tokens )
+for entry in tokens
+    print( entry )
+
