@@ -3,12 +3,12 @@ require "runtime/runtime"
 
 class ContractTest < Test::Unit::TestCase
   def test_class_in_root_context
-    assert_not_nil RootContext.symbol("Contract")
+    assert_not_nil RootContext.symbol("Contract", nil)
   end
 
   def test_predefined_contracts_in_root_context
-    assert_not_nil RootContext.symbol("Stringifiable")
-    assert_not_nil RootContext.symbol("Sortable")
+    assert_not_nil RootContext.symbol("Stringifiable", nil)
+    assert_not_nil RootContext.symbol("Sortable", nil)
   end
 
   def test_pretty_print_exists

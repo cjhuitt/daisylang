@@ -3,7 +3,7 @@ require "runtime/runtime"
 
 class DaisyNoneTest < Test::Unit::TestCase
   def test_class_in_root_context
-    assert_not_nil RootContext.symbol("None")
+    assert_not_nil RootContext.symbol("None", nil)
   end
 
   def test_constant_for_only_value

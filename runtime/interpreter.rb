@@ -67,12 +67,12 @@ class Interpreter
       value = node.value
       unless value.nil?
         if value.is_a? String
-          value = @context.symbol(value)
+          value = @context.symbol(value, nil)
         else
           value = value.accept(self)
         end
       end
-      type = @context.symbol(node.type)
+      type = @context.symbol(node.type, nil)
       raise "Unknown parameter type" if type.nil? && value.nil?
       if type.nil?
         type = value.runtime_class unless value.nil?
@@ -82,7 +82,7 @@ class Interpreter
 
     def visit_DefineMessageNode(node)
       debug_print("Define message #{node.name} with #{node.parameters}")
-      returning = @context.symbol(node.return_type)
+      returning = @context.symbol(node.return_type, nil)
       params = node.parameters.map { |param| param.accept(self) }
       method = DaisyMethod.new(node.name, returning, params, node.body)
       @context.assign_symbol(node.name, nil, Constants["Function"].new(method))
@@ -129,7 +129,7 @@ class Interpreter
 
     def visit_GetSymbolNode(node)
       debug_print("Getting value for #{node.id}")
-      var = @context.symbol(node.id)
+      var = @context.symbol(node.id, node.instance)
       raise "Referenced unknown symbol #{node.id}" if var.nil?
       var
     end
@@ -168,7 +168,7 @@ class Interpreter
       debug_print("Define class #{node.name}")
       daisy_class = DaisyClass.new(node.name, Constants["Object"])
       node.contracts.each do |contract_name|
-        contract = @context.symbol(contract_name)
+        contract = @context.symbol(contract_name, nil)
         raise "Referenced unknown symbol #{contract_name}" if contract.nil?
         daisy_class.add_contract(contract.ruby_value)
       end

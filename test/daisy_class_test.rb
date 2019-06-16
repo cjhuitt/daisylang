@@ -79,7 +79,7 @@ class DaisyClassTest < Test::Unit::TestCase
   end
 
   def test_class_in_root_context
-    assert_not_nil RootContext.symbol("Class")
+    assert_not_nil RootContext.symbol("Class", nil)
   end
 
   def test_equality_operations_exists

@@ -32,7 +32,7 @@ class DaisyObjectTest < Test::Unit::TestCase
   end
 
   def test_class_in_root_context
-    assert_not_nil RootContext.symbol("Object")
+    assert_not_nil RootContext.symbol("Object", nil)
   end
 
   def test_print_function_exists

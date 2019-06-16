@@ -3,7 +3,7 @@ require "runtime/runtime"
 
 class DaisyStringTest < Test::Unit::TestCase
   def test_class_in_root_context
-    assert_not_nil RootContext.symbol("String")
+    assert_not_nil RootContext.symbol("String", nil)
   end
 
   def test_pretty_print

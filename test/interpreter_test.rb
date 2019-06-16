@@ -14,7 +14,7 @@ class DaisyInterpreterTest < Test::Unit::TestCase
 
   def test_can_define_variable
     @interpreter.eval("asdf = true")
-    symbol = @interpreter.context.symbol("asdf")
+    symbol = @interpreter.context.symbol("asdf", nil)
     assert_equal Constants["true"], symbol
     assert_equal Constants["Boolean"], symbol.runtime_class
   end
@@ -39,7 +39,7 @@ Function: String Greeting()
 
 CODE
     @interpreter.eval(code)
-    symbol = @interpreter.context.symbol("Greeting")
+    symbol = @interpreter.context.symbol("Greeting", nil)
     assert_equal Constants["Function"], symbol.runtime_class
     method = symbol.ruby_value
     assert_equal "Greeting", method.name
@@ -55,7 +55,7 @@ Function: String Greeting()
 retval = Greeting()
 CODE
     @interpreter.eval(code)
-    symbol = @interpreter.context.symbol("retval")
+    symbol = @interpreter.context.symbol("retval", nil)
     assert_equal Constants["String"], symbol.runtime_class
     assert_equal "Hey", symbol.ruby_value
   end
@@ -68,7 +68,7 @@ if true
 
 CODE
     @interpreter.eval(code)
-    symbol = @interpreter.context.symbol("a")
+    symbol = @interpreter.context.symbol("a", nil)
     assert_equal Constants["false"], symbol
   end
 
@@ -80,7 +80,7 @@ unless false
 
 CODE
     @interpreter.eval(code)
-    symbol = @interpreter.context.symbol("a")
+    symbol = @interpreter.context.symbol("a", nil)
     assert_equal Constants["false"], symbol
   end
 
@@ -92,7 +92,7 @@ CODE
 
   def test_send_message_argument
     @interpreter.eval("a = 1 + 2")
-    symbol = @interpreter.context.symbol("a")
+    symbol = @interpreter.context.symbol("a", nil)
     assert_equal Constants["Integer"], symbol.runtime_class
     assert_equal 3, symbol.ruby_value
   end
@@ -104,7 +104,7 @@ Contract: Foo
 
 CODE
     @interpreter.eval(code)
-    symbol = @interpreter.context.symbol("Foo")
+    symbol = @interpreter.context.symbol("Foo", nil)
     assert_not_nil symbol
     assert_equal Constants["Contract"], symbol.runtime_class
     contract = symbol.ruby_value
@@ -123,7 +123,7 @@ Class: Foo
 
 CODE
     @interpreter.eval(code)
-    symbol = @interpreter.context.symbol("Foo")
+    symbol = @interpreter.context.symbol("Foo", nil)
     assert_not_nil symbol
     assert_equal Constants["Class"], symbol.runtime_class
     daisy_class = symbol.ruby_value
@@ -141,7 +141,7 @@ Class: Foo is Stringifiable, Sortable
 
 CODE
     @interpreter.eval(code)
-    symbol = @interpreter.context.symbol("Foo")
+    symbol = @interpreter.context.symbol("Foo", nil)
     assert_not_nil symbol
     assert_equal Constants["Class"], symbol.runtime_class
     daisy_class = symbol.ruby_value
@@ -158,7 +158,7 @@ Class: Foo
 
 CODE
     @interpreter.eval(code)
-    symbol = @interpreter.context.symbol("Foo")
+    symbol = @interpreter.context.symbol("Foo", nil)
     assert_not_nil symbol
     assert_equal Constants["Class"], symbol.runtime_class
     daisy_class = symbol.ruby_value
@@ -179,9 +179,9 @@ foo.bar()
 
 CODE
     @interpreter.eval(code)
-    daisy_class = @interpreter.context.symbol("Foo")
+    daisy_class = @interpreter.context.symbol("Foo", nil)
     assert_not_nil daisy_class
-    symbol = @interpreter.context.symbol("foo")
+    symbol = @interpreter.context.symbol("foo", nil)
     assert_not_nil symbol
     assert_equal daisy_class, symbol.runtime_class
     field = symbol.instance_data["a"]
@@ -202,7 +202,7 @@ foo.change()
 
 CODE
     @interpreter.eval(code)
-    foo = @interpreter.context.symbol("foo")
+    foo = @interpreter.context.symbol("foo", nil)
     assert_not_nil foo
     a = foo.instance_data["a"]
     assert_not_nil a
@@ -221,7 +221,7 @@ foo = Foo.create()
 
 CODE
     @interpreter.eval(code)
-    foo = @interpreter.context.symbol("foo")
+    foo = @interpreter.context.symbol("foo", nil)
     assert_not_nil foo
     a = foo.instance_data["a"]
     assert_not_nil a
@@ -243,14 +243,14 @@ foo.change( bar )
 CODE
     @interpreter.eval(code)
 
-    foo = @interpreter.context.symbol("foo")
+    foo = @interpreter.context.symbol("foo", nil)
     assert_not_nil foo
     foo_a = foo.instance_data["a"]
     assert_not_nil foo_a
     assert_equal Constants["Integer"], foo_a.runtime_class
     assert_equal 2, foo_a.ruby_value
 
-    bar = @interpreter.context.symbol("bar")
+    bar = @interpreter.context.symbol("bar", nil)
     assert_not_nil bar
     bar_a = bar.instance_data["a"]
     assert_not_nil bar_a
@@ -273,6 +273,38 @@ CODE
     assert_raise do
       @interpreter.eval(code)
     end
+  end
+
+  def test_can_read_class_instance_fields
+    code = <<-CODE
+Class: Foo
+    a = 2
+    Function: None init( val: Integer )
+        a = val
+    
+    Function: None assign( other: Foo )
+        a = other.a
+
+foo = Foo.create( 5 )
+bar = Foo.create( 7 )
+foo.assign( bar )
+
+CODE
+    @interpreter.eval(code)
+    foo = @interpreter.context.symbol("foo", nil)
+    assert_not_nil foo
+    foo_a = foo.instance_data["a"]
+    assert_not_nil foo_a
+    assert_equal Constants["Integer"], foo_a.runtime_class
+
+    bar = @interpreter.context.symbol("bar", nil)
+    assert_not_nil bar
+    bar_a = bar.instance_data["a"]
+    assert_not_nil bar_a
+    assert_equal Constants["Integer"], bar_a.runtime_class
+
+    assert_equal bar_a.ruby_value, foo_a.ruby_value
+    assert_equal 7, foo_a.ruby_value
   end
 
 end

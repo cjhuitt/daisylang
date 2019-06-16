@@ -3,7 +3,7 @@ require "runtime/runtime"
 
 class DaisyIntegerTest < Test::Unit::TestCase
   def test_class_in_root_context
-    assert_not_nil RootContext.symbol("Integer")
+    assert_not_nil RootContext.symbol("Integer", nil)
   end
 
   def test_immutable_math_operations_exist
