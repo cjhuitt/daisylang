@@ -2,7 +2,7 @@ class Parser
 
 token BLOCKSTART BLOCKEND
 token FUNCTION CLASS CONTRACT IS
-token IDENTIFIER
+token IDENTIFIER FIELD
 token INTEGER STRING
 token IF UNLESS RETURN
 token NEWLINE
@@ -155,11 +155,13 @@ rule
   ;
 
   GetSymbol:
-    IDENTIFIER                          { result = GetSymbolNode.new(val[0]) }
+    IDENTIFIER                          { result = GetSymbolNode.new(val[0], nil) }
+  | IDENTIFIER FIELD                    { result = GetSymbolNode.new(val[1], val[0]) }
   ;
 
   SetSymbol:
-    IDENTIFIER "=" Expression           { result = SetSymbolNode.new(val[0], val[2]) }
+    IDENTIFIER "=" Expression           { result = SetSymbolNode.new(val[0], val[2], nil) }
+  | IDENTIFIER FIELD "=" Expression     { result = SetSymbolNode.new(val[1], val[3], val[0]) }
   ;
 
   Comment:

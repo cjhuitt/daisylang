@@ -72,10 +72,10 @@ class UnlessNode < ConditionalNode
   include Visitable
 end
 
-class GetSymbolNode < Struct.new(:id)
+class GetSymbolNode < Struct.new(:id, :instance)
   include Visitable
 end
-class SetSymbolNode < Struct.new(:id, :value)
+class SetSymbolNode < Struct.new(:id, :value, :instance)
   include Visitable
 end
 

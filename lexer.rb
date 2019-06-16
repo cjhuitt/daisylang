@@ -89,6 +89,18 @@ class Lexer
           tokens << [:IS, "is"]
           debug_out("Extracted is (Keyword)")
           i += "is ".size
+        elsif identifier = sub[/\A(\w+\.\w+)([^(\w]|$)/, 1]
+          id = sub[/\A(\w+)/, 1]
+          tokens << [:IDENTIFIER, id]
+          debug_out("Extracted #{id} (Identifier)")
+          i += id.size
+
+          i += 1 # period
+
+          id = sub[/\A(\w+)\.(\w+)/, 2]
+          tokens << [:FIELD, id]
+          debug_out("Extracted #{id} (Field)")
+          i += id.size
         elsif identifier = sub[/\A(\w+\?)\(/, 1]
           tokens << [:IDENTIFIER, identifier]
           debug_out("Extracted #{identifier} (Identifier)")

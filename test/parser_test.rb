@@ -21,16 +21,26 @@ class ParserTest < Test::Unit::TestCase
   end
 
   def test_get_variable
-    assert_equal Nodes.new([GetSymbolNode.new("q")]), Parser.new.parse("q")
+    assert_equal Nodes.new([GetSymbolNode.new("q", nil)]), Parser.new.parse("q")
   end
 
   def test_set_variable
-    assert_equal Nodes.new([SetSymbolNode.new("asdf", TrueNode.new())]),
+    assert_equal Nodes.new([SetSymbolNode.new("asdf", TrueNode.new(), nil)]),
       Parser.new.parse("asdf = true")
   end
 
+  def test_get_member_variable
+    assert_equal Nodes.new([SetSymbolNode.new("a", GetSymbolNode.new("member", "variable"), nil)]),
+      Parser.new.parse("a = variable.member")
+  end
+
+  def test_set_member_variable
+    assert_equal Nodes.new([SetSymbolNode.new("member", TrueNode.new(), "variable")]),
+      Parser.new.parse("variable.member = true")
+  end
+
   def test_message_no_arguments
-    assert_equal Nodes.new([SendMessageNode.new(GetSymbolNode.new("variable"), "method", [])]),
+    assert_equal Nodes.new([SendMessageNode.new(GetSymbolNode.new("variable", nil), "method", [])]),
       Parser.new.parse("variable.method()")
   end
 
@@ -87,7 +97,7 @@ class ParserTest < Test::Unit::TestCase
   # representation of it and let the later analysis handle erroring
   def test_message_with_multiple_unlabeled_arguments
     expected = Nodes.new([
-      SendMessageNode.new(GetSymbolNode.new("foo"), "method", [
+      SendMessageNode.new(GetSymbolNode.new("foo", nil), "method", [
         ArgumentNode.new(nil, IntegerNode.new(13)),
         ArgumentNode.new(nil, IntegerNode.new(42))
       ])
@@ -173,10 +183,10 @@ CODE
   def test_parenthesis_expression_ordering
     expected = Nodes.new([
       SendMessageNode.new(
-        SendMessageNode.new(GetSymbolNode.new("a"), "+", [
-          ArgumentNode.new(nil, GetSymbolNode.new("b"))
+        SendMessageNode.new(GetSymbolNode.new("a", nil), "+", [
+          ArgumentNode.new(nil, GetSymbolNode.new("b", nil))
         ]), "+",
-        [ArgumentNode.new(nil, GetSymbolNode.new("c"))]
+        [ArgumentNode.new(nil, GetSymbolNode.new("c", nil))]
       )
     ])
     assert_equal expected, Parser.new.parse("(a + b) + c")
@@ -185,10 +195,10 @@ CODE
   def test_addition_operator_ordering
     expected = Nodes.new([
       SendMessageNode.new(
-        SendMessageNode.new(GetSymbolNode.new("a"), "+", [
-          ArgumentNode.new(nil, GetSymbolNode.new("b"))
+        SendMessageNode.new(GetSymbolNode.new("a", nil), "+", [
+          ArgumentNode.new(nil, GetSymbolNode.new("b", nil))
         ]), "+",
-        [ArgumentNode.new(nil, GetSymbolNode.new("c"))]
+        [ArgumentNode.new(nil, GetSymbolNode.new("c", nil))]
       )
     ])
     assert_equal expected, Parser.new.parse("a + b + c")
@@ -202,7 +212,7 @@ if n <= 2
 CODE
     expected = Nodes.new([
       IfNode.new(
-        SendMessageNode.new(GetSymbolNode.new("n"), "<=", [
+        SendMessageNode.new(GetSymbolNode.new("n", nil), "<=", [
           ArgumentNode.new(nil, IntegerNode.new(2))
         ]),
         Nodes.new([PassNode.new])
@@ -280,12 +290,12 @@ CODE
             ReturnNode.new(
               SendMessageNode.new(
                 SendMessageNode.new(
-                  GetSymbolNode.new("greeting"),
+                  GetSymbolNode.new("greeting", nil),
                   "+",
                   [ArgumentNode.new(nil, StringNode.new(" "))]
                 ),
                 "+",
-                [ArgumentNode.new(nil, GetSymbolNode.new("name"))]
+                [ArgumentNode.new(nil, GetSymbolNode.new("name", nil))]
               )
             )
           ]
@@ -333,7 +343,8 @@ CODE
         [],
         Nodes.new([
           SetSymbolNode.new("a",
-            GetSymbolNode.new("Integer")
+            GetSymbolNode.new("Integer", nil),
+            nil
           )
         ])
       )
