@@ -146,12 +146,18 @@ else
 CODE
     expected = Nodes.new([
       UnlessNode.new(
-        TrueNode.new(), Nodes.new([
-          ReturnNode.new(IntegerNode.new(1))
-        ]),
-        Nodes.new([
-          ReturnNode.new(IntegerNode.new(2))
-        ])
+        ConditionBlockNode.new(
+          TrueNode.new(),
+          Nodes.new([
+            ReturnNode.new(IntegerNode.new(1))
+          ])
+        ),
+        ConditionBlockNode.new(
+          nil,
+          Nodes.new([
+            ReturnNode.new(IntegerNode.new(2))
+          ])
+        )
       )
     ])
     assert_equal expected, Parser.new.parse(code)

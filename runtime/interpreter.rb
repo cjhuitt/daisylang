@@ -113,12 +113,12 @@ class Interpreter
     end
 
     def visit_UnlessNode(node)
-      if !node.condition.accept(self).ruby_value
+      if !node.condition_block.condition.accept(self).ruby_value
         debug_print("Unless node: triggered")
-        node.body.accept(self)
-      elsif !node.else_body.nil?
+        node.condition_block.body.accept(self)
+      elsif !node.else_block.nil?
         debug_print("Unless node: else triggered")
-        node.else_body.accept(self)
+        node.else_block.body.accept(self)
       else
         debug_print("Unless node: nogo")
         Constants["none"]
