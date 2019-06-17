@@ -162,10 +162,10 @@ rule
   ;
 
   ConditionalSet:
-    IF ConditionBlock2                  { result = IfNode.new(val[1], nil) }
-  | IF ConditionBlock2 ElseBlock        { result = IfNode.new(val[1], val[2]) }
-  | UNLESS ConditionBlock2              { result = UnlessNode.new(val[1], nil) }
-  | UNLESS ConditionBlock2 ElseBlock    { result = UnlessNode.new(val[1], val[2]) }
+    IF ConditionBlock                   { result = IfNode.new(val[1], nil) }
+  | IF ConditionBlock ElseBlock         { result = IfNode.new(val[1], val[2]) }
+  | UNLESS ConditionBlock               { result = UnlessNode.new(val[1], nil) }
+  | UNLESS ConditionBlock ElseBlock     { result = UnlessNode.new(val[1], val[2]) }
   ;
 
   ElseBlock:
@@ -173,16 +173,12 @@ rule
   ;
 
   ConditionBlock:
-    Expression Block                    { result = val }
-  ;
-
-  ConditionBlock2:
     Expression Block                    { result = ConditionBlockNode.new(val[0], val[1]) }
   ;
 
   Loop:
     FOR IDENTIFIER IN Expression Block  { result = ForNode.new(val[3], val[1], val[4]) }
-  | WHILE ConditionBlock2               { result = WhileNode.new(val[1]) }
+  | WHILE ConditionBlock                { result = WhileNode.new(val[1]) }
   ;
 
   GetSymbol:
