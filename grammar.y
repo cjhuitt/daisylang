@@ -181,7 +181,7 @@ rule
   ;
 
   Loop:
-    FOR IDENTIFIER IN ConditionBlock    { result = ForNode.new(val[3][0], val[1], val[3][1]) }
+    FOR IDENTIFIER IN Expression Block  { result = ForNode.new(val[3], val[1], val[4]) }
   | WHILE ConditionBlock2               { result = WhileNode.new(val[1]) }
   ;
 
