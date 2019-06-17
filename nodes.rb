@@ -65,10 +65,20 @@ end
 class ParameterNode < SymbolNode; end
 
 class ConditionBlockNode < Struct.new(:condition, :body); end
+
 class IfNode < Struct.new(:condition_block, :else_block)
   include Visitable
 end
+
 class UnlessNode < Struct.new(:condition_block, :else_block)
+  include Visitable
+end
+
+class WhileNode < Struct.new(:condition, :body)
+  include Visitable
+end
+
+class ForNode < Struct.new(:container, :variable, :body)
   include Visitable
 end
 
@@ -92,13 +102,5 @@ class DefineClassNode < Struct.new(:name, :contracts, :body)
 end
 
 class ArrayNode < Struct.new(:members)
-  include Visitable
-end
-
-class ForNode < Struct.new(:container, :variable, :body)
-  include Visitable
-end
-
-class WhileNode < Struct.new(:condition, :body)
   include Visitable
 end
