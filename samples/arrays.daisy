@@ -7,7 +7,7 @@ if foobar?
     print( foobar.count().toString() + " items: " + foobar.toString() )
 
 tokens = []
-tokens.append!( Class, Contract, Function, Array )
+tokens.append!( Class, Contract, Method, Array )
 for entry in tokens
     print( entry )
 
