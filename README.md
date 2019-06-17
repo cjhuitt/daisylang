@@ -23,7 +23,7 @@ What can be parsed right now can be seen in the [samples directory](samples/),
 but here are a few snippets
 
 ```
-Function Integer fibonacci( n: Integer )
+Method: Integer fibonacci( n: Integer )
     if n <= 2
         return 1
     return fibonacci( n - 1 ) + fibonacci( n - 2 )
