@@ -13,7 +13,7 @@ if true.isa?( Object )
 unless true.isa?( None )
     print( "Recognizes not a different class" )
 
-print( true.isa?( Function ) )
+print( true.isa?( Method ) )
 
 if 1.is?( Comperable )
     print( "Recognizes met contract" )
