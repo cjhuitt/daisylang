@@ -163,16 +163,12 @@ rule
 
   ConditionalSet:
     IF ConditionBlock2                  { result = IfNode.new(val[1], nil) }
-  | IF ConditionBlock2 ElseBlock2       { result = IfNode.new(val[1], val[2]) }
+  | IF ConditionBlock2 ElseBlock        { result = IfNode.new(val[1], val[2]) }
   | UNLESS ConditionBlock2              { result = UnlessNode.new(val[1], nil) }
-  | UNLESS ConditionBlock2 ElseBlock2   { result = UnlessNode.new(val[1], val[2]) }
+  | UNLESS ConditionBlock2 ElseBlock    { result = UnlessNode.new(val[1], val[2]) }
   ;
 
   ElseBlock:
-    ELSE Block                          { result = val[1] }
-  ;
-
-  ElseBlock2:
     ELSE Block                          { result = ConditionBlockNode.new( nil, val[1]) }
   ;
 
