@@ -447,10 +447,12 @@ while false
 CODE
     expected = Nodes.new([
       WhileNode.new(
-        FalseNode.new,
-        Nodes.new([
-          NoneNode.new
-        ])
+        ConditionBlockNode.new(
+          FalseNode.new,
+          Nodes.new([
+            NoneNode.new
+          ])
+        )
       )
     ])
     assert_equal expected, Parser.new.parse(code)
