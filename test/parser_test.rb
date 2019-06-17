@@ -173,12 +173,18 @@ else
 CODE
     expected = Nodes.new([
       IfNode.new(
-        FalseNode.new(), Nodes.new([
-          ReturnNode.new(IntegerNode.new(1))
-        ]),
-        Nodes.new([
-          ReturnNode.new(IntegerNode.new(2))
-        ])
+        ConditionBlockNode.new(
+          FalseNode.new(),
+          Nodes.new([
+            ReturnNode.new(IntegerNode.new(1))
+          ])
+        ),
+        ConditionBlockNode.new(
+          nil,
+          Nodes.new([
+            ReturnNode.new(IntegerNode.new(2))
+          ])
+        )
       )
     ])
     assert_equal expected, Parser.new.parse(code)
@@ -216,10 +222,12 @@ if n <= 2
 CODE
     expected = Nodes.new([
       IfNode.new(
-        SendMessageNode.new(GetSymbolNode.new("n", nil), "<=", [
-          ArgumentNode.new(nil, IntegerNode.new(2))
-        ]),
-        Nodes.new([PassNode.new]),
+        ConditionBlockNode.new(
+          SendMessageNode.new(GetSymbolNode.new("n", nil), "<=", [
+            ArgumentNode.new(nil, IntegerNode.new(2))
+          ]),
+          Nodes.new([PassNode.new])
+        ),
         nil
       )
     ])
