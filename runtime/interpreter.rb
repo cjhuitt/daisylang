@@ -126,9 +126,9 @@ class Interpreter
     end
 
     def visit_WhileNode(node)
-      while node.condition.accept(self).ruby_value
+      while node.condition_block.condition.accept(self).ruby_value
         debug_print("While node: triggered")
-        node.body.accept(self)
+        node.condition_block.body.accept(self)
       end
     end
 

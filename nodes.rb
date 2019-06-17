@@ -74,7 +74,7 @@ class UnlessNode < Struct.new(:condition_block, :else_block)
   include Visitable
 end
 
-class WhileNode < Struct.new(:condition, :body)
+class WhileNode < Struct.new(:condition_block)
   include Visitable
 end
 
