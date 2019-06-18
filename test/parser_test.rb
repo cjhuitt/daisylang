@@ -172,13 +172,13 @@ else
 
 CODE
     expected = Nodes.new([
-      IfNode.new(
+      IfNode.new([
         ConditionBlockNode.new(
           FalseNode.new(),
           Nodes.new([
             ReturnNode.new(IntegerNode.new(1))
           ])
-        ),
+        )],
         ConditionBlockNode.new(
           nil,
           Nodes.new([
@@ -221,13 +221,13 @@ if n <= 2
 
 CODE
     expected = Nodes.new([
-      IfNode.new(
+      IfNode.new([
         ConditionBlockNode.new(
           SendMessageNode.new(GetSymbolNode.new("n", nil), "<=", [
             ArgumentNode.new(nil, IntegerNode.new(2))
           ]),
           Nodes.new([PassNode.new])
-        ),
+        )],
         nil
       )
     ])

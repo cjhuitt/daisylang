@@ -100,10 +100,16 @@ class Interpreter
     end
 
     def visit_IfNode(node)
-      if node.condition_block.condition.accept(self).ruby_value
-        debug_print("If node: triggered")
-        node.condition_block.body.accept(self)
-      elsif !node.else_block.nil?
+      condition_met = false
+      node.condition_blocks.each do |block|
+        if block.condition.accept(self).ruby_value
+          debug_print("If node: triggered")
+          block.body.accept(self)
+          condition_met = true
+          break
+        end
+      end
+      if !condition_met && !node.else_block.nil?
         debug_print("If node: else triggered")
         node.else_block.body.accept(self)
       else
