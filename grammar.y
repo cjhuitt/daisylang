@@ -164,8 +164,19 @@ rule
   ConditionalSet:
     IF ConditionBlock                   { result = IfNode.new([val[1]], nil) }
   | IF ConditionBlock ElseBlock         { result = IfNode.new([val[1]], val[2]) }
+  | IF ConditionBlock ElseIfBlocks      { result = IfNode.new(val[2].unshift(val[1]), val[3]) }
+  | IF ConditionBlock ElseIfBlocks ElseBlock { result = IfNode.new(val[2].unshift(val[1]), val[3]) }
   | UNLESS ConditionBlock               { result = UnlessNode.new(val[1], nil) }
   | UNLESS ConditionBlock ElseBlock     { result = UnlessNode.new(val[1], val[2]) }
+  ;
+
+  ElseIfBlocks:
+    ElseIfBlock                         { result = [val[0]] }
+  | ElseIfBlocks ElseIfBlock            { result = val[0] << val[1] }
+  ;
+
+  ElseIfBlock:
+    ELSE IF ConditionBlock              { result = val[2] }
   ;
 
   ElseBlock:
