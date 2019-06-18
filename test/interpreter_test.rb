@@ -434,4 +434,23 @@ CODE
     assert_equal 6, sum.ruby_value
   end
 
+  def test_if_else_if_expression
+    code = <<-CODE
+result = 0
+a = false
+b = true
+if a?
+    result = 1
+else if b?
+    result = 2
+else
+    result = 3
+
+CODE
+    @interpreter.eval(code)
+    result = @interpreter.context.symbol("result", nil)
+    assert_equal Constants["Integer"], result.runtime_class
+    assert_equal 2, result.ruby_value
+  end
+
 end
