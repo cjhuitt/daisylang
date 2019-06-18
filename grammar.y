@@ -4,7 +4,7 @@ token BLOCKSTART BLOCKEND
 token METHOD CLASS CONTRACT IS
 token IDENTIFIER FIELD
 token INTEGER STRING
-token IF UNLESS RETURN FOR IN WHILE ELSE
+token IF UNLESS RETURN FOR IN WHILE ELSE BREAK
 token NEWLINE
 token NONETYPE
 token PASS TRUE FALSE NONE
@@ -45,6 +45,7 @@ rule
     Literal                             { result = val[0] }
   | ConditionalSet                      { result = val[0] }
   | Loop                                { result = val[0] }
+  | FlowControl                         { result = val[0] }
   | Message                             { result = val[0] }
   | Operation                           { result = val[0] }
   | Define                              { result = val[0] }
@@ -190,6 +191,10 @@ rule
   Loop:
     FOR IDENTIFIER IN Expression Block  { result = ForNode.new(val[3], val[1], val[4]) }
   | WHILE ConditionBlock                { result = WhileNode.new(val[1]) }
+  ;
+
+  FlowControl:
+    BREAK                               { result = BreakNode.new }
   ;
 
   GetSymbol:

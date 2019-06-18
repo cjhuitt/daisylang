@@ -82,6 +82,13 @@ class ForNode < Struct.new(:container, :variable, :body)
   include Visitable
 end
 
+class BreakNode < LiteralNode
+  def initialize
+    super(nil)
+  end
+end
+
+
 class GetSymbolNode < Struct.new(:id, :instance)
   include Visitable
 end
