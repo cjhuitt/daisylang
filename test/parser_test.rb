@@ -424,7 +424,7 @@ CODE
   def test_for_loop
     code = <<-CODE
 for a in b
-    none
+    break
 
 CODE
     expected = Nodes.new([
@@ -432,7 +432,7 @@ CODE
         GetSymbolNode.new("b"),
         "a",
         Nodes.new([
-          NoneNode.new
+          BreakNode.new
         ])
       )
     ])
