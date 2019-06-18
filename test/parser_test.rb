@@ -458,4 +458,61 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_if_else_blocks
+    code = <<-CODE
+if a?
+    none
+else if b?
+    none
+else if c?
+    none
+else if d?
+    none
+else
+    none
+
+CODE
+    expected = Nodes.new([
+      IfNode.new([
+        ConditionBlockNode.new(
+          SendMessageNode.new(
+            GetSymbolNode.new("a", nil),
+            "?",
+            []
+          ),
+          Nodes.new([ NoneNode.new ])
+        ),
+        ConditionBlockNode.new(
+          SendMessageNode.new(
+            GetSymbolNode.new("b", nil),
+            "?",
+            []
+          ),
+          Nodes.new([ NoneNode.new ])
+        ),
+        ConditionBlockNode.new(
+          SendMessageNode.new(
+            GetSymbolNode.new("c", nil),
+            "?",
+            []
+          ),
+          Nodes.new([ NoneNode.new ])
+        ),
+        ConditionBlockNode.new(
+          SendMessageNode.new(
+            GetSymbolNode.new("d", nil),
+            "?",
+            []
+          ),
+          Nodes.new([ NoneNode.new ])
+        )
+      ],
+      ConditionBlockNode.new(
+        nil,
+        Nodes.new([ NoneNode.new ])
+      ))
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end
