@@ -9,12 +9,12 @@ class ContextManager
     @context = Context.new(@context, new_self)
   end
 
-  def push_define_class_context(daisy_class)
+  def enter_class_definition_context(daisy_class)
     @context = Context.new(@context, daisy_class, daisy_class)
     @context.defining_class = daisy_class
   end
 
-  def push_define_contract_context(contract)
+  def enter_contract_definition_context(contract)
     @context = Context.new(@context, contract, contract)
   end
 
