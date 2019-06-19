@@ -23,6 +23,15 @@ class Interpreter
     @context = Context.new(@context, new_self)
   end
 
+  def push_define_class_context(daisy_class)
+    @context = Context.new(@context, daisy_class, daisy_class)
+    @context.defining_class = daisy_class
+  end
+
+  def push_define_contract_context(contract)
+    @context = Context.new(@context, contract, contract)
+  end
+
   def pop_context()
     @context = @context.previous_context
   end
@@ -204,19 +213,18 @@ class Interpreter
         daisy_class.add_contract(contract.ruby_value)
       end
       context.assign_symbol(node.name, nil, daisy_class)
-      @context = Context.new(@context, daisy_class, daisy_class)
-      @context.defining_class = daisy_class
+      push_define_class_context(daisy_class)
       node.body.accept(self)
-      @context = @context.previous_context
+      pop_context()
     end
 
     def visit_DefineContractNode(node)
       debug_print("Define contract #{node.name}")
       contract = DaisyContract.new(node.name)
-      @context.assign_symbol(node.name, nil, contract)
-      @context = Context.new(@context, contract, contract)
+      context.assign_symbol(node.name, nil, contract)
+      push_define_contract_context(contract)
       node.body.accept(self)
-      @context = @context.previous_context
+      pop_context()
     end
 
     def visit_ArrayNode(node)
