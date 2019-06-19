@@ -4,6 +4,23 @@ class ContextManager
   def initialize(root_context)
     @context = root_context
   end
+
+  def push_context(new_self)
+    @context = Context.new(@context, new_self)
+  end
+
+  def push_define_class_context(daisy_class)
+    @context = Context.new(@context, daisy_class, daisy_class)
+    @context.defining_class = daisy_class
+  end
+
+  def push_define_contract_context(contract)
+    @context = Context.new(@context, contract, contract)
+  end
+
+  def pop_context()
+    @context = @context.previous_context
+  end
 end
 
 class Context

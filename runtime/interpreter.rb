@@ -20,20 +20,19 @@ class Interpreter
   end
 
   def push_context(new_self)
-    @contexts.context = Context.new(@contexts.context, new_self)
+    @contexts.push_context(new_self)
   end
 
   def push_define_class_context(daisy_class)
-    @contexts.context = Context.new(@contexts.context, daisy_class, daisy_class)
-    @contexts.context.defining_class = daisy_class
+    @contexts.push_define_class_context(daisy_class)
   end
 
   def push_define_contract_context(contract)
-    @contexts.context = Context.new(@contexts.context, contract, contract)
+    @contexts.push_define_contract_context(contract)
   end
 
   def pop_context()
-    @contexts.context = @contexts.context.previous_context
+    @contexts.pop_context()
   end
 
   def eval(code)
