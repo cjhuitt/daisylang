@@ -1,3 +1,11 @@
+class ContextManager
+  attr_accessor :context
+
+  def initialize(root_context)
+    @context = root_context
+  end
+end
+
 class Context
   attr_reader :previous_context, :current_self, :current_class
   attr_accessor :interpreter, :symbols
