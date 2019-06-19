@@ -10,30 +10,30 @@ class Interpreter
 
   def initialize(debug=false)
     @parser = Parser.new
-    @context = RootContext
-    @context.interpreter = self
+    @contexts = ContextManager.new(RootContext)
+    @contexts.context.interpreter = self
     @debug = debug
   end
 
   def context()
-    @context
+    @contexts.context
   end
 
   def push_context(new_self)
-    @context = Context.new(@context, new_self)
+    @contexts.context = Context.new(@contexts.context, new_self)
   end
 
   def push_define_class_context(daisy_class)
-    @context = Context.new(@context, daisy_class, daisy_class)
-    @context.defining_class = daisy_class
+    @contexts.context = Context.new(@contexts.context, daisy_class, daisy_class)
+    @contexts.context.defining_class = daisy_class
   end
 
   def push_define_contract_context(contract)
-    @context = Context.new(@context, contract, contract)
+    @contexts.context = Context.new(@contexts.context, contract, contract)
   end
 
   def pop_context()
-    @context = @context.previous_context
+    @contexts.context = @contexts.context.previous_context
   end
 
   def eval(code)
