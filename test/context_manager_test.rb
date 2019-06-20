@@ -170,4 +170,13 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     @manager.leave_scope(file1_context)
   end
 
+  def test_symbol_defined_in_method_not_available_in_subsequent_method_scope
+    method1_context = @manager.enter_method_scope(@test_self)
+    method1_context.assign_symbol("foo", nil, Constants["true"])
+    method2_context = @manager.enter_method_scope(@test_self)
+    assert_nil @manager.context.symbol("foo", nil)
+    @manager.leave_scope(method2_context)
+    @manager.leave_scope(method1_context)
+  end
+
 end

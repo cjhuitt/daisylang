@@ -1,5 +1,6 @@
 class Context
   attr_reader :previous_context, :current_self, :current_class
+  attr_reader :last_file_context
   attr_accessor :interpreter, :symbols
   attr_accessor :return_type, :return_value, :should_return
   attr_accessor :defining_class
@@ -14,6 +15,7 @@ class Context
     @return_value = Constants["none"]
     @should_return = false
     @defining_class = nil
+    @last_file_context = nil
   end
 
   def interpreter()
