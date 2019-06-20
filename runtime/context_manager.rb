@@ -8,9 +8,9 @@ class ContextManager
     @context_queue = []
   end
 
-  def enter_method_context(new_self)
+  def enter_method_context(receiver)
     @context_queue.push(@context)
-    @context = Context.new(@context, new_self)
+    @context = Context.new(@context, receiver)
   end
 
   def enter_class_definition_context(daisy_class)
