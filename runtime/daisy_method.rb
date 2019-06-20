@@ -13,15 +13,7 @@ class DaisyMethod < DaisyObject
   end
 
   def call(interpreter, receiver, args)
-    context = interpreter.push_context(receiver)
-    arglist(args).each do |name, value|
-      context.symbols[name] = value
-    end
-    context.return_type = @return_type
-
-    @body.accept(interpreter)
-    interpreter.pop_context
-    context.return_value
+    interpreter.execute_method(receiver, arglist(args), @return_type, @body)
   end
 
   private
