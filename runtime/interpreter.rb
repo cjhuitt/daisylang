@@ -20,14 +20,6 @@ class Interpreter
     @contexts.context
   end
 
-  def push_context(new_self)
-    @contexts.push_context(new_self)
-  end
-
-  def pop_context()
-    @contexts.pop_context
-  end
-
   def eval(code)
     nodes = @parser.parse(code, @debug)
     nodes.accept(self)
