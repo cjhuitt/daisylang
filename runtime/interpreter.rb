@@ -8,7 +8,7 @@ require 'runtime'
 class Interpreter
   attr_accessor :debug
 
-  def initialize(initial_context = nil, debug=false)
+  def initialize(initial_context=nil, debug=false)
     @parser = Parser.new
     @contexts = ContextManager.new(
       initial_context.nil? ? RootContext : initial_context)
