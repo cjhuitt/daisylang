@@ -5,7 +5,7 @@ class ContextManager
     @context = root_context
   end
 
-  def push_context(new_self)
+  def enter_method_context(new_self)
     @context = Context.new(@context, new_self)
   end
 

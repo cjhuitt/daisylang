@@ -34,7 +34,7 @@ class Interpreter
   end
 
   def execute_method(receiver, arglist, return_type, method_body)
-    context = @contexts.push_context(receiver)
+    context = @contexts.enter_method_context(receiver)
     arglist.each do |name, value|
       context.symbols[name] = value
     end
