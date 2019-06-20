@@ -8,9 +8,10 @@ require 'runtime'
 class Interpreter
   attr_accessor :debug
 
-  def initialize(debug=false)
+  def initialize(initial_context = nil, debug=false)
     @parser = Parser.new
-    @contexts = ContextManager.new(RootContext)
+    @contexts = ContextManager.new(
+      initial_context.nil? ? RootContext : initial_context)
     @contexts.context.interpreter = self
     @debug = debug
   end
@@ -24,7 +25,7 @@ class Interpreter
   end
 
   def pop_context()
-    @contexts.pop_context()
+    @contexts.pop_context
   end
 
   def eval(code)
@@ -41,14 +42,14 @@ class Interpreter
   end
 
   def execute_method(receiver, arglist, return_type, method_body)
-    context = push_context(receiver)
+    context = @contexts.push_context(receiver)
     arglist.each do |name, value|
       context.symbols[name] = value
     end
     context.return_type = return_type
 
     method_body.accept(self)
-    pop_context
+    @contexts.pop_context()
     context.return_value
   end
 
