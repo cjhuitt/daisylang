@@ -107,19 +107,23 @@ class Interpreter
       Constants["String"].new(node.value)
     end
 
+    def execute_flow_control_body(body)
+      body.accept(self)
+    end
+
     def visit_IfNode(node)
       condition_met = false
       node.condition_blocks.each do |block|
         if block.condition.accept(self).ruby_value
           debug_print("If node: triggered")
-          block.body.accept(self)
+          execute_flow_control_body(block.body)
           condition_met = true
           break
         end
       end
       if !condition_met && !node.else_block.nil?
         debug_print("If node: else triggered")
-        node.else_block.body.accept(self)
+        execute_flow_control_body(node.else_block.body)
       else
         debug_print("If node: nogo")
         Constants["none"]
@@ -129,10 +133,10 @@ class Interpreter
     def visit_UnlessNode(node)
       if !node.condition_block.condition.accept(self).ruby_value
         debug_print("Unless node: triggered")
-        node.condition_block.body.accept(self)
+        execute_flow_control_body(node.condition_block.body)
       elsif !node.else_block.nil?
         debug_print("Unless node: else triggered")
-        node.else_block.body.accept(self)
+        execute_flow_control_body(node.else_block.body)
       else
         debug_print("Unless node: nogo")
         Constants["none"]
@@ -142,7 +146,7 @@ class Interpreter
     def visit_WhileNode(node)
       while node.condition_block.condition.accept(self).ruby_value
         debug_print("While node: triggered")
-        node.condition_block.body.accept(self)
+        execute_flow_control_body(node.condition_block.body)
       end
     end
 
@@ -151,7 +155,7 @@ class Interpreter
       container = node.container.accept(self)
       container.ruby_value.each do |item|
         context.assign_symbol(node.variable, nil, item)
-        node.body.accept(self)
+        execute_flow_control_body(node.body)
       end
     end
 
