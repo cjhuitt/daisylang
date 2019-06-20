@@ -2,7 +2,8 @@ class Context
   attr_reader :previous_context, :current_self, :current_class
   attr_accessor :interpreter, :symbols
   attr_accessor :return_type, :return_value, :should_return
-  attr_accessor :defining_class ,:last_file_context
+  attr_accessor :defining_class
+  attr_accessor :last_file_context, :last_method_context
 
   def initialize(prev_context, current_self, current_class=current_self.runtime_class)
     @previous_context = prev_context
@@ -15,6 +16,7 @@ class Context
     @should_return = false
     @defining_class = nil
     @last_file_context = nil
+    @last_method_context = nil
   end
 
   def interpreter()
