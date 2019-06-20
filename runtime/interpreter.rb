@@ -40,6 +40,18 @@ class Interpreter
     retval
   end
 
+  def execute_method(receiver, arglist, return_type, method_body)
+    context = push_context(receiver)
+    arglist.each do |name, value|
+      context.symbols[name] = value
+    end
+    context.return_type = return_type
+
+    method_body.accept(self)
+    pop_context
+    context.return_value
+  end
+
   private
     def visit_Nodes(node)
       debug_print("Visiting Nodes")
