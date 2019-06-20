@@ -18,7 +18,8 @@ class ContextManager
     @context = Context.new(@context, contract, contract)
   end
 
-  def pop_context()
+  def leave_context(context=nil)
+    raise "Leaving inactive context" if !context.nil? && context != @context
     @context = @context.previous_context
   end
 end
