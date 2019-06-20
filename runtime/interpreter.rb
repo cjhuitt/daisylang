@@ -34,14 +34,14 @@ class Interpreter
   end
 
   def execute_method(receiver, arglist, return_type, method_body)
-    context = @contexts.enter_method_context(receiver)
+    context = @contexts.enter_method_scope(receiver)
     arglist.each do |name, value|
       context.symbols[name] = value
     end
     context.return_type = return_type
 
     method_body.accept(self)
-    @contexts.leave_context(context)
+    @contexts.leave_scope(context)
     context.return_value
   end
 
@@ -209,18 +209,18 @@ class Interpreter
         daisy_class.add_contract(contract.ruby_value)
       end
       context.assign_symbol(node.name, nil, daisy_class)
-      context = @contexts.enter_class_definition_context(daisy_class)
+      context = @contexts.enter_class_definition_scope(daisy_class)
       node.body.accept(self)
-      @contexts.leave_context(context)
+      @contexts.leave_scope(context)
     end
 
     def visit_DefineContractNode(node)
       debug_print("Define contract #{node.name}")
       contract = DaisyContract.new(node.name)
       context.assign_symbol(node.name, nil, contract)
-      @contexts.enter_contract_definition_context(contract)
+      @contexts.enter_contract_definition_scope(contract)
       node.body.accept(self)
-      @contexts.leave_context(context)
+      @contexts.leave_scope(context)
     end
 
     def visit_ArrayNode(node)
