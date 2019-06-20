@@ -108,7 +108,10 @@ class Interpreter
     end
 
     def execute_flow_control_body(body)
-      body.accept(self)
+      context = @contexts.enter_flow_control_block_scope()
+      returned = body.accept(self)
+      @contexts.leave_scope(context)
+      returned
     end
 
     def visit_IfNode(node)

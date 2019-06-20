@@ -449,4 +449,15 @@ CODE
     assert_equal 2, result.ruby_value
   end
 
+  def test_new_symbol_in_if_block_not_available_outside_of_block
+    code = <<-CODE
+if true?
+    result = 1
+
+CODE
+    @interpreter.eval(code)
+    result = @interpreter.context.symbol("result", nil)
+    assert_nil result
+  end
+
 end
