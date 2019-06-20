@@ -4,13 +4,16 @@ class ContextManager
   attr_accessor :context
 
   def initialize(root_context)
-    @context = root_context
+    @root_context = root_context
+    @context = @root_context
+    @last_file_context = nil
     @context_queue = []
   end
 
   def enter_file_scope(file)
     @context_queue.push(@context)
-    @context = Context.new(@context, file)
+    @context = Context.new(@root_context, file)
+    @last_file_context = @context
   end
 
   def enter_flow_control_block_scope()

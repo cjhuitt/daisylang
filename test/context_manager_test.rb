@@ -11,6 +11,8 @@ class DaisyContextManagerTest < Test::Unit::TestCase
   def cleanup
   end
 
+  # Test symbols that should be available in subsequence scopes
+
   def test_symbol_defined_in_root_scope_available_in_file_scope
     file = Constants["Object"].new
     file_context = @manager.enter_file_scope(file)
@@ -115,6 +117,7 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     @manager.leave_scope(method_context)
   end
 
+  # Test symbols after scopes are left:
 
   def test_symbol_defined_in_file_not_available_after_scope_is_left
     file = Constants["Object"].new
@@ -152,6 +155,19 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     contract_context.assign_symbol("foo", nil, Constants["true"])
     @manager.leave_scope(contract_context)
     assert_nil @manager.context.symbol("foo", nil)
+  end
+
+  # Test symbols that should *not* be available in subsequent scopes
+
+  def test_symbol_defined_in_file_not_available_in_subsequent_file_scope
+    file1 = Constants["Object"].new
+    file2 = Constants["Object"].new
+    file1_context = @manager.enter_file_scope(file1)
+    file1_context.assign_symbol("foo", nil, Constants["true"])
+    file2_context = @manager.enter_file_scope(file2)
+    assert_nil @manager.context.symbol("foo", nil)
+    @manager.leave_scope(file2_context)
+    @manager.leave_scope(file1_context)
   end
 
 end
