@@ -12,13 +12,14 @@ class ContextManager
   def enter_class_definition_context(daisy_class)
     @context = Context.new(@context, daisy_class, daisy_class)
     @context.defining_class = daisy_class
+    @context
   end
 
   def enter_contract_definition_context(contract)
     @context = Context.new(@context, contract, contract)
   end
 
-  def leave_context(context=nil)
+  def leave_context(context)
     raise "Leaving inactive context" if !context.nil? && context != @context
     @context = @context.previous_context
   end

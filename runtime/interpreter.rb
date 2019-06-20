@@ -41,7 +41,7 @@ class Interpreter
     context.return_type = return_type
 
     method_body.accept(self)
-    @contexts.leave_context()
+    @contexts.leave_context(context)
     context.return_value
   end
 
@@ -209,9 +209,9 @@ class Interpreter
         daisy_class.add_contract(contract.ruby_value)
       end
       context.assign_symbol(node.name, nil, daisy_class)
-      @contexts.enter_class_definition_context(daisy_class)
+      context = @contexts.enter_class_definition_context(daisy_class)
       node.body.accept(self)
-      @contexts.leave_context()
+      @contexts.leave_context(context)
     end
 
     def visit_DefineContractNode(node)
@@ -220,7 +220,7 @@ class Interpreter
       context.assign_symbol(node.name, nil, contract)
       @contexts.enter_contract_definition_context(contract)
       node.body.accept(self)
-      @contexts.leave_context()
+      @contexts.leave_context(context)
     end
 
     def visit_ArrayNode(node)
