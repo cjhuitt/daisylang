@@ -117,6 +117,15 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     @manager.leave_scope(method_context)
   end
 
+  def test_symbol_defined_in_flow_control_block_scope_available_in_subsequent_flow_control_block_scope
+    flow_context1 = @manager.enter_flow_control_block_scope()
+    flow_context1.assign_symbol("foo", nil, Constants["true"])
+    flow_context2 = @manager.enter_flow_control_block_scope()
+    assert_equal Constants["true"], @manager.context.symbol("foo", nil)
+    @manager.leave_scope(flow_context2)
+    @manager.leave_scope(flow_context1)
+  end
+
   # Test symbols after scopes are left:
 
   def test_symbol_defined_in_file_not_available_after_scope_is_left
