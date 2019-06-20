@@ -7,6 +7,7 @@ class ContextManager
     @root_context = root_context
     @context = @root_context
     @last_file_context = nil
+    @last_method_context = nil
     @context_queue = []
   end
 
@@ -25,6 +26,8 @@ class ContextManager
   def enter_method_scope(receiver)
     @context_queue.push(@context)
     @context = Context.new(base_scope, receiver)
+    @context.last_method_context = @last_method_context
+    @last_method_context = @context
   end
 
   def enter_class_definition_scope(daisy_class)
@@ -42,6 +45,7 @@ class ContextManager
   def leave_scope(context)
     raise "Leaving scope with inactive context" if !context.nil? && context != @context
     @last_file_context = @context.last_file_context if !@context.last_file_context.nil?
+    @last_method_context = @context.last_method_context if !@context.last_method_context.nil?
     @context = @context_queue.pop()
   end
 
