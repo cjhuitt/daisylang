@@ -109,10 +109,41 @@ class DaisyContextManagerTest < Test::Unit::TestCase
   end
 
 
-  def test_symbol_defined_in_function_not_available_after_scope_is_left
+  def test_symbol_defined_in_file_not_available_after_scope_is_left
+    file = Constants["Object"].new
+    file_context = @manager.enter_file_scope(file)
+    file_context.assign_symbol("foo", nil, Constants["true"])
+    @manager.leave_scope(file_context)
+    assert_nil @manager.context.symbol("foo", nil)
+  end
+
+  def test_symbol_defined_in_method_not_available_after_scope_is_left
     method_context = @manager.enter_method_scope(@test_self)
     method_context.assign_symbol("foo", nil, Constants["true"])
     @manager.leave_scope(method_context)
+    assert_nil @manager.context.symbol("foo", nil)
+  end
+
+  def test_symbol_defined_in_flow_control_block_not_available_after_scope_is_left
+    flow_context = @manager.enter_flow_control_block_scope()
+    flow_context.assign_symbol("foo", nil, Constants["true"])
+    @manager.leave_scope(flow_context)
+    assert_nil @manager.context.symbol("foo", nil)
+  end
+
+  def test_symbol_defined_in_class_scope_not_available_after_scope_is_left
+    daisy_class = DaisyClass.new("Foo", Constants["Object"])
+    class_context = @manager.enter_class_definition_scope(daisy_class)
+    class_context.assign_symbol("foo", nil, Constants["true"])
+    @manager.leave_scope(class_context)
+    assert_nil @manager.context.symbol("foo", nil)
+  end
+
+  def test_symbol_defined_in_contract_scope_not_available_after_scope_is_left
+    contract = DaisyContract.new("Foo")
+    contract_context = @manager.enter_contract_definition_scope(contract)
+    contract_context.assign_symbol("foo", nil, Constants["true"])
+    @manager.leave_scope(contract_context)
     assert_nil @manager.context.symbol("foo", nil)
   end
 
