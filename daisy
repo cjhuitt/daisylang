@@ -29,7 +29,7 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-interpreter = Interpreter.new(options["debug"])
+interpreter = Interpreter.new(nil, options["debug"])
 
 # If a file is given we should run it.
 if file = ARGV.first
