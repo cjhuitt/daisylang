@@ -18,6 +18,13 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     assert_nil @manager.context.symbol("foo", nil)
   end
 
+  def test_symbol_defined_in_root_scope_available_in_file_scope
+    file = Constants["Object"].new
+    file_context = @manager.enter_file_scope(@test_self)
+    assert_equal Constants["None"], @manager.context.symbol("None", nil)
+    @manager.leave_scope(file_context)
+  end
+
   def test_symbol_defined_in_root_scope_available_in_method_scope
     method_context = @manager.enter_method_scope(@test_self)
     assert_equal Constants["None"], @manager.context.symbol("None", nil)
