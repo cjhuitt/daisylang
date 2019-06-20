@@ -13,7 +13,7 @@ class DaisyContextManagerTest < Test::Unit::TestCase
 
   def test_symbol_defined_in_root_scope_available_in_file_scope
     file = Constants["Object"].new
-    file_context = @manager.enter_file_scope(@test_self)
+    file_context = @manager.enter_file_scope(file)
     assert_equal Constants["None"], @manager.context.symbol("None", nil)
     @manager.leave_scope(file_context)
   end
@@ -46,7 +46,7 @@ class DaisyContextManagerTest < Test::Unit::TestCase
 
   def test_symbol_defined_in_file_scope_available_in_method_scope
     file = Constants["Object"].new
-    file_context = @manager.enter_file_scope(@test_self)
+    file_context = @manager.enter_file_scope(file)
     method_context = @manager.enter_method_scope(@test_self)
     assert_equal Constants["None"], @manager.context.symbol("None", nil)
     @manager.leave_scope(method_context)
@@ -55,7 +55,7 @@ class DaisyContextManagerTest < Test::Unit::TestCase
 
   def test_symbol_defined_in_file_scope_available_in_flow_control_block_scope
     file = Constants["Object"].new
-    file_context = @manager.enter_file_scope(@test_self)
+    file_context = @manager.enter_file_scope(file)
     flow_context = @manager.enter_flow_control_block_scope()
     assert_equal Constants["None"], @manager.context.symbol("None", nil)
     @manager.leave_scope(flow_context)
@@ -64,7 +64,7 @@ class DaisyContextManagerTest < Test::Unit::TestCase
 
   def test_symbol_defined_in_file_scope_available_in_class_definition_scope
     file = Constants["Object"].new
-    file_context = @manager.enter_file_scope(@test_self)
+    file_context = @manager.enter_file_scope(file)
     daisy_class = DaisyClass.new("Foo", Constants["Object"])
     class_context = @manager.enter_class_definition_scope(daisy_class)
     assert_equal Constants["None"], @manager.context.symbol("None", nil)
@@ -74,7 +74,7 @@ class DaisyContextManagerTest < Test::Unit::TestCase
 
   def test_symbol_defined_in_file_scope_available_in_contract_definition_scope
     file = Constants["Object"].new
-    file_context = @manager.enter_file_scope(@test_self)
+    file_context = @manager.enter_file_scope(file)
     contract = DaisyContract.new("Foo")
     contract_context = @manager.enter_contract_definition_scope(contract)
     assert_equal Constants["None"], @manager.context.symbol("None", nil)
