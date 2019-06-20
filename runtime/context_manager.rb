@@ -8,6 +8,11 @@ class ContextManager
     @context_queue = []
   end
 
+  def enter_file_scope(file)
+    @context_queue.push(@context)
+    @context = Context.new(@context, file)
+  end
+
   def enter_method_scope(receiver)
     @context_queue.push(@context)
     @context = Context.new(@context, receiver)
