@@ -25,15 +25,17 @@ class DaisyContextManagerTest < Test::Unit::TestCase
   end
 
   def test_symbol_defined_in_root_scope_available_in_class_definition_scope
-    method_context = @manager.enter_class_definition_scope(@test_self)
+    daisy_class = DaisyClass.new("Foo", Constants["Object"])
+    class_context = @manager.enter_class_definition_scope(daisy_class)
     assert_equal Constants["None"], @manager.context.symbol("None", nil)
-    @manager.leave_scope(method_context)
+    @manager.leave_scope(class_context)
   end
 
   def test_symbol_defined_in_root_scope_available_in_contract_definition_scope
-    method_context = @manager.enter_contract_definition_scope(@test_self)
+    contract = DaisyContract.new("Foo")
+    contract_context = @manager.enter_contract_definition_scope(contract)
     assert_equal Constants["None"], @manager.context.symbol("None", nil)
-    @manager.leave_scope(method_context)
+    @manager.leave_scope(contract_context)
   end
 
 end
