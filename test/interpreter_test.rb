@@ -3,13 +3,9 @@ require "runtime/interpreter"
 
 class DaisyInterpreterTest < Test::Unit::TestCase
   def setup
-    @interpreter = Interpreter.new
-    new_self = Constants["Object"].new
-    @interpreter.push_context(new_self)
-  end
-
-  def cleanup
-    @interpreter.pop_context
+    test_self = Constants["Object"].new
+    context = Context.new(RootContext, test_self)
+    @interpreter = Interpreter.new(context)
   end
 
   def test_can_define_variable
