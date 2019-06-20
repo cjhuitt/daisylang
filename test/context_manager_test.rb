@@ -12,9 +12,9 @@ class DaisyContextManagerTest < Test::Unit::TestCase
   end
 
   def test_symbol_defined_in_function_not_available_after_scope_is_left
-    method_context = @manager.enter_method_context(@test_self)
+    method_context = @manager.enter_method_scope(@test_self)
     method_context.assign_symbol("foo", nil, Constants["true"])
-    @manager.leave_context(method_context)
+    @manager.leave_scope(method_context)
     assert_nil @manager.context.symbol("foo", nil)
   end
 
