@@ -31,6 +31,12 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     @manager.leave_scope(method_context)
   end
 
+  def test_symbol_defined_in_root_scope_available_in_flow_control_block_scope
+    flow_context = @manager.enter_flow_control_block_scope()
+    assert_equal Constants["None"], @manager.context.symbol("None", nil)
+    @manager.leave_scope(flow_context)
+  end
+
   def test_symbol_defined_in_root_scope_available_in_class_definition_scope
     daisy_class = DaisyClass.new("Foo", Constants["Object"])
     class_context = @manager.enter_class_definition_scope(daisy_class)

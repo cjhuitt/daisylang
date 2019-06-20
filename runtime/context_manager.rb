@@ -13,6 +13,11 @@ class ContextManager
     @context = Context.new(@context, file)
   end
 
+  def enter_flow_control_block_scope()
+    @context_queue.push(@context)
+    @context = Context.new(@context, @context.current_self)
+  end
+
   def enter_method_scope(receiver)
     @context_queue.push(@context)
     @context = Context.new(@context, receiver)
