@@ -13,6 +13,7 @@ class ContextManager
   def enter_file_scope(file)
     @context_queue.push(@context)
     @context = Context.new(@root_context, file)
+    @context.last_file_context = @last_file_context
     @last_file_context = @context
   end
 
@@ -40,6 +41,7 @@ class ContextManager
 
   def leave_scope(context)
     raise "Leaving scope with inactive context" if !context.nil? && context != @context
+    @last_file_context = @context.last_file_context if !@context.last_file_context.nil?
     @context = @context_queue.pop()
   end
 
