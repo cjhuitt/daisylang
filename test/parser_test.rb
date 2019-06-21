@@ -515,4 +515,23 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_forever_loop
+    code = <<-CODE
+loop
+    break
+
+CODE
+    expected = Nodes.new([
+      WhileNode.new(
+        ConditionBlockNode.new(
+          TrueNode.new,
+          Nodes.new([
+            BreakNode.new
+          ])
+        )
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end
