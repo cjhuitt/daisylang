@@ -52,4 +52,28 @@ class DaisyContextTest < Test::Unit::TestCase
     new_self.instance_data["foo"] = field
     assert_equal field, context.symbol("foo", nil)
   end
+
+  def test_does_not_need_early_exit_if_no_method_context
+    new_self = Constants["Object"].new
+    context = Context.new(nil, new_self)
+    context.set_return(new_self)
+    assert_false context.need_early_exit
+  end
+
+  def test_does_not_need_early_exit_if_no_return_value_set
+    new_self = Constants["Object"].new
+    method_context = Context.new(nil, new_self)
+    flow_context = Context.new(nil, new_self)
+    flow_context.current_method_context = method_context
+    assert_false flow_context.need_early_exit
+  end
+
+  def test_needs_early_exit_if_return_value_set_on_context_with_current_method
+    new_self = Constants["Object"].new
+    method_context = Context.new(nil, new_self)
+    flow_context = Context.new(nil, new_self)
+    flow_context.current_method_context = method_context
+    flow_context.set_return(new_self)
+    assert_true flow_context.need_early_exit
+  end
 end

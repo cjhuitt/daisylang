@@ -162,6 +162,10 @@ class Interpreter
       end
     end
 
+    def visit_BreakNode(node)
+      debug_print("Break node")
+    end
+
     def visit_ReturnNode(node)
       val = node.expression.accept(self)
       debug_print("Return node #{val}")
