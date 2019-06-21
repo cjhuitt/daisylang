@@ -215,4 +215,16 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     @manager.leave_scope(method_context)
   end
 
+  def test_early_exit_needed_in_loop_flow_contexts_with_break_set
+    method_context = @manager.enter_method_scope(@test_self)
+    method_context.return_type = Constants["Boolean"]
+    flow_context = @manager.enter_flow_control_block_scope(true)
+    flow_context.set_should_break
+    assert_true flow_context.current_loop_context.should_break
+    assert_true flow_context.need_early_exit
+    @manager.leave_scope(flow_context)
+    assert_false method_context.need_early_exit
+    @manager.leave_scope(method_context)
+  end
+
 end

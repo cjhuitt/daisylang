@@ -8,6 +8,7 @@ class ContextManager
     @context = @root_context
     @last_file_context = nil
     @last_method_context = nil
+    @last_loop_context = nil
     @context_queue = []
   end
 
@@ -18,10 +19,12 @@ class ContextManager
     @last_file_context = @context
   end
 
-  def enter_flow_control_block_scope()
+  def enter_flow_control_block_scope(looping=false)
     @context_queue.push(@context)
     @context = Context.new(@context, @context.current_self)
     @context.current_method_context = @last_method_context
+    @last_loop_context = @context if looping
+    @context.current_loop_context = @last_loop_context
     @context
   end
 
