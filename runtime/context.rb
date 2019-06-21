@@ -87,11 +87,8 @@ class Context
   end
 
   def need_early_exit
-    if !@current_method_context.nil?
-      return @current_method_context.should_return
-    elsif !@current_loop_context.nil?
-      return @current_loop_context.should_break
-    end
+    return @current_method_context.should_return if !@current_method_context.nil?
+    return @current_loop_context.should_break if !@current_loop_context.nil?
     false
   end
 end
