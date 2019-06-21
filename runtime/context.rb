@@ -75,4 +75,11 @@ class Context
       @current_method_context.should_return = true
     end
   end
+
+  def need_early_exit
+    if !current_method_context.nil?
+      return @current_method_context.should_return
+    end
+    false
+  end
 end
