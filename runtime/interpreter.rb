@@ -165,8 +165,7 @@ class Interpreter
     def visit_ReturnNode(node)
       val = node.expression.accept(self)
       debug_print("Return node #{val}")
-      context.return_value = val
-      context.should_return = true
+      context.set_return(val)
       val
     end
 

@@ -67,4 +67,9 @@ class Context
   def add_method(method)
     @current_class.add_method(method)
   end
+
+  def set_return(val)
+    @return_value = val
+    @should_return = true
+  end
 end
