@@ -76,4 +76,28 @@ class DaisyContextTest < Test::Unit::TestCase
     flow_context.set_return(new_self)
     assert_true flow_context.need_early_exit
   end
+
+  def test_does_not_need_early_exit_if_no_loop_context
+    new_self = Constants["Object"].new
+    flow_context = Context.new(nil, new_self)
+    flow_context.set_should_break
+    assert_false flow_context.need_early_exit
+  end
+
+  def test_does_not_need_early_exit_if_should_break_not_set
+    new_self = Constants["Object"].new
+    loop_context = Context.new(nil, new_self)
+    flow_context = Context.new(nil, new_self)
+    flow_context.current_loop_context = loop_context
+    assert_false flow_context.need_early_exit
+  end
+
+  def test_needs_early_exit_if_loop_context_and_should_break_set
+    new_self = Constants["Object"].new
+    loop_context = Context.new(nil, new_self)
+    flow_context = Context.new(nil, new_self)
+    flow_context.current_loop_context = loop_context
+    flow_context.set_should_break
+    assert_true flow_context.need_early_exit
+  end
 end

@@ -3,7 +3,9 @@ class Context
   attr_accessor :interpreter, :symbols
   attr_accessor :return_type, :return_value, :should_return
   attr_accessor :defining_class
-  attr_accessor :last_file_context, :last_method_context, :current_method_context
+  attr_accessor :last_file_context
+  attr_accessor :last_method_context, :current_method_context
+  attr_accessor :current_loop_context, :should_break
 
   def initialize(prev_context, current_self, current_class=current_self.runtime_class)
     @previous_context = prev_context
@@ -18,6 +20,8 @@ class Context
     @last_file_context = nil
     @last_method_context = nil
     @current_method_context = nil
+    @current_loop_context = nil
+    @should_break = false
   end
 
   def interpreter()
@@ -76,9 +80,17 @@ class Context
     end
   end
 
+  def set_should_break
+    if !@current_loop_context.nil?
+      @current_loop_context.should_break = true
+    end
+  end
+
   def need_early_exit
-    if !current_method_context.nil?
+    if !@current_method_context.nil?
       return @current_method_context.should_return
+    elsif !@current_loop_context.nil?
+      return @current_loop_context.should_break
     end
     false
   end
