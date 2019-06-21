@@ -3,13 +3,9 @@ require "runtime/interpreter"
 
 class DaisyInterpreterTest < Test::Unit::TestCase
   def setup
-    @interpreter = Interpreter.new
-    new_self = Constants["Object"].new
-    @interpreter.push_context(new_self)
-  end
-
-  def cleanup
-    @interpreter.pop_context
+    test_self = Constants["Object"].new
+    context = Context.new(RootContext, test_self)
+    @interpreter = Interpreter.new(context)
   end
 
   def test_can_define_variable
@@ -451,6 +447,17 @@ CODE
     result = @interpreter.context.symbol("result", nil)
     assert_equal Constants["Integer"], result.runtime_class
     assert_equal 2, result.ruby_value
+  end
+
+  def test_new_symbol_in_if_block_not_available_outside_of_block
+    code = <<-CODE
+if true?
+    result = 1
+
+CODE
+    @interpreter.eval(code)
+    result = @interpreter.context.symbol("result", nil)
+    assert_nil result
   end
 
 end

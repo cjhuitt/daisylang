@@ -6,22 +6,18 @@ require 'parser'
 require 'runtime'
 
 class Interpreter
-  attr_reader :context
   attr_accessor :debug
 
-  def initialize(debug=false)
+  def initialize(initial_context=nil, debug=false)
     @parser = Parser.new
-    @context = RootContext
-    @context.interpreter = self
+    @contexts = ContextManager.new(
+      initial_context.nil? ? RootContext : initial_context)
+    @contexts.context.interpreter = self
     @debug = debug
   end
 
-  def push_context(new_self)
-    @context = Context.new(@context, new_self)
-  end
-
-  def pop_context()
-    @context = @context.previous_context
+  def context()
+    @contexts.context
   end
 
   def eval(code)
@@ -37,13 +33,25 @@ class Interpreter
     retval
   end
 
+  def execute_method(receiver, arglist, return_type, method_body)
+    context = @contexts.enter_method_scope(receiver)
+    arglist.each do |name, value|
+      context.symbols[name] = value
+    end
+    context.return_type = return_type
+
+    method_body.accept(self)
+    @contexts.leave_scope(context)
+    context.return_value
+  end
+
   private
     def visit_Nodes(node)
       debug_print("Visiting Nodes")
       return_val = nil
       node.nodes.each do |node|
         return_val = node.accept(self)
-        if @context.should_return
+        if context.need_early_exit
           return return_val || Constants["none"]
         end
       end
@@ -51,11 +59,11 @@ class Interpreter
     end
 
     def visit_SendMessageNode(node)
-      receiver = node.receiver.nil? ? @context.current_self : node.receiver.accept(self)
+      receiver = node.receiver.nil? ? context.current_self : node.receiver.accept(self)
       evaluated_args = node.arguments.map { |arg| arg.accept(self) }
       debug_print("Dispatching #{node.message} on #{receiver.runtime_class.name}")
       debug_print("Arguments: #{evaluated_args}")
-      receiver.dispatch(@context, node.message, evaluated_args)
+      receiver.dispatch(context, node.message, evaluated_args)
     end
 
     def visit_ArgumentNode(node)
@@ -67,12 +75,12 @@ class Interpreter
       value = node.value
       unless value.nil?
         if value.is_a? String
-          value = @context.symbol(value, nil)
+          value = context.symbol(value, nil)
         else
           value = value.accept(self)
         end
       end
-      type = @context.symbol(node.type, nil)
+      type = context.symbol(node.type, nil)
       raise "Unknown parameter type" if type.nil? && value.nil?
       if type.nil?
         type = value.runtime_class unless value.nil?
@@ -82,11 +90,11 @@ class Interpreter
 
     def visit_DefineMessageNode(node)
       debug_print("Define message #{node.name} with #{node.parameters}")
-      returning = @context.symbol(node.return_type, nil)
+      returning = context.symbol(node.return_type, nil)
       params = node.parameters.map { |param| param.accept(self) }
       method = DaisyMethod.new(node.name, returning, params, node.body)
-      @context.assign_symbol(node.name, nil, Constants["Method"].new(method))
-      @context.add_method( method )
+      context.assign_symbol(node.name, nil, Constants["Method"].new(method))
+      context.add_method( method )
     end
 
     def visit_IntegerNode(node)
@@ -99,19 +107,26 @@ class Interpreter
       Constants["String"].new(node.value)
     end
 
+    def execute_flow_control_body(body)
+      context = @contexts.enter_flow_control_block_scope()
+      returned = body.accept(self)
+      @contexts.leave_scope(context)
+      returned
+    end
+
     def visit_IfNode(node)
       condition_met = false
       node.condition_blocks.each do |block|
         if block.condition.accept(self).ruby_value
           debug_print("If node: triggered")
-          block.body.accept(self)
+          execute_flow_control_body(block.body)
           condition_met = true
           break
         end
       end
       if !condition_met && !node.else_block.nil?
         debug_print("If node: else triggered")
-        node.else_block.body.accept(self)
+        execute_flow_control_body(node.else_block.body)
       else
         debug_print("If node: nogo")
         Constants["none"]
@@ -121,10 +136,10 @@ class Interpreter
     def visit_UnlessNode(node)
       if !node.condition_block.condition.accept(self).ruby_value
         debug_print("Unless node: triggered")
-        node.condition_block.body.accept(self)
+        execute_flow_control_body(node.condition_block.body)
       elsif !node.else_block.nil?
         debug_print("Unless node: else triggered")
-        node.else_block.body.accept(self)
+        execute_flow_control_body(node.else_block.body)
       else
         debug_print("Unless node: nogo")
         Constants["none"]
@@ -134,7 +149,7 @@ class Interpreter
     def visit_WhileNode(node)
       while node.condition_block.condition.accept(self).ruby_value
         debug_print("While node: triggered")
-        node.condition_block.body.accept(self)
+        execute_flow_control_body(node.condition_block.body)
       end
     end
 
@@ -142,22 +157,21 @@ class Interpreter
       debug_print("For node on #{node.container}")
       container = node.container.accept(self)
       container.ruby_value.each do |item|
-        @context.assign_symbol(node.variable, nil, item)
-        node.body.accept(self)
+        context.assign_symbol(node.variable, nil, item)
+        execute_flow_control_body(node.body)
       end
     end
 
     def visit_ReturnNode(node)
       val = node.expression.accept(self)
       debug_print("Return node #{val}")
-      @context.return_value = val
-      @context.should_return = true
+      context.set_return(val)
       val
     end
 
     def visit_GetSymbolNode(node)
       debug_print("Getting value for #{node.id}")
-      var = @context.symbol(node.id, node.instance)
+      var = context.symbol(node.id, node.instance)
       raise "Referenced unknown symbol #{node.id}" if var.nil?
       var
     end
@@ -165,7 +179,7 @@ class Interpreter
     def visit_SetSymbolNode(node)
       debug_print("Setting value for #{node.id}")
       val = node.value.accept(self)
-      @context.assign_symbol(node.id, node.instance, val.copy)
+      context.assign_symbol(node.id, node.instance, val.copy)
       val
     end
 
@@ -196,24 +210,23 @@ class Interpreter
       debug_print("Define class #{node.name}")
       daisy_class = DaisyClass.new(node.name, Constants["Object"])
       node.contracts.each do |contract_name|
-        contract = @context.symbol(contract_name, nil)
+        contract = context.symbol(contract_name, nil)
         raise "Referenced unknown symbol #{contract_name}" if contract.nil?
         daisy_class.add_contract(contract.ruby_value)
       end
-      @context.assign_symbol(node.name, nil, daisy_class)
-      @context = Context.new(@context, daisy_class, daisy_class)
-      @context.defining_class = daisy_class
+      context.assign_symbol(node.name, nil, daisy_class)
+      context = @contexts.enter_class_definition_scope(daisy_class)
       node.body.accept(self)
-      @context = @context.previous_context
+      @contexts.leave_scope(context)
     end
 
     def visit_DefineContractNode(node)
       debug_print("Define contract #{node.name}")
       contract = DaisyContract.new(node.name)
-      @context.assign_symbol(node.name, nil, contract)
-      @context = Context.new(@context, contract, contract)
+      context.assign_symbol(node.name, nil, contract)
+      @contexts.enter_contract_definition_scope(contract)
       node.body.accept(self)
-      @context = @context.previous_context
+      @contexts.leave_scope(context)
     end
 
     def visit_ArrayNode(node)

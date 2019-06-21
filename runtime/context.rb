@@ -3,6 +3,7 @@ class Context
   attr_accessor :interpreter, :symbols
   attr_accessor :return_type, :return_value, :should_return
   attr_accessor :defining_class
+  attr_accessor :last_file_context, :last_method_context, :current_method_context
 
   def initialize(prev_context, current_self, current_class=current_self.runtime_class)
     @previous_context = prev_context
@@ -14,6 +15,9 @@ class Context
     @return_value = Constants["none"]
     @should_return = false
     @defining_class = nil
+    @last_file_context = nil
+    @last_method_context = nil
+    @current_method_context = nil
   end
 
   def interpreter()
@@ -63,5 +67,19 @@ class Context
 
   def add_method(method)
     @current_class.add_method(method)
+  end
+
+  def set_return(val)
+    if !@current_method_context.nil?
+      @current_method_context.return_value = val
+      @current_method_context.should_return = true
+    end
+  end
+
+  def need_early_exit
+    if !current_method_context.nil?
+      return @current_method_context.should_return
+    end
+    false
   end
 end
