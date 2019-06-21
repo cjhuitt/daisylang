@@ -202,4 +202,17 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     @manager.leave_scope(method_context)
   end
 
+
+  # Test early scope exit scenarios
+  def test_early_exit_needed_in_contexts_with_method_return_value_set
+    method_context = @manager.enter_method_scope(@test_self)
+    method_context.return_type = Constants["Boolean"]
+    flow_context = @manager.enter_flow_control_block_scope()
+    flow_context.set_return(Constants["true"])
+    assert_true flow_context.need_early_exit
+    @manager.leave_scope(flow_context)
+    assert_true method_context.need_early_exit
+    @manager.leave_scope(method_context)
+  end
+
 end
