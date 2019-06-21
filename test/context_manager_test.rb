@@ -188,4 +188,18 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     @manager.leave_scope(method1_context)
   end
 
+ 
+  # Test return flags work through nested flow control scopes
+  def test_return_value_set_in_flow_control_scope_propogates_to_method_scope
+    method_context = @manager.enter_method_scope(@test_self)
+    method_context.return_type = Constants["Boolean"]
+    flow_context = @manager.enter_flow_control_block_scope()
+    flow_context.set_return(Constants["true"])
+    @manager.leave_scope(flow_context)
+    assert_equal Constants["Boolean"], method_context.return_type
+    assert_equal Constants["true"], method_context.return_value
+    assert_true method_context.should_return
+    @manager.leave_scope(method_context)
+  end
+
 end
