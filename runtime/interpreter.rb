@@ -51,7 +51,7 @@ class Interpreter
       return_val = nil
       node.nodes.each do |node|
         return_val = node.accept(self)
-        if context.should_return
+        if context.need_early_exit
           return return_val || Constants["none"]
         end
       end
