@@ -14,6 +14,7 @@ class Interpreter
       initial_context.nil? ? RootContext : initial_context)
     @contexts.context.interpreter = self
     @debug = debug
+    @should_break = false
   end
 
   def context()
@@ -107,9 +108,10 @@ class Interpreter
       Constants["String"].new(node.value)
     end
 
-    def execute_flow_control_body(body)
-      context = @contexts.enter_flow_control_block_scope()
+    def execute_flow_control_body(body, looping=false)
+      context = @contexts.enter_flow_control_block_scope(looping)
       returned = body.accept(self)
+      @should_break = context.need_early_exit
       @contexts.leave_scope(context)
       returned
     end
@@ -147,23 +149,28 @@ class Interpreter
     end
 
     def visit_WhileNode(node)
+      @should_break = false
       while node.condition_block.condition.accept(self).ruby_value
         debug_print("While node: triggered")
-        execute_flow_control_body(node.condition_block.body)
+        execute_flow_control_body(node.condition_block.body, true)
+        break if @should_break
       end
     end
 
     def visit_ForNode(node)
+      @should_break = false
       debug_print("For node on #{node.container}")
       container = node.container.accept(self)
       container.ruby_value.each do |item|
         context.assign_symbol(node.variable, nil, item)
-        execute_flow_control_body(node.body)
+        retval = execute_flow_control_body(node.body, true)
+        return retval if @should_break
       end
     end
 
     def visit_BreakNode(node)
       debug_print("Break node")
+      context.set_should_break
     end
 
     def visit_ReturnNode(node)
