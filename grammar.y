@@ -4,7 +4,7 @@ token BLOCKSTART BLOCKEND
 token METHOD CLASS CONTRACT IS
 token IDENTIFIER FIELD
 token INTEGER STRING
-token IF UNLESS RETURN FOR IN WHILE ELSE BREAK
+token IF UNLESS RETURN FOR IN WHILE ELSE BREAK LOOP
 token NEWLINE
 token NONETYPE
 token PASS TRUE FALSE NONE
@@ -191,6 +191,7 @@ rule
   Loop:
     FOR IDENTIFIER IN Expression Block  { result = ForNode.new(val[3], val[1], val[4]) }
   | WHILE ConditionBlock                { result = WhileNode.new(val[1]) }
+  | LOOP Block                          { result = WhileNode.new(ConditionBlockNode.new(TrueNode.new, val[1])) }
   ;
 
   FlowControl:
