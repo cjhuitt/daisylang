@@ -460,4 +460,19 @@ CODE
     assert_nil result
   end
 
+  def test_break_construct
+    code = <<-CODE
+sum = 0
+for a in [1, 2, 3]
+    sum = sum + a
+    if sum > 2
+        break
+
+CODE
+    @interpreter.eval(code)
+    sum = @interpreter.context.symbol("sum", nil)
+    assert_equal Constants["Integer"], sum.runtime_class
+    assert_equal 3, sum.ruby_value
+  end
+
 end
