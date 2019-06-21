@@ -21,6 +21,8 @@ class ContextManager
   def enter_flow_control_block_scope()
     @context_queue.push(@context)
     @context = Context.new(@context, @context.current_self)
+    @context.current_method_context = @last_method_context
+    @context
   end
 
   def enter_method_scope(receiver)
@@ -28,6 +30,7 @@ class ContextManager
     @context = Context.new(base_scope, receiver)
     @context.last_method_context = @last_method_context
     @last_method_context = @context
+    @context.current_method_context = @context
   end
 
   def enter_class_definition_scope(daisy_class)
