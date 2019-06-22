@@ -630,4 +630,24 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_comments_on_while_condition
+    code = <<-CODE
+while true // TODO: should be a forever loop!
+    none
+
+CODE
+    expected = Nodes.new([
+      WhileNode.new(
+        ConditionBlockNode.new(
+          TrueNode.new,
+          Nodes.new([
+            NoneNode.new
+          ]),
+          CommentNode.new("// TODO: should be a forever loop!\n")
+        )
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end
