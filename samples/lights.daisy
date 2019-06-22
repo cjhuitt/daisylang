@@ -12,7 +12,7 @@ for light in TrafficLightColor
 for light in TrafficLightColor.entries()
     print( "Light " + light.name() + ": " + light.value().toString() )
 
-Class: TrafficLight is Stringifiable
+Class: IndividualLight is Stringifiable
     color = TrafficLightColor
     lit = false
     
@@ -25,17 +25,20 @@ Class: TrafficLight is Stringifiable
     Method: String toString()
         string = color.name()
         if lit?
-            string = string + " (on)"
+            string = string + "(on)"
         return string
 
-red = TrafficLight.create( c: RED , l: true )
-yellow = TrafficLight.create( c: YELLOW, l: false )
-green = TrafficLight.create( c: GREEN, l: false )
-// TODO: These shouldn't have to name the color argument if it's the only
-//       uninitialized parameter.
-//yellow = TrafficLight.create( YELLOW )
-//green = TrafficLight.create( GREEN )
+Class: TrafficLight is Stringifiable
+    red = IndividualLight.create( c: RED , l: true )
+    yellow = IndividualLight.create( c: YELLOW, l: false )
+    green = IndividualLight.create( c: GREEN, l: false )
+    // TODO: These shouldn't have to name the color argument if it's the only
+    //       uninitialized parameter.
+    //yellow = IndividualLight.create( YELLOW )
+    //green = IndividualLight.create( GREEN )
+    
+    Method: toString()
+        return red.toString() + ":" + yellow.toString() + ":" + green.toString()
 
-print( red )
-print( yellow )
-print( green )
+light = TrafficLight.create()
+print( light )
