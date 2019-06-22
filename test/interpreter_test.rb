@@ -667,4 +667,17 @@ CODE
     assert_equal "Hello Caleb", a.ruby_value
   end
 
+  def test_can_send_message_with_unlabeled_argument_if_others_have_default_values
+    code = <<-CODE
+Method: String Greet( name: String, greeting: "Hello" )
+    return greeting + " " + name
+
+a = Greet( "Caleb" )
+CODE
+    @interpreter.eval(code)
+    a = @interpreter.context.symbol("a", nil)
+    assert_equal Constants["String"], a.runtime_class
+    assert_equal "Hello Caleb", a.ruby_value
+  end
+
 end
