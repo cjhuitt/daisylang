@@ -50,7 +50,7 @@ class DaisyEnumTest < Test::Unit::TestCase
     enum.add("A")
     a = enum.types["A"]
     assert_not_nil a
-    assert_equal 0, a.value
+    assert_equal 0, a.value.ruby_value
   end
 
 end
