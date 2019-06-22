@@ -475,4 +475,19 @@ CODE
     assert_equal 3, sum.ruby_value
   end
 
+  def test_loop_construct
+    code = <<-CODE
+sum = 0
+loop
+    sum = sum + 1
+    if sum > 2
+        break
+
+CODE
+    @interpreter.eval(code)
+    sum = @interpreter.context.symbol("sum", nil)
+    assert_equal Constants["Integer"], sum.runtime_class
+    assert_equal 3, sum.ruby_value
+  end
+
 end
