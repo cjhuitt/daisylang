@@ -2,6 +2,7 @@
 require 'daisy_class'
 require 'daisy_contract'
 require 'daisy_method'
+require 'daisy_enum'
 require 'context_manager'
 
 # The hodge-podge of initial definitions of things
