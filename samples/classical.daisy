@@ -41,8 +41,8 @@ print( color.type().methods() )
 
 // A contract
 Contract: Dimensional
-    Method: Integer width()
-    Method: Integer height()
+    Method: Integer width();
+    Method: Integer height();
 
 // A class fulfilling the contract
 Class: Painting is Dimensional

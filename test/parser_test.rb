@@ -387,7 +387,7 @@ CODE
   def test_define_contract
     code = <<-CODE
 Contract: Foo
-    Method: None bar()
+    Method: None bar();
 
 CODE
     expected = Nodes.new([

@@ -113,10 +113,10 @@ rule
   Define:
     METHOD Typename IDENTIFIER ParameterList Block { result = DefineMethodNode.new(val[2], val[1], val[3], val[4]) }
   | METHOD IDENTIFIER ParameterList Block { result = DefineMethodNode.new(val[1], NoneNode.new, val[2], val[3]) }
+  | METHOD Typename IDENTIFIER ParameterList ";" { result = DefineMethodNode.new(val[2], val[1], val[3], NoneNode.new) }
   | CLASS IDENTIFIER Block              { result = DefineClassNode.new(val[1], [], val[2]) }
   | CLASS IDENTIFIER IS Contracts Block { result = DefineClassNode.new(val[1], val[3], val[4]) }
   | CONTRACT IDENTIFIER Block           { result = DefineContractNode.new(val[1], val[2]) }
-  | METHOD Typename IDENTIFIER ParameterList { result = DefineMethodNode.new(val[2], val[1], val[3], NoneNode.new) }
   | ENUM IDENTIFIER EnumBlock           { result = EnumerateNode.new(val[1], val[2]) }
   ;
 

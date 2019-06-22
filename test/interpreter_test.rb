@@ -125,7 +125,7 @@ CODE
   def test_define_contract
     code = <<-CODE
 Contract: Foo
-    Method: None bar()
+    Method: None bar();
 
 CODE
     @interpreter.eval(code)
@@ -145,6 +145,7 @@ CODE
     code = <<-CODE
 Class: Foo
     Method: None bar()
+        none
 
 CODE
     @interpreter.eval(code)
@@ -163,6 +164,7 @@ CODE
     code = <<-CODE
 Class: Foo is Stringifiable, Comperable
     Method: None bar()
+        none
 
 CODE
     @interpreter.eval(code)
