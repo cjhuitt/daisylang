@@ -15,6 +15,7 @@ class Interpreter
     @contexts.context.interpreter = self
     @debug = debug
     @should_break = false
+    @should_continue = false
   end
 
   def context()
@@ -52,7 +53,7 @@ class Interpreter
       return_val = nil
       node.nodes.each do |node|
         return_val = node.accept(self)
-        if context.need_early_exit
+        if context.need_early_exit || @should_continue
           return return_val || Constants["none"]
         end
       end
@@ -152,6 +153,7 @@ class Interpreter
       @should_break = false
       while node.condition_block.condition.accept(self).ruby_value
         debug_print("While node: triggered")
+        @should_continue = false
         execute_flow_control_body(node.condition_block.body, true)
         break if @should_break
       end
@@ -163,6 +165,7 @@ class Interpreter
       container = node.container.accept(self)
       container.ruby_value.each do |item|
         context.assign_symbol(node.variable, nil, item)
+        @should_continue = false
         retval = execute_flow_control_body(node.body, true)
         return retval if @should_break
       end
@@ -172,6 +175,7 @@ class Interpreter
       @should_break = false
       debug_print("Loop node")
       loop do
+        @should_continue = false
         retval = execute_flow_control_body(node.body, true)
         return retval if @should_break
       end
@@ -180,6 +184,11 @@ class Interpreter
     def visit_BreakNode(node)
       debug_print("Break node")
       context.set_should_break
+    end
+
+    def visit_ContinueNode(node)
+      debug_print("Continue node")
+      @should_continue = true
     end
 
     def visit_ReturnNode(node)
