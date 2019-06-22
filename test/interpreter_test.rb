@@ -574,4 +574,24 @@ CODE
     assert_equal Constants["none"], param.value
   end
 
+  def test_abstract_method_parameter_can_be_enum
+    code = <<-CODE
+Enumerate: Option
+    A
+    B
+
+Method: None foo( opt: Option )
+    none
+
+CODE
+    @interpreter.eval(code)
+    method = @interpreter.context.symbol("foo", nil)
+    assert_equal 1, method.ruby_value.params.count
+    param = method.ruby_value.params.first
+    assert_equal "opt", param.label
+    option = @interpreter.context.symbol("Option", nil)
+    assert_equal option, param.type
+    assert_equal Constants["none"], param.value
+  end
+
 end
