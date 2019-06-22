@@ -559,4 +559,19 @@ CODE
     assert_equal Constants["none"], param.value
   end
 
+  def test_abstract_method_parameter_can_be_contract
+    code = <<-CODE
+Method: String foo( obj: Stringifiable )
+    none
+
+CODE
+    @interpreter.eval(code)
+    method = @interpreter.context.symbol("foo", nil)
+    assert_equal 1, method.ruby_value.params.count
+    param = method.ruby_value.params.first
+    assert_equal "obj", param.label
+    assert_equal Constants["Stringifiable"], param.type
+    assert_equal Constants["none"], param.value
+  end
+
 end
