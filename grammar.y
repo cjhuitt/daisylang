@@ -196,10 +196,12 @@ rule
 
   ElseBlock:
     ELSE Block                          { result = ConditionBlockNode.new( nil, val[1]) }
+  | ELSE Comment Block                  { result = ConditionBlockNode.new( nil, val[2], val[1]) }
   ;
 
   ConditionBlock:
     Expression Block                    { result = ConditionBlockNode.new(val[0], val[1]) }
+  | Expression Comment Block            { result = ConditionBlockNode.new(val[0], val[2], val[1]) }
   ;
 
   Loop:
