@@ -16,9 +16,7 @@ Class: IndividualLight is Stringifiable
     color = TrafficLightColor
     lit = false
     
-    // TODO: Should be able to specify a default value for the boolean
-    //Method: init( c: TrafficLightColor, l: false )
-    Method: init( c: TrafficLightColor, l: Boolean )
+    Method: init( c: TrafficLightColor, l: false )
         color = c
         lit = l
     
@@ -42,8 +40,8 @@ Class: IndividualLight is Stringifiable
 Class: TrafficLight is Stringifiable
     lights = [ 
         red = IndividualLight.create( c: RED, l: true ),
-        yellow = IndividualLight.create( c: YELLOW, l: false ),
-        green = IndividualLight.create( c: GREEN, l: false ) 
+        yellow = IndividualLight.create( c: YELLOW ),
+        green = IndividualLight.create( c: GREEN ) 
     ]
     
     Method: toString()
