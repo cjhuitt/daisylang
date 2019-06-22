@@ -522,13 +522,10 @@ loop
 
 CODE
     expected = Nodes.new([
-      WhileNode.new(
-        ConditionBlockNode.new(
-          TrueNode.new,
-          Nodes.new([
-            BreakNode.new
-          ])
-        )
+      LoopNode.new(
+        Nodes.new([
+          BreakNode.new
+        ])
       )
     ])
     assert_equal expected, Parser.new.parse(code)

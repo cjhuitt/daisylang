@@ -168,6 +168,15 @@ class Interpreter
       end
     end
 
+    def visit_LoopNode(node)
+      @should_break = false
+      debug_print("Loop node")
+      loop do
+        retval = execute_flow_control_body(node.body, true)
+        return retval if @should_break
+      end
+    end
+
     def visit_BreakNode(node)
       debug_print("Break node")
       context.set_should_break
