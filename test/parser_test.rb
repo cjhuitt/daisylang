@@ -667,4 +667,23 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_comments_on_for_condition
+    code = <<-CODE
+for a in b // Check everything
+    break
+
+CODE
+    expected = Nodes.new([
+      ForNode.new(
+        GetSymbolNode.new("b"),
+        "a",
+        Nodes.new([
+          BreakNode.new
+        ]),
+        CommentNode.new("// Check everything\n")
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end
