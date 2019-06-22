@@ -30,11 +30,11 @@ Class: IndividualLight is Stringifiable
 
 // TODO: This is how it should look
 //Class: TrafficLight is Stringifiable
-//    lights = [ 
-//        IndividualLight.create( c: RED, l: true ),
-//        IndividualLight.create( YELLOW ),
-//        IndividualLight.create( GREEN )
-//    ]
+//    lights = { 
+//        RED => IndividualLight.create( c: RED, l: true ),
+//        YELLOW => IndividualLight.create( YELLOW ),
+//        GREEN => IndividualLight.create( GREEN )
+//    }
 //    
 //    Method: toString()
 //        return lights[RED].toString() + ":" + lights[YELLOW].toString() + ":" + lights[GREEN].toString()
