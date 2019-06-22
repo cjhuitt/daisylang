@@ -74,18 +74,10 @@ class Interpreter
     end
 
     def visit_ParameterNode(node)
-      value = node.value
-      unless value.nil?
-        if value.is_a? String
-          value = context.symbol(value, nil)
-        else
-          value = value.accept(self)
-        end
-      end
-      type = context.symbol(node.type, nil)
-      raise "Unknown parameter type" if type.nil? && value.nil?
-      if type.nil?
-        type = value.runtime_class unless value.nil?
+      value = node.value.accept(self)
+      if value.is_a? DaisyClass
+        type = value
+        value = nil
       end
       DaisyParameter.new(node.label, type, value)
     end
