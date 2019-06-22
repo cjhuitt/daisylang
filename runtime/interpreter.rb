@@ -78,6 +78,8 @@ class Interpreter
       if value.is_a? DaisyClass
         type = value
         value = nil
+      else
+        type = value.runtime_class
       end
       DaisyParameter.new(node.label, type, value)
     end
