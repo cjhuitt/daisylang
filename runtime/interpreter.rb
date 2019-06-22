@@ -258,6 +258,16 @@ class Interpreter
       @contexts.leave_scope(context)
     end
 
+    def visit_EnumerateNode(node)
+      debug_print("Enumerate #{node.name}")
+      enum = DaisyEnumCategory.new(node.name)
+      context.assign_symbol(node.name, nil, enum)
+      node.symbols.each do |symbol|
+        entry = enum.add(symbol.id)
+        context.assign_symbol(symbol.id, nil, entry)
+      end
+    end
+
     def visit_ArrayNode(node)
       debug_print("ArrayNode #{node.members.size}")
       evaluated_members = node.members.map { |member| member.accept(self) }
