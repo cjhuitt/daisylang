@@ -318,7 +318,7 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
-  def test_comments_are_ignored
+  def test_comments
     assert_equal Nodes.new([CommentNode.new("// pass")]),
       Parser.new.parse("// pass")
   end
@@ -556,6 +556,75 @@ CODE
           SetSymbolNode.new("YELLOW", nil, nil),
           SetSymbolNode.new("GREEN", nil, nil),
         ]
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_comments_on_else_condition_blocks
+    code = <<-CODE
+if a? // A is valid when foo
+    none
+else if b? // B is valid when bar
+    none
+else // Something odd happened
+    none
+
+CODE
+    expected = Nodes.new([
+      IfNode.new([
+        ConditionBlockNode.new(
+          SendMessageNode.new(
+            GetSymbolNode.new("a", nil),
+            "?",
+            []
+          ),
+          Nodes.new([ NoneNode.new ]),
+          CommentNode.new("// A is valid when foo\n" )
+        ),
+        ConditionBlockNode.new(
+          SendMessageNode.new(
+            GetSymbolNode.new("b", nil),
+            "?",
+            []
+          ),
+          Nodes.new([ NoneNode.new ]),
+          CommentNode.new("// B is valid when bar\n" )
+        )
+      ],
+      ConditionBlockNode.new(
+        nil,
+        Nodes.new([ NoneNode.new ]),
+        CommentNode.new("// Something odd happened\n")
+      ))
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_comments_on_unless_condition_blocks
+    code = <<-CODE
+unless a? // A is valid when foo
+    none
+else // A shouldn't be valid
+    none
+
+CODE
+    expected = Nodes.new([
+      UnlessNode.new(
+        ConditionBlockNode.new(
+          SendMessageNode.new(
+            GetSymbolNode.new("a", nil),
+            "?",
+            []
+          ),
+          Nodes.new([ NoneNode.new ]),
+          CommentNode.new("// A is valid when foo\n" )
+        ),
+        ConditionBlockNode.new(
+          nil,
+          Nodes.new([ NoneNode.new ]),
+          CommentNode.new("// A shouldn't be valid\n")
+        )
       )
     ])
     assert_equal expected, Parser.new.parse(code)

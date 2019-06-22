@@ -64,7 +64,7 @@ class SymbolNode < Struct.new(:label, :type, :value)
 end
 class ParameterNode < SymbolNode; end
 
-class ConditionBlockNode < Struct.new(:condition, :body); end
+class ConditionBlockNode < Struct.new(:condition, :body, :comment); end
 
 class IfNode < Struct.new(:condition_blocks, :else_block)
   include Visitable
