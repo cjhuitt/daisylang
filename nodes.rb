@@ -82,6 +82,10 @@ class ForNode < Struct.new(:container, :variable, :body)
   include Visitable
 end
 
+class LoopNode < Struct.new(:body)
+  include Visitable
+end
+
 class BreakNode < LiteralNode
   def initialize
     super(nil)
