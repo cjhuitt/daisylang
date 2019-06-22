@@ -70,6 +70,7 @@ class DaisyEnumTest < Test::Unit::TestCase
 
   def test_category_reflection
     assert_not_nil Constants["EnumCategory"].lookup("name")
+    assert_not_nil Constants["EnumCategory"].lookup("entries")
   end
 
   def test_entry_reflection

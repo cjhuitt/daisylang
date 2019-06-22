@@ -9,6 +9,9 @@ end
 Constants["EnumCategory"].def :name do |interpreter, receiver, args|
   Constants["String"].new( "#{receiver.name}" )
 end
+Constants["EnumCategory"].def :entries do |interpreter, receiver, args|
+  Constants["Array"].new( receiver.entries.values )
+end
 
 
 Constants["EnumEntry"] = DaisyClass.new("EnumEntry", Constants["Object"])
