@@ -192,11 +192,13 @@ rule
 
   ElseIfBlock:
     ELSE IF ConditionBlock              { result = val[2] }
+  | Comment ELSE IF ConditionBlock      { val[3].comment = val[0]; result = val[3] }
   ;
 
   ElseBlock:
     ELSE Block                          { result = ConditionBlockNode.new( nil, val[1]) }
   | ELSE Comment Block                  { result = ConditionBlockNode.new( nil, val[2], val[1]) }
+  | Comment ELSE Block                  { result = ConditionBlockNode.new( nil, val[2], val[0]) }
   ;
 
   ConditionBlock:

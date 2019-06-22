@@ -686,4 +686,47 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_comments_between_else_condition_blocks
+    code = <<-CODE
+// A is valid when foo
+if a?
+    none
+// B is valid when bar
+else if b?
+    none
+// Something odd happened
+else
+    none
+
+CODE
+    expected = Nodes.new([
+      CommentNode.new("// A is valid when foo\n" ),
+      IfNode.new([
+        ConditionBlockNode.new(
+          SendMessageNode.new(
+            GetSymbolNode.new("a", nil),
+            "?",
+            []
+          ),
+          Nodes.new([ NoneNode.new ])
+        ),
+        ConditionBlockNode.new(
+          SendMessageNode.new(
+            GetSymbolNode.new("b", nil),
+            "?",
+            []
+          ),
+          Nodes.new([ NoneNode.new ]),
+          CommentNode.new("// B is valid when bar\n" )
+        )
+      ],
+      ConditionBlockNode.new(
+        nil,
+        Nodes.new([ NoneNode.new ]),
+        CommentNode.new("// Something odd happened\n")
+      ))
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end
