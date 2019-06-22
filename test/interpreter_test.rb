@@ -594,4 +594,23 @@ CODE
     assert_equal Constants["none"], param.value
   end
 
+  def test_abstract_method_parameter_can_be_user_defined_type
+    code = <<-CODE
+Class: Foo
+    none
+
+Method: None foo( opt: Foo )
+    none
+
+CODE
+    @interpreter.eval(code)
+    method = @interpreter.context.symbol("foo", nil)
+    assert_equal 1, method.ruby_value.params.count
+    param = method.ruby_value.params.first
+    assert_equal "opt", param.label
+    foo_type = @interpreter.context.symbol("Foo", nil)
+    assert_equal foo_type, param.type
+    assert_equal Constants["none"], param.value
+  end
+
 end
