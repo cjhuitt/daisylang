@@ -47,7 +47,7 @@ class SendMessageNode < Struct.new(:receiver, :message, :arguments)
   include Visitable
 end
 
-class DefineMessageNode < Struct.new(:name, :return_type,
+class DefineMethodNode < Struct.new(:name, :return_type,
                                      :parameters, :body)
   include Visitable
 end
@@ -59,10 +59,9 @@ class ArgumentNode < Struct.new(:label, :value)
   include Visitable
 end
 
-class SymbolNode < Struct.new(:label, :type, :value)
+class ParameterNode < Struct.new(:label, :value)
   include Visitable
 end
-class ParameterNode < SymbolNode; end
 
 class ConditionBlockNode < Struct.new(:condition, :body, :comment); end
 

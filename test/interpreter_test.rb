@@ -529,4 +529,103 @@ CODE
     assert_equal 2, green.ruby_value.value.ruby_value
   end
 
+  def test_concrete_method_parameter_defaults
+    code = <<-CODE
+Method: None setVisible( vis: true )
+    none
+
+CODE
+    @interpreter.eval(code)
+    method = @interpreter.context.symbol("setVisible", nil)
+    assert_equal 1, method.ruby_value.params.count
+    param = method.ruby_value.params.first
+    assert_equal "vis", param.label
+    assert_equal Constants["Boolean"], param.type
+    assert_equal Constants["true"], param.value
+  end
+
+  def test_abstract_method_parameter_defaults
+    code = <<-CODE
+Method: None setVisible( vis: Boolean )
+    none
+
+CODE
+    @interpreter.eval(code)
+    method = @interpreter.context.symbol("setVisible", nil)
+    assert_equal 1, method.ruby_value.params.count
+    param = method.ruby_value.params.first
+    assert_equal "vis", param.label
+    assert_equal Constants["Boolean"], param.type
+    assert_equal Constants["none"], param.value
+  end
+
+  def test_abstract_method_parameter_can_be_contract
+    code = <<-CODE
+Method: String foo( obj: Stringifiable )
+    none
+
+CODE
+    @interpreter.eval(code)
+    method = @interpreter.context.symbol("foo", nil)
+    assert_equal 1, method.ruby_value.params.count
+    param = method.ruby_value.params.first
+    assert_equal "obj", param.label
+    assert_equal Constants["Stringifiable"], param.type
+    assert_equal Constants["none"], param.value
+  end
+
+  def test_abstract_method_parameter_can_be_enum
+    code = <<-CODE
+Enumerate: Option
+    A
+    B
+
+Method: None foo( opt: Option )
+    none
+
+CODE
+    @interpreter.eval(code)
+    method = @interpreter.context.symbol("foo", nil)
+    assert_equal 1, method.ruby_value.params.count
+    param = method.ruby_value.params.first
+    assert_equal "opt", param.label
+    option = @interpreter.context.symbol("Option", nil)
+    assert_equal option, param.type
+    assert_equal Constants["none"], param.value
+  end
+
+  def test_abstract_method_parameter_can_be_user_defined_type
+    code = <<-CODE
+Class: Foo
+    none
+
+Method: None foo( opt: Foo )
+    none
+
+CODE
+    @interpreter.eval(code)
+    method = @interpreter.context.symbol("foo", nil)
+    assert_equal 1, method.ruby_value.params.count
+    param = method.ruby_value.params.first
+    assert_equal "opt", param.label
+    foo_type = @interpreter.context.symbol("Foo", nil)
+    assert_equal foo_type, param.type
+    assert_equal Constants["none"], param.value
+  end
+
+  def test_define_method_param_with_expression
+    code = <<-CODE
+Method: None foo( start: 5 * 3 )
+    none
+
+CODE
+    @interpreter.eval(code)
+    method = @interpreter.context.symbol("foo", nil)
+    assert_equal 1, method.ruby_value.params.count
+    param = method.ruby_value.params.first
+    assert_equal "start", param.label
+    assert_equal Constants["Integer"], param.type
+    assert_equal 15, param.value.ruby_value
+  end
+
 end

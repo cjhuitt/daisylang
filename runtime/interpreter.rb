@@ -74,23 +74,22 @@ class Interpreter
     end
 
     def visit_ParameterNode(node)
-      value = node.value
-      unless value.nil?
-        if value.is_a? String
-          value = context.symbol(value, nil)
+      value = node.value.accept(self)
+      if value.class == DaisyClass || value.class == DaisyContract
+        type = value
+        value = Constants["none"]
+      else
+        if value.ruby_value.class == DaisyEnumCategory
+          type = value.ruby_value
+          value = Constants["none"]
         else
-          value = value.accept(self)
+          type = value.runtime_class
         end
-      end
-      type = context.symbol(node.type, nil)
-      raise "Unknown parameter type" if type.nil? && value.nil?
-      if type.nil?
-        type = value.runtime_class unless value.nil?
       end
       DaisyParameter.new(node.label, type, value)
     end
 
-    def visit_DefineMessageNode(node)
+    def visit_DefineMethodNode(node)
       debug_print("Define message #{node.name} with #{node.parameters}")
       returning = context.symbol(node.return_type, nil)
       params = node.parameters.map { |param| param.accept(self) }
