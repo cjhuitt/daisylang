@@ -35,13 +35,13 @@ print( fibonacci( 10 ) )
 
 A whole lot remains to make this go, but the highlights are
 + Built-in types: Float, Dict
-+ A bunch of built-in operators for those types
++ A bunch of built-in operators for built-in types
 + Rename some of the keywords
 + More contracts for built-in types
 + Contract checking, delegation
 + More reflection
 + switch/case
-+ continue/break
++ continue
 + Exception handling
 + Most error handling during parsing, interpretation (type safety, etc)
 + Mutability and constness checks
