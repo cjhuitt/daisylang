@@ -82,7 +82,7 @@ class ForNode < Struct.new(:container, :variable, :body)
   include Visitable
 end
 
-class LoopNode < Struct.new(:body)
+class LoopNode < Struct.new(:body, :comment)
   include Visitable
 end
 
