@@ -79,7 +79,12 @@ class Interpreter
         type = value
         value = Constants["none"]
       else
-        type = value.runtime_class
+        if value.ruby_value.class == DaisyEnumCategory
+          type = value.ruby_value
+          value = Constants["none"]
+        else
+          type = value.runtime_class
+        end
       end
       DaisyParameter.new(node.label, type, value)
     end
