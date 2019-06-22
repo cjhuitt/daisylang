@@ -12,6 +12,8 @@ class DaisyEnumEntry < DaisyObject
 end
 
 class DaisyEnumCategory < DaisyObject
+  include Enumerable
+
   attr_reader :name, :entries
 
   def initialize(name)
@@ -27,6 +29,16 @@ class DaisyEnumCategory < DaisyObject
   def add(typename)
     raise "Error: Adding enum entry with identical name '#{typename}'" if @entries.key? typename
     @entries[typename] = DaisyEnumEntry.new(typename, self, @entries.count)
+  end
+
+  def each
+    if block_given?
+      @entries.values.each do |entry|
+        yield entry
+      end
+    else
+      @entries.values.each
+    end
   end
 end
 
