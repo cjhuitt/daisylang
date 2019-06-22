@@ -13,4 +13,12 @@ class DaisyEnumTest < Test::Unit::TestCase
     assert_false enum2.is_type(enum)
   end
 
+  def test_enum_knows_how_many_types_it_has
+    enum = DaisyEnum.new("Test")
+    enum.add("A")
+    enum.add("B")
+    enum.add("C")
+    assert_equal 3, enum.types.count
+  end
+
 end
