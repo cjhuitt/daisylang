@@ -1,7 +1,7 @@
 class Parser
 
 token BLOCKSTART BLOCKEND
-token METHOD CLASS CONTRACT IS
+token METHOD CLASS CONTRACT IS ENUM
 token IDENTIFIER FIELD
 token INTEGER STRING
 token IF UNLESS RETURN FOR IN WHILE ELSE BREAK LOOP CONTINUE
@@ -117,6 +117,7 @@ rule
   | CLASS IDENTIFIER IS Contracts Block { result = DefineClassNode.new(val[1], val[3], val[4]) }
   | CONTRACT IDENTIFIER Block           { result = DefineContractNode.new(val[1], val[2]) }
   | METHOD Typename IDENTIFIER ParameterList { result = DefineMessageNode.new(val[2], val[1], val[3], NoneNode.new) }
+  | ENUM IDENTIFIER EnumBlock           { result = EnumerateNode.new(val[1], val[2]) }
   ;
 
   ParameterList:
@@ -146,6 +147,19 @@ rule
 
   Block:
     BLOCKSTART Expressions BLOCKEND     { result = val[1] }
+  ;
+
+  EnumBlock:
+    BLOCKSTART EnumDefinitions BLOCKEND { result = val[1] }
+  ;
+
+  EnumDefinitions:
+    EnumDefinition                      { result = [val[0]] }
+  | EnumDefinitions EnumDefinition      { result = val[0] << val[1] }
+  ;
+
+  EnumDefinition:
+    IDENTIFIER                          { result = SetSymbolNode.new(val[0], nil, nil) }
   ;
 
   Return:

@@ -61,6 +61,7 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:CONTRACT, "Contract:"]], Lexer.new.tokenize("Contract: ")
     assert_equal [[:IDENTIFIER, "Contract"]], Lexer.new.tokenize("Contract")
     assert_equal [[:CLASS, "Class:"]], Lexer.new.tokenize("Class: ")
+    assert_equal [[:ENUM, "Enumerate:"]], Lexer.new.tokenize("Enumerate: ")
   end
 
   def test_recognizes_simple_operators

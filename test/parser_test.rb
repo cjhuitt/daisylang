@@ -541,4 +541,24 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_enumerate
+    code = <<-CODE
+Enumerate: Lights
+    RED
+    YELLOW
+    GREEN
+
+CODE
+    expected = Nodes.new([
+      EnumerateNode.new(
+        "Lights",
+        [ SetSymbolNode.new("RED", nil, nil),
+          SetSymbolNode.new("YELLOW", nil, nil),
+          SetSymbolNode.new("GREEN", nil, nil),
+        ]
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end

@@ -85,6 +85,10 @@ class Lexer
           tokens << [:CONTRACT, "Contract:"]
           debug_out("Extracted Contract: (Definition)")
           i += "Contract: ".size
+        elsif sub.start_with? "Enumerate: "
+          tokens << [:ENUM, "Enumerate:"]
+          debug_out("Extracted Enumerate: (Definition)")
+          i += "Enumerate: ".size
         elsif sub.start_with? "is "
           tokens << [:IS, "is"]
           debug_out("Extracted is (Keyword)")
