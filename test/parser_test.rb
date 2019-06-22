@@ -515,15 +515,25 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
-  def test_forever_loop
+  def test_forever_loop_and_continue
     code = <<-CODE
 loop
+    if a < 5
+        continue
     break
 
 CODE
     expected = Nodes.new([
       LoopNode.new(
         Nodes.new([
+          IfNode.new([
+            ConditionBlockNode.new(
+              SendMessageNode.new(GetSymbolNode.new("a", nil), "<", [
+                ArgumentNode.new(nil, IntegerNode.new(5))]),
+              Nodes.new([ContinueNode.new])
+            )],
+            nil
+          ),
           BreakNode.new
         ])
       )

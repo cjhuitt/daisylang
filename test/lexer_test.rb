@@ -48,6 +48,7 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:TRUE, "true"]], Lexer.new.tokenize("true")
     assert_equal [[:FALSE, "false"]], Lexer.new.tokenize("false")
     assert_equal [[:BREAK, "break"]], Lexer.new.tokenize("break")
+    assert_equal [[:CONTINUE, "continue"]], Lexer.new.tokenize("continue")
     assert_equal [[:NONE, "none"]], Lexer.new.tokenize("none")
   end
 

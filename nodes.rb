@@ -92,6 +92,12 @@ class BreakNode < LiteralNode
   end
 end
 
+class ContinueNode < LiteralNode
+  def initialize
+    super(nil)
+  end
+end
+
 
 class GetSymbolNode < Struct.new(:id, :instance)
   include Visitable
