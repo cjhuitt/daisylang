@@ -1,0 +1,41 @@
+Enumerate: TrafficLightColor
+    RED
+    YELLOW
+    GREEN
+
+print( RED )
+print( RED.category() )
+print( RED.category().name() )
+for light in TrafficLightColor
+    print( "Light " + light.name() + ": " + light.value().toString() )
+
+for light in TrafficLightColor.entries()
+    print( "Light " + light.name() + ": " + light.value().toString() )
+
+Class: TrafficLight is Stringifiable
+    color = TrafficLightColor
+    lit = false
+    
+    // TODO: Should be able to specify a default value for the boolean
+    //Method: init( c: TrafficLightColor, l: false )
+    Method: init( c: TrafficLightColor, l: Boolean )
+        color = c
+        lit = l
+    
+    Method: String toString()
+        string = color.name()
+        if lit?
+            string = string + " (on)"
+        return string
+
+red = TrafficLight.create( c: RED , l: true )
+yellow = TrafficLight.create( c: YELLOW, l: false )
+green = TrafficLight.create( c: GREEN, l: false )
+// TODO: These shouldn't have to name the color argument if it's the only
+//       uninitialized parameter.
+//yellow = TrafficLight.create( YELLOW )
+//green = TrafficLight.create( GREEN )
+
+print( red )
+print( yellow )
+print( green )
