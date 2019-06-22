@@ -73,6 +73,7 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [['^', " ^ "]], Lexer.new.tokenize(" ^ ")
     assert_equal [[':', ": "]], Lexer.new.tokenize(": ")
     assert_equal [[',', ", "]], Lexer.new.tokenize(", ")
+    assert_equal [[',', ", "]], Lexer.new.tokenize(",\n")
     assert_equal [['( ', "( "]], Lexer.new.tokenize("( ")
     assert_equal [[' )', " )"]], Lexer.new.tokenize(" )")
     assert_equal [['(', "("]], Lexer.new.tokenize("(")

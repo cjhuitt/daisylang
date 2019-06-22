@@ -40,8 +40,8 @@ Class: IndividualLight is Stringifiable
 //        return lights[RED].toString() + ":" + lights[YELLOW].toString() + ":" + lights[GREEN].toString()
 
 Class: TrafficLight is Stringifiable
-    lights = [ red = IndividualLight.create( c: RED, l: true ), 
-      yellow = IndividualLight.create( c: YELLOW, l: false ), 
+    lights = [ red = IndividualLight.create( c: RED, l: true ),
+      yellow = IndividualLight.create( c: YELLOW, l: false ),
       green = IndividualLight.create( c: GREEN, l: false ) ]
     
     Method: toString()
