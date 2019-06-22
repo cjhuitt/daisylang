@@ -193,20 +193,26 @@ rule
 
   ElseIfBlock:
     ELSE IF ConditionBlock              { result = val[2] }
+  | Comment ELSE IF ConditionBlock      { val[3].comment = val[0]; result = val[3] }
   ;
 
   ElseBlock:
     ELSE Block                          { result = ConditionBlockNode.new( nil, val[1]) }
+  | ELSE Comment Block                  { result = ConditionBlockNode.new( nil, val[2], val[1]) }
+  | Comment ELSE Block                  { result = ConditionBlockNode.new( nil, val[2], val[0]) }
   ;
 
   ConditionBlock:
     Expression Block                    { result = ConditionBlockNode.new(val[0], val[1]) }
+  | Expression Comment Block            { result = ConditionBlockNode.new(val[0], val[2], val[1]) }
   ;
 
   Loop:
     FOR IDENTIFIER IN Expression Block  { result = ForNode.new(val[3], val[1], val[4]) }
+  | FOR IDENTIFIER IN Expression Comment Block { result = ForNode.new(val[3], val[1], val[5], val[4]) }
   | WHILE ConditionBlock                { result = WhileNode.new(val[1]) }
   | LOOP Block                          { result = LoopNode.new(val[1]) }
+  | LOOP Comment Block                  { result = LoopNode.new(val[2], val[1]) }
   ;
 
   FlowControl:
