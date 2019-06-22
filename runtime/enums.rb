@@ -24,4 +24,7 @@ end
 Constants["EnumEntry"].def :value do |interpreter, receiver, args|
   receiver.value
 end
+Constants["EnumEntry"].def :category do |interpreter, receiver, args|
+  receiver.category
+end
 
