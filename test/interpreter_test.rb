@@ -613,4 +613,19 @@ CODE
     assert_equal Constants["none"], param.value
   end
 
+  def test_define_method_param_with_expression
+    code = <<-CODE
+Method: None foo( start: 5 * 3 )
+    none
+
+CODE
+    @interpreter.eval(code)
+    method = @interpreter.context.symbol("foo", nil)
+    assert_equal 1, method.ruby_value.params.count
+    param = method.ruby_value.params.first
+    assert_equal "start", param.label
+    assert_equal Constants["Integer"], param.type
+    assert_equal 15, param.value.ruby_value
+  end
+
 end
