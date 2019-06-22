@@ -421,6 +421,23 @@ CODE
     assert_equal expected, Parser.new.parse("[1, b]")
   end
 
+  def test_define_array_in_block
+    code = <<-CODE
+[
+    1,
+    b
+]
+
+CODE
+    expected = Nodes.new([
+      ArrayNode.new([
+        IntegerNode.new(1),
+        GetSymbolNode.new("b")
+      ])
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
   def test_for_loop
     code = <<-CODE
 for a in b
