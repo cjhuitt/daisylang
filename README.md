@@ -41,7 +41,6 @@ A whole lot remains to make this go, but the highlights are
 + Contract checking, delegation
 + More reflection
 + switch/case
-+ continue
 + Exception handling
 + Most error handling during parsing, interpretation (type safety, etc)
 + Mutability and constness checks
