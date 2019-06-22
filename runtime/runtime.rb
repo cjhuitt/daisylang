@@ -10,6 +10,7 @@ require 'bootstrap'
 
 # Items that represent classes in the language
 require 'contracts'
+require 'enums'
 require 'array'
 require 'boolean'
 require 'integer'
