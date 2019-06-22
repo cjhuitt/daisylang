@@ -45,4 +45,5 @@ A whole lot remains to make this go, but the highlights are
 + Most error handling during parsing, interpretation (type safety, etc)
 + Mutability and constness checks
 + RAII-style scoping
++ Argument/value validators
 + *and more*
