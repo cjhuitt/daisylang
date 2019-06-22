@@ -43,6 +43,7 @@ class DaisyMethod < DaisyObject
       default = nil
       args.each do |label, value|
         if label.nil?
+          raise "Only one argument may be given without using labels" if !default.nil?
           default = value
         else
           given_dict[label] = value
