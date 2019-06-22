@@ -53,4 +53,12 @@ class DaisyEnumTest < Test::Unit::TestCase
     assert_equal 0, a.value.ruby_value
   end
 
+  def test_enum_category_is_iterable
+    enum = DaisyEnumCategory.new("Test")
+    enum.add("A")
+    enum.add("B")
+    enum.add("C")
+    assert_equal Enumerator, enum.each.class
+  end
+
 end
