@@ -650,4 +650,21 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_comments_on_forever_loop
+    code = <<-CODE
+loop // Forever
+    break
+
+CODE
+    expected = Nodes.new([
+      LoopNode.new(
+        Nodes.new([
+          BreakNode.new
+        ]),
+        CommentNode.new("// Forever\n")
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end
