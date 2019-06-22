@@ -628,4 +628,80 @@ CODE
     assert_equal 15, param.value.ruby_value
   end
 
+  def test_can_send_message_with_unlabeled_argument_if_method_has_one_param
+    code = <<-CODE
+Method: None foo( start: Integer )
+    return start * 3
+
+a = foo( 5 )
+CODE
+    @interpreter.eval(code)
+    a = @interpreter.context.symbol("a", nil)
+    assert_equal Constants["Integer"], a.runtime_class
+    assert_equal 15, a.ruby_value
+  end
+
+  def test_can_send_message_with_labeled_arguments_if_method_has_multiple_params
+    code = <<-CODE
+Method: String Greet( name: String, greeting: "Hello" )
+    return greeting + " " + name
+
+a = Greet( name: "Caleb", greeting: "Hey" )
+CODE
+    @interpreter.eval(code)
+    a = @interpreter.context.symbol("a", nil)
+    assert_equal Constants["String"], a.runtime_class
+    assert_equal "Hey Caleb", a.ruby_value
+  end
+
+  def test_can_send_message_with_labeled_argument_and_default_others
+    code = <<-CODE
+Method: String Greet( name: String, greeting: "Hello" )
+    return greeting + " " + name
+
+a = Greet( name: "Caleb" )
+CODE
+    @interpreter.eval(code)
+    a = @interpreter.context.symbol("a", nil)
+    assert_equal Constants["String"], a.runtime_class
+    assert_equal "Hello Caleb", a.ruby_value
+  end
+
+  def test_can_send_message_with_unlabeled_argument_if_others_have_default_values
+    code = <<-CODE
+Method: String Greet( name: String, greeting: "Hello" )
+    return greeting + " " + name
+
+a = Greet( "Caleb" )
+CODE
+    @interpreter.eval(code)
+    a = @interpreter.context.symbol("a", nil)
+    assert_equal Constants["String"], a.runtime_class
+    assert_equal "Hello Caleb", a.ruby_value
+  end
+
+  def test_errors_if_no_default_argument_given_for_parameter_with_no_default
+    code = <<-CODE
+Method: String Greet( name: String, greeting: "Hello" )
+    return greeting + " " + name
+
+a = Greet()
+CODE
+    assert_raises do
+      @interpreter.eval(code)
+    end
+  end
+
+  def test_errors_if_multiple_unlabeled_arguments_given
+    code = <<-CODE
+Method: String Greet( name: String, greeting: "Hello" )
+    return greeting + " " + name
+
+a = Greet( "Caleb", "Hey" )
+CODE
+    assert_raises do
+      @interpreter.eval(code)
+    end
+  end
+
 end

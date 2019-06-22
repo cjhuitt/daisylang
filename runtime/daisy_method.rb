@@ -40,8 +40,14 @@ class DaisyMethod < DaisyObject
 
     def many_param_arglist(args)
       given_dict = {}
+      default = nil
       args.each do |label, value|
-        given_dict[label] = value
+        if label.nil?
+          raise "Only one argument may be given without using labels" if !default.nil?
+          default = value
+        else
+          given_dict[label] = value
+        end
       end
 
       args_dict = {}
@@ -49,8 +55,16 @@ class DaisyMethod < DaisyObject
         if val = given_dict.delete(param.label)
           args_dict[param.label] = val
         else
-          raise "Parameter #{param.label} to method #{@name} required" if param.value.nil?
-          args_dict[param.label] = param.value
+          if param.value == Constants["none"]
+            if !default.nil?
+              args_dict[param.label] = default
+              default = nil
+            else
+              raise "Parameter #{param.label} required for method #{@name}"
+            end
+          else
+            args_dict[param.label] = param.value
+          end
         end
       end
       raise "Too many parameters passed to method #{@name}" unless given_dict.empty?
