@@ -75,7 +75,7 @@ class Interpreter
 
     def visit_ParameterNode(node)
       value = node.value.accept(self)
-      if value.is_a? DaisyClass
+      if value.class == DaisyClass || value.class == DaisyContract
         type = value
         value = Constants["none"]
       else
