@@ -59,10 +59,9 @@ class ArgumentNode < Struct.new(:label, :value)
   include Visitable
 end
 
-class SymbolNode < Struct.new(:label, :type, :value)
+class ParameterNode < Struct.new(:label, :type, :value)
   include Visitable
 end
-class ParameterNode < SymbolNode; end
 
 class ConditionBlockNode < Struct.new(:condition, :body, :comment); end
 
