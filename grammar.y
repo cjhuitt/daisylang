@@ -169,6 +169,7 @@ rule
   Array:
     '[' ']'                             { result = ArrayNode.new([]) }
   | '[' ExpressionList ']'              { result = ArrayNode.new(val[1]) }
+  | '[' BLOCKSTART ExpressionList BLOCKEND ']' { result = ArrayNode.new(val[2]) }
   ;
 
   ExpressionList:
