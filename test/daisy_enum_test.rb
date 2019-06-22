@@ -61,4 +61,11 @@ class DaisyEnumTest < Test::Unit::TestCase
     assert_equal Enumerator, enum.each.class
   end
 
+  def test_stringifiable
+    assert_true Constants["EnumCategory"].has_contract(Constants["Stringifiable"].ruby_value)
+    assert_not_nil Constants["EnumCategory"].lookup("toString")
+    assert_true Constants["EnumEntry"].has_contract(Constants["Stringifiable"].ruby_value)
+    assert_not_nil Constants["EnumEntry"].lookup("toString")
+  end
+
 end
