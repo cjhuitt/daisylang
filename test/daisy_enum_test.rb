@@ -29,4 +29,20 @@ class DaisyEnumTest < Test::Unit::TestCase
     end
   end
 
+  def test_enum_type_knows_id_as_string
+    enum = DaisyEnum.new("Test")
+    enum.add("A")
+    a = enum.types["A"]
+    assert_not_nil a
+    assert_equal "A", a.name
+  end
+
+  def test_enum_type_knows_enum_collection
+    enum = DaisyEnum.new("Test")
+    enum.add("A")
+    a = enum.types["A"]
+    assert_not_nil a
+    assert_equal enum, a.type
+  end
+
 end
