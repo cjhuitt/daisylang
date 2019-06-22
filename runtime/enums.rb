@@ -21,4 +21,7 @@ end
 Constants["EnumEntry"].def :name do |interpreter, receiver, args|
   Constants["String"].new( "#{receiver.name}" )
 end
+Constants["EnumEntry"].def :value do |interpreter, receiver, args|
+  receiver.value
+end
 
