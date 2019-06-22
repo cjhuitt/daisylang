@@ -6,7 +6,7 @@ class DaisyEnumEntry < DaisyObject
   def initialize(name, type, value)
     @name = name
     @type = type
-    @value = value
+    @value = Constants["Integer"].new(value)
   end
 end
 
