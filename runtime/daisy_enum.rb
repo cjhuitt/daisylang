@@ -13,6 +13,7 @@ class DaisyEnum < DaisyObject
   end
 
   def add(typename)
+    raise "Error: Adding enum type with identical name '#{typename}'" if @types.key? typename
     @types[typename] = nil
   end
 end

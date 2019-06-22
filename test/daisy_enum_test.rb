@@ -21,4 +21,12 @@ class DaisyEnumTest < Test::Unit::TestCase
     assert_equal 3, enum.types.count
   end
 
+  def test_enum_does_not_allow_repeat_type_names
+    enum = DaisyEnum.new("Test")
+    enum.add("A")
+    assert_raise do
+      enum.add("A")
+    end
+  end
+
 end
