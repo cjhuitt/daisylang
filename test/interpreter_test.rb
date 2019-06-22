@@ -529,4 +529,20 @@ CODE
     assert_equal 2, green.ruby_value.value.ruby_value
   end
 
+  def test_concrete_method_parameter_defaults
+    code = <<-CODE
+Method: None setVisible( vis: true )
+    none
+
+setVisible()
+CODE
+    @interpreter.eval(code)
+    method = @interpreter.context.symbol("setVisible", nil)
+    assert_equal 1, method.ruby_value.params.count
+    param = method.ruby_value.params.first
+    assert_equal "vis", param.label
+    assert_equal Constants["Boolean"], param.type
+    assert_equal Constants["true"], param.value
+  end
+
 end

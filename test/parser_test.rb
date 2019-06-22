@@ -318,6 +318,25 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_define_method_with_default_of_another_symbol
+    code = <<-CODE
+Method: None setVisible( vis: true )
+    none
+
+CODE
+    expected = Nodes.new([
+      DefineMethodNode.new(
+        "setVisible",
+        "None",
+        [ ParameterNode.new("vis", TrueNode.new) ],
+        Nodes.new([
+          NoneNode.new
+        ]),
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
   def test_comments
     assert_equal Nodes.new([CommentNode.new("// pass")]),
       Parser.new.parse("// pass")
