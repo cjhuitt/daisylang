@@ -680,4 +680,28 @@ CODE
     assert_equal "Hello Caleb", a.ruby_value
   end
 
+  def test_errors_if_no_default_argument_given_for_parameter_with_no_default
+    code = <<-CODE
+Method: String Greet( name: String, greeting: "Hello" )
+    return greeting + " " + name
+
+a = Greet()
+CODE
+    assert_raises do
+      @interpreter.eval(code)
+    end
+  end
+
+  def test_errors_if_multiple_unlabeled_arguments_given
+    code = <<-CODE
+Method: String Greet( name: String, greeting: "Hello" )
+    return greeting + " " + name
+
+a = Greet( "Caleb", "Hey" )
+CODE
+    assert_raises do
+      @interpreter.eval(code)
+    end
+  end
+
 end
