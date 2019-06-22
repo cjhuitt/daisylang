@@ -45,4 +45,12 @@ class DaisyEnumTest < Test::Unit::TestCase
     assert_equal enum, a.type
   end
 
+  def test_enum_type_knows_value
+    enum = DaisyEnum.new("Test")
+    enum.add("A")
+    a = enum.types["A"]
+    assert_not_nil a
+    assert_equal 0, a.value
+  end
+
 end
