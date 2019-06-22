@@ -77,7 +77,7 @@ class Interpreter
       value = node.value.accept(self)
       if value.is_a? DaisyClass
         type = value
-        value = nil
+        value = Constants["none"]
       else
         type = value.runtime_class
       end
