@@ -241,7 +241,7 @@ Method: String Greeting()
 
 CODE
     expected = Nodes.new([
-      DefineMessageNode.new(
+      DefineMethodNode.new(
         "Greeting",
         "String",
         [],
@@ -258,7 +258,7 @@ Method: SayHi()
 
 CODE
     expected = Nodes.new([
-      DefineMessageNode.new(
+      DefineMethodNode.new(
         "SayHi",
         NoneNode.new,
         [],
@@ -275,7 +275,7 @@ Method: None SayHi()
 
 CODE
     expected = Nodes.new([
-      DefineMessageNode.new(
+      DefineMethodNode.new(
         "SayHi",
         "None",
         [],
@@ -292,7 +292,7 @@ Method: String Greet( name: String, greeting: "Hello" )
 
 CODE
     expected = Nodes.new([
-      DefineMessageNode.new(
+      DefineMethodNode.new(
         "Greet",
         "String",
         [ ParameterNode.new("name", nil, "String"),
@@ -374,7 +374,7 @@ CODE
     expected = Nodes.new([
       DefineContractNode.new("Foo",
         Nodes.new([
-          DefineMessageNode.new(
+          DefineMethodNode.new(
             "bar",
             "None",
             [],
