@@ -490,4 +490,20 @@ CODE
     assert_equal 3, sum.ruby_value
   end
 
+  def test_continue_construct
+    code = <<-CODE
+result = 0
+for a in [1, 2, 3, 4]
+    result = a
+    if a < 3
+        continue
+    break
+
+CODE
+    @interpreter.eval(code)
+    result = @interpreter.context.symbol("result", nil)
+    assert_equal Constants["Integer"], result.runtime_class
+    assert_equal 3, result.ruby_value
+  end
+
 end
