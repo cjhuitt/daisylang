@@ -1,22 +1,23 @@
 require 'daisy_object'
 
 class DaisyEnumEntry < DaisyObject
-  attr_reader :name, :type, :value
+  attr_reader :name, :category, :value
 
-  def initialize(name, type, value)
+  def initialize(name, category, value)
+    super(Constants["EnumEntry"])
     @name = name
-    @type = type
+    @category = category
     @value = Constants["Integer"].new(value)
   end
 end
 
-class DaisyEnum < DaisyObject
-  attr_reader :name, :types
+class DaisyEnumCategory < DaisyObject
+  attr_reader :name, :entries
 
   def initialize(name)
-#    super(Constants["Enum"])
+    super(Constants["EnumCategory"])
     @name = name
-    @types = {}
+    @entries = {}
   end
 
   def is_type(type)
@@ -24,8 +25,8 @@ class DaisyEnum < DaisyObject
   end
 
   def add(typename)
-    raise "Error: Adding enum type with identical name '#{typename}'" if @types.key? typename
-    @types[typename] = DaisyEnumEntry.new(typename, self, @types.count)
+    raise "Error: Adding enum entry with identical name '#{typename}'" if @entries.key? typename
+    @entries[typename] = DaisyEnumEntry.new(typename, self, @entries.count)
   end
 end
 
