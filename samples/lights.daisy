@@ -28,14 +28,21 @@ Class: IndividualLight is Stringifiable
             string = string + "(on)"
         return string
 
+// TODO: This is how it should look
+//Class: TrafficLight is Stringifiable
+//    lights = [ 
+//        IndividualLight.create( c: RED, l: true ),
+//        IndividualLight.create( YELLOW ),
+//        IndividualLight.create( GREEN )
+//    ]
+//    
+//    Method: toString()
+//        return lights[RED].toString() + ":" + lights[YELLOW].toString() + ":" + lights[GREEN].toString()
+
 Class: TrafficLight is Stringifiable
-    red = IndividualLight.create( c: RED , l: true )
-    yellow = IndividualLight.create( c: YELLOW, l: false )
-    green = IndividualLight.create( c: GREEN, l: false )
-    // TODO: These shouldn't have to name the color argument if it's the only
-    //       uninitialized parameter.
-    //yellow = IndividualLight.create( YELLOW )
-    //green = IndividualLight.create( GREEN )
+    lights = [ red = IndividualLight.create( c: RED, l: true ), 
+      yellow = IndividualLight.create( c: YELLOW, l: false ), 
+      green = IndividualLight.create( c: GREEN, l: false ) ]
     
     Method: toString()
         return red.toString() + ":" + yellow.toString() + ":" + green.toString()
