@@ -20,3 +20,17 @@ if 1.is?( Comperable )
 unless Class.is?( Comperable )
     print( "Recognizes when not meeting a contract" )
 
+Enumerate: TrafficLights
+    RED
+    YELLOW
+    GREEN
+
+print( RED )
+print( RED.category() )
+print( RED.category().name() )
+for light in TrafficLights
+    print( "Light " + light.name() + ": " + light.value().toString() )
+
+for light in TrafficLights.entries()
+    print( "Light " + light.name() + ": " + light.value().toString() )
+
