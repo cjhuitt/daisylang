@@ -61,7 +61,7 @@ class DaisyMethodTest < Test::Unit::TestCase
     params = [paramA, paramB]
     method = DaisyMethod.new("foo", Constants["None"], params, body)
     interp = Interpreter.new
-    args = { "a" => Constants["false"] }
+    args = [[ "a", Constants["false"] ]]
     method.call(interp, method, args)
     assert_equal Constants["false"], body.context.symbol("a", nil)
     assert_equal b, body.context.symbol("b", nil)
