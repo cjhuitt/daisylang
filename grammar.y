@@ -4,7 +4,7 @@ token BLOCKSTART BLOCKEND
 token METHOD CLASS CONTRACT IS
 token IDENTIFIER FIELD
 token INTEGER STRING
-token IF UNLESS RETURN FOR IN WHILE ELSE BREAK LOOP
+token IF UNLESS RETURN FOR IN WHILE ELSE BREAK LOOP CONTINUE
 token NEWLINE
 token NONETYPE
 token PASS TRUE FALSE NONE
@@ -196,6 +196,7 @@ rule
 
   FlowControl:
     BREAK                               { result = BreakNode.new }
+  | CONTINUE                            { result = ContinueNode.new }
   ;
 
   GetSymbol:
