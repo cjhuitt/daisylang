@@ -295,8 +295,8 @@ CODE
       DefineMethodNode.new(
         "Greet",
         "String",
-        [ ParameterNode.new("name", nil, "String"),
-          ParameterNode.new("greeting", "String", StringNode.new("Hello"))
+        [ ParameterNode.new("name", GetSymbolNode.new("String")),
+          ParameterNode.new("greeting", StringNode.new("Hello"))
         ],
         Nodes.new(
           [

@@ -59,7 +59,7 @@ class ArgumentNode < Struct.new(:label, :value)
   include Visitable
 end
 
-class ParameterNode < Struct.new(:label, :type, :value)
+class ParameterNode < Struct.new(:label, :value)
   include Visitable
 end
 

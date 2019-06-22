@@ -131,9 +131,7 @@ rule
   ;
 
   Parameter:
-    IDENTIFIER ":" INTEGER              { result = ParameterNode.new(val[0], "Integer", IntegerNode.new(val[2])) }
-  | IDENTIFIER ":" STRING               { result = ParameterNode.new(val[0], "String", StringNode.new(val[2])) }
-  | IDENTIFIER ":" IDENTIFIER           { result = ParameterNode.new(val[0], nil, val[2]) }
+    IDENTIFIER ":" Expression           { result = ParameterNode.new(val[0], val[2]) }
   ;
 
   Contracts:
