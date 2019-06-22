@@ -7,4 +7,10 @@ class DaisyEnumTest < Test::Unit::TestCase
     assert_true enum.is_type(enum)
   end
 
+  def test_type_mismatch
+    enum = DaisyEnum.new("Test")
+    enum2 = DaisyEnum.new("Foo")
+    assert_false enum2.is_type(enum)
+  end
+
 end
