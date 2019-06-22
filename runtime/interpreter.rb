@@ -90,7 +90,7 @@ class Interpreter
       DaisyParameter.new(node.label, type, value)
     end
 
-    def visit_DefineMessageNode(node)
+    def visit_DefineMethodNode(node)
       debug_print("Define message #{node.name} with #{node.parameters}")
       returning = context.symbol(node.return_type, nil)
       params = node.parameters.map { |param| param.accept(self) }
