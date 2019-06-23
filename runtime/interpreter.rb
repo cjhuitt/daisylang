@@ -163,7 +163,12 @@ class Interpreter
       debug_print("For array #{node.container}")
       container = node.container.accept(self)
       container.ruby_value.each do |item|
-        context.assign_symbol(node.variable, nil, item)
+        if item.class == Array
+          value = Constants["Array"].new(item)
+        else
+          value = item
+        end
+        context.assign_symbol(node.variable, nil, value)
         @should_continue = false
         retval = execute_flow_control_body(node.body, true)
         return retval if @should_break
