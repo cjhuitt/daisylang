@@ -170,6 +170,19 @@ class Interpreter
       end
     end
 
+    def visit_ForHashNode(node)
+      @should_break = false
+      debug_print("For hash #{node.container}")
+      container = node.container.accept(self)
+      container.ruby_value.each do |key, val|
+        context.assign_symbol(node.key_symbol, nil, key)
+        context.assign_symbol(node.value_symbol, nil, val)
+        @should_continue = false
+        retval = execute_flow_control_body(node.body, true)
+        return retval if @should_break
+      end
+    end
+
     def visit_LoopNode(node)
       @should_break = false
       debug_print("Loop node")
