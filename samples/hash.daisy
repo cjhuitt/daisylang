@@ -8,13 +8,13 @@ squares = {
 
 print( foo )
 
-//for entry in squares
-//    print( entry )
+for entry in squares
+    print( entry )
+for key, value in squares
+    print( key.toString() + ": " + value.toString() )
 
 more = squares + { 5 => 5 ^ 2 }
 more.append!( { 6 => 6 ^ 2, 7 => 7 ^ 2 } )
-//for key in more.keys()
-//    print( key )
-//for value in more.values()
-//    print( value )
+print( more.keys() )
+print( more.values() )
 
