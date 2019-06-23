@@ -238,6 +238,12 @@ CODE
                   [:IDENTIFIER, "a"],
                   [:IN, "in"],
                   [:IDENTIFIER, "b"]], Lexer.new.tokenize("for a in b")
+    assert_equal [[:FOR, "for"],
+                  [:IDENTIFIER, "a"],
+                  [',', ", "],
+                  [:IDENTIFIER, "b"],
+                  [:IN, "in"],
+                  [:IDENTIFIER, "c"]], Lexer.new.tokenize("for a, b in c")
     assert_equal [[:IDENTIFIER, "from"], ['( ', "( "],
                   [:IDENTIFIER, "in"], [':', ": "],
                   [:INTEGER, 0],
