@@ -9,7 +9,7 @@ print( RED.category().name() )
 for light in TrafficLightColor
     print( "Light " + light.name() + ": " + light.value().toString() )
 
-for light in TrafficLightColor.entries()
+for light in TrafficLightColor.values()
     print( "Light " + light.name() + ": " + light.value().toString() )
 
 Class: IndividualLight is Stringifiable
