@@ -218,6 +218,9 @@ rule
     ELSE Block                          { result = ConditionBlockNode.new( nil, val[1]) }
   | ELSE Comment Block                  { result = ConditionBlockNode.new( nil, val[2], val[1]) }
   | Comment ELSE Block                  { result = ConditionBlockNode.new( nil, val[2], val[0]) }
+  | ELSE ":" Expression                 { result = ConditionBlockNode.new( nil, val[2]) }
+  | Comment ELSE ":" Expression         { result = ConditionBlockNode.new( nil, val[3], val[0]) }
+  | ELSE ":" Expression Comment         { result = ConditionBlockNode.new( nil, val[2], val[3]) }
   ;
 
   CaseBlocks:
