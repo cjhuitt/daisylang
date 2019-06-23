@@ -55,13 +55,11 @@ class ReturnNode < Struct.new(:expression)
   include Visitable
 end
 
-class ArgumentNode < Struct.new(:label, :value)
+class LabeledValueNode < Struct.new(:label, :value)
   include Visitable
 end
-
-class ParameterNode < Struct.new(:label, :value)
-  include Visitable
-end
+class ArgumentNode < LabeledValueNode; end
+class ParameterNode < LabeledValueNode; end
 
 class ConditionBlockNode < Struct.new(:condition, :body, :comment); end
 
