@@ -39,3 +39,11 @@ Constants["Hash"].def :append! do |interpreter, receiver, args|
   end
   receiver
 end
+
+Constants["Hash"].def :keys do |interpreter, receiver, args|
+  Constants["Array"].new(receiver.ruby_value.keys)
+end
+Constants["Hash"].def :values do |interpreter, receiver, args|
+  Constants["Array"].new(receiver.ruby_value.values)
+end
+
