@@ -16,6 +16,10 @@ class DaisyMethod < DaisyObject
     interpreter.execute_method(receiver, arglist(args), @return_type, @body)
   end
 
+  def hash
+    @name.hash
+  end
+
   def ==(o)
     @name == o.name
   end

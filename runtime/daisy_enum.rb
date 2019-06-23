@@ -10,6 +10,10 @@ class DaisyEnumEntry < DaisyObject
     @value = Constants["Integer"].new(value)
   end
 
+  def hash
+    @name.hash
+  end
+
   def ==(o)
     @name == o.name
   end

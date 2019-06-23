@@ -35,6 +35,10 @@ class DaisyContract < DaisyObject
     DaisyObject.new(self, value)
   end
 
+  def hash
+    @name.hash
+  end
+
   def ==(o)
     @name == o.name
   end
