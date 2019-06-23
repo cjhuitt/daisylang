@@ -21,10 +21,13 @@ check: tests
 parser.rb: grammar.y
 	racc -g -o parser.rb grammar.y
 
-samples: arrays calc classical fibo hello mirror printing truthy
+samples: arrays calc classical fibo hash hello mirror printing truthy
 
 arrays: daisy samples/arrays.daisy
 	./daisy samples/arrays.daisy
+
+hash: daisy samples/hash.daisy
+	./daisy samples/hash.daisy
 
 hello: daisy samples/hello.daisy
 	./daisy samples/hello.daisy
