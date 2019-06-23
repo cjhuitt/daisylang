@@ -148,6 +148,27 @@ class Interpreter
       end
     end
 
+    def visit_SwitchNode(node)
+      condition_met = false
+      value = node.value.accept(self)
+      debug_print("Switch node on #{value.runtime_class.name}")
+      node.condition_blocks.each do |block|
+        if block.condition.accept(self) == value
+          debug_print("Switch node: triggered")
+          execute_flow_control_body(block.body)
+          condition_met = true
+          break
+        end
+      end
+      if !condition_met && !node.else_block.nil?
+        debug_print("Switch node: else triggered")
+        execute_flow_control_body(node.else_block.body)
+      else
+        debug_print("Switch node: nogo")
+        Constants["none"]
+      end
+    end
+
     def visit_WhileNode(node)
       @should_break = false
       while node.condition_block.condition.accept(self).ruby_value
