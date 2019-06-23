@@ -748,4 +748,12 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_define_empty_hash
+    expected = Nodes.new([
+      HashNode.new([
+      ])
+    ])
+    assert_equal expected, Parser.new.parse("{}")
+  end
+
 end

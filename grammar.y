@@ -51,6 +51,7 @@ rule
   | Define                              { result = val[0] }
   | Return                              { result = val[0] }
   | Array                               { result = val[0] }
+  | Hash                                { result = val[0] }
   | GetSymbol                           { result = val[0] }
   | SetSymbol                           { result = val[0] }
   | "(" Expression ")"                  { result = val[1] }
@@ -172,6 +173,10 @@ rule
   ExpressionList:
     Expression                          { result = [] << val[0] }
   | ExpressionList ',' Expression       { result = val[0] << val[2] }
+  ;
+
+  Hash:
+    '{' '}'                             { result = HashNode.new([]) }
   ;
 
   ConditionalSet:
