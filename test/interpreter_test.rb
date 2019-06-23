@@ -762,4 +762,30 @@ CODE
     assert_equal 42, hash.ruby_value
   end
 
+  def test_switch_case
+    code = <<-CODE
+Enumerate: TrafficLights
+    RED
+    YELLOW
+    GREEN
+
+a = YELLOW
+next = none
+switch a
+    case RED
+        next = GREEN
+    case YELLOW
+        next = RED
+    case GREEN
+        next = YELLOW
+
+CODE
+    @interpreter.eval(code)
+    nxt = @interpreter.context.symbol("next", nil)
+    assert_equal Constants["EnumValue"], nxt.runtime_class
+    red = @interpreter.context.symbol("RED", nil)
+    assert_equal Constants["EnumValue"], red.runtime_class
+    assert_equal red, nxt
+  end
+
 end
