@@ -34,5 +34,10 @@ class DaisyHashTest < Test::Unit::TestCase
     assert_equal({ 1 => 2, 3 => 4 }, hash.ruby_value)
   end
 
+  def test_access_components
+    assert_not_nil Constants["Hash"].lookup("keys")
+    assert_not_nil Constants["Hash"].lookup("values")
+  end
+
 end
 
