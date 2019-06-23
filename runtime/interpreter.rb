@@ -158,7 +158,7 @@ class Interpreter
       end
     end
 
-    def visit_ForArrayNode(node)
+    def visit_StandardForNode(node)
       @should_break = false
       debug_print("For array #{node.container}")
       container = node.container.accept(self)
@@ -170,7 +170,7 @@ class Interpreter
       end
     end
 
-    def visit_ForHashNode(node)
+    def visit_KeyValueForNode(node)
       @should_break = false
       debug_print("For hash #{node.container}")
       container = node.container.accept(self)

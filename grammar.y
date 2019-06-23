@@ -221,10 +221,10 @@ rule
   ;
 
   Loop:
-    FOR IDENTIFIER IN Expression Block  { result = ForArrayNode.new(val[3], val[1], val[4]) }
-  | FOR IDENTIFIER IN Expression Comment Block { result = ForArrayNode.new(val[3], val[1], val[5], val[4]) }
-  | FOR IDENTIFIER ',' IDENTIFIER IN Expression Block  { result = ForHashNode.new(val[5], val[1], val[3], val[6]) }
-  | FOR IDENTIFIER ',' IDENTIFIER IN Expression Comment Block { result = ForHashNode.new(val[5], val[1], val[3], val[7], val[6]) }
+    FOR IDENTIFIER IN Expression Block  { result = StandardForNode.new(val[3], val[1], val[4]) }
+  | FOR IDENTIFIER IN Expression Comment Block { result = StandardForNode.new(val[3], val[1], val[5], val[4]) }
+  | FOR IDENTIFIER ',' IDENTIFIER IN Expression Block  { result = KeyValueForNode.new(val[5], val[1], val[3], val[6]) }
+  | FOR IDENTIFIER ',' IDENTIFIER IN Expression Comment Block { result = KeyValueForNode.new(val[5], val[1], val[3], val[7], val[6]) }
   | WHILE ConditionBlock                { result = WhileNode.new(val[1]) }
   | LOOP Block                          { result = LoopNode.new(val[1]) }
   | LOOP Comment Block                  { result = LoopNode.new(val[2], val[1]) }
