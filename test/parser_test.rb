@@ -531,6 +531,17 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_index_into_container
+    expected = Nodes.new([
+      SendMessageNode.new(
+        GetSymbolNode.new("a"),
+        "#",
+        [ArgumentNode.new(nil, GetSymbolNode.new("b"))]
+      )
+    ])
+    assert_equal expected, Parser.new.parse("a#b")
+  end
+
   def test_while_loop
     code = <<-CODE
 while false
