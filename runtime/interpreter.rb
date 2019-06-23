@@ -272,5 +272,14 @@ class Interpreter
       evaluated_members = node.members.map { |member| member.accept(self) }
       Constants["Array"].new(evaluated_members)
     end
+
+    def visit_HashNode(node)
+      debug_print("HashNode #{node.members.size}")
+      hash = {}
+      node.members.each do |member|
+        hash[member.label.accept(self)] = member.value.accept(self)
+      end
+      Constants["Hash"].new(hash)
+    end
 end
 

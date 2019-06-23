@@ -704,4 +704,18 @@ CODE
     end
   end
 
+  def test_hash_definition
+    code = <<-CODE
+a = { 1 => true, 2 => false }
+CODE
+    @interpreter.eval(code)
+    a = @interpreter.context.symbol("a", nil)
+    assert_equal Constants["Hash"], a.runtime_class
+    assert_equal 2, a.ruby_value.count
+    a.ruby_value.each do |key, val|
+      assert_equal Constants["Integer"], key.runtime_class
+      assert_equal Constants["Boolean"], val.runtime_class
+    end
+  end
+
 end
