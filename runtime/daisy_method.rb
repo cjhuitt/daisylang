@@ -16,6 +16,14 @@ class DaisyMethod < DaisyObject
     interpreter.execute_method(receiver, arglist(args), @return_type, @body)
   end
 
+  def ==(o)
+    @name == o.name
+  end
+
+  def eql?(o)
+    self.class == o.class && @name == o.name
+  end
+
   private
     def arglist(args)
       case @params.count

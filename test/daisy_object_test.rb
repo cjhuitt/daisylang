@@ -12,7 +12,7 @@ class DaisyObjectTest < Test::Unit::TestCase
     daisy_object = DaisyObject.new(daisy_class)
     daisy_class.def :foo do |passed_interpreter, passed_receiver, passed_args|
       assert_equal interpreter, passed_interpreter
-      assert_equal daisy_object, passed_receiver
+      assert_true daisy_object.equal?(passed_receiver)
       assert_equal args, passed_args
       ran = true
     end

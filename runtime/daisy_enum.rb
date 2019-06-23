@@ -9,6 +9,14 @@ class DaisyEnumEntry < DaisyObject
     @category = category
     @value = Constants["Integer"].new(value)
   end
+
+  def ==(o)
+    @name == o.name
+  end
+
+  def eql?(o)
+    self.class == o.class && @name == o.name
+  end
 end
 
 class DaisyEnumCategory < DaisyObject
@@ -39,6 +47,14 @@ class DaisyEnumCategory < DaisyObject
     else
       @entries.values.each
     end
+  end
+
+  def ==(o)
+    @name == o.name
+  end
+
+  def eql?(o)
+    self.class == o.class && @name == o.name
   end
 end
 
