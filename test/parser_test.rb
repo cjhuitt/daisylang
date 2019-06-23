@@ -569,8 +569,7 @@ else if b?
 else if c?
     none
 else if d?: none
-else
-    none
+else: none
 
 CODE
     expected = Nodes.new([
@@ -610,7 +609,7 @@ CODE
       ],
       ConditionBlockNode.new(
         nil,
-        Nodes.new([ NoneNode.new ])
+        NoneNode.new
       ))
     ])
     assert_equal expected, Parser.new.parse(code)
