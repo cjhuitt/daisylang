@@ -31,6 +31,14 @@ class DaisyHashTest < Test::Unit::TestCase
     assert_not_nil Constants["Hash"].lookup("#")
   end
 
+  def test_indexing_unknown_key_returns_none
+    index = Constants["Hash"].lookup("#")
+    assert_not_nil index
+    hash = Constants["Hash"].new({Constants["Integer"].new(1) => Constants["Integer"].new(2)})
+    returned = index.call(nil, hash, [[nil, Constants["Integer"].new(3)]])
+    assert_equal Constants["none"], returned
+  end
+
   def test_append_multiple_values
     append = Constants["Hash"].lookup("append!")
     assert_not_nil append

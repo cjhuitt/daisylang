@@ -36,7 +36,7 @@ end
 Constants["Hash"].add_contract(Constants["Indexable"].ruby_value)
 Constants["Hash"].def :'#' do |interpreter, receiver, args|
   index = args.first[1]
-  receiver.ruby_value[index]
+  receiver.ruby_value[index] || Constants["none"]
 end
 
 Constants["Hash"].def :append! do |interpreter, receiver, args|
