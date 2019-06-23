@@ -43,6 +43,8 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[:UNLESS, "unless"]], Lexer.new.tokenize("unless")
     assert_equal [[:WHILE, "while"]], Lexer.new.tokenize("while")
     assert_equal [[:LOOP, "loop"]], Lexer.new.tokenize("loop")
+    assert_equal [[:SWITCH, "switch"]], Lexer.new.tokenize("switch")
+    assert_equal [[:CASE, "case"]], Lexer.new.tokenize("case")
 
     assert_equal [[:BREAK, "break"]], Lexer.new.tokenize("break")
     assert_equal [[:CONTINUE, "continue"]], Lexer.new.tokenize("continue")
