@@ -3,14 +3,16 @@ Enumerate: TrafficLightColor
     YELLOW
     GREEN
 
-print( RED )
-print( RED.category() )
-print( RED.category().name() )
-for light in TrafficLightColor
-    print( "Light " + light.name() + ": " + light.value().toString() )
-
-for light in TrafficLightColor.values()
-    print( "Light " + light.name() + ": " + light.value().toString() )
+// NOTE: Enum reflection possibilities here for reference
+// print( RED )
+// print( RED.category() )
+// print( RED.category().name() )
+// 
+// for light in TrafficLightColor
+//     print( "Light " + light.name() + ": " + light.value().toString() )
+// 
+// for light in TrafficLightColor.values()
+//     print( "Light " + light.name() + ": " + light.value().toString() )
 
 Class: IndividualLight is Stringifiable
     color = TrafficLightColor
@@ -25,6 +27,9 @@ Class: IndividualLight is Stringifiable
         if lit?
             string = string + "(on)"
         return string
+    
+    Method: toggle()
+        lit = !lit
 
 Class: TrafficLight is Stringifiable
     lights = { 
@@ -32,10 +37,22 @@ Class: TrafficLight is Stringifiable
         YELLOW => IndividualLight.create( YELLOW ),
         GREEN => IndividualLight.create( GREEN )
     }
+    current = RED
     
-    Method: toString()
+    Method: String toString()
         return (lights#RED).toString() + ":" + 
                 (lights#YELLOW).toString() + ":" + (lights#GREEN).toString()
+    
+    Method: cycle!()
+        old = current
+        switch current
+            case GREEN: current = YELLOW
+            case YELLOW: current = RED
+            case RED: current = GREEN
+        (lights#old).toggle()
+        (lights#current).toggle()
 
 light = TrafficLight.create()
+print( light )
+light.cycle!()
 print( light )
