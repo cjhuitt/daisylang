@@ -34,5 +34,13 @@ class DaisyContract < DaisyObject
   def new(value=nil)
     DaisyObject.new(self, value)
   end
+
+  def ==(o)
+    @name == o.name
+  end
+
+  def eql?(o)
+    self.class == o.class && @name == o.name
+  end
 end
 
