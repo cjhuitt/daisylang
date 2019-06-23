@@ -124,3 +124,7 @@ end
 class ArrayNode < Struct.new(:members)
   include Visitable
 end
+
+class HashNode < Struct.new(:members)
+  include Visitable
+end

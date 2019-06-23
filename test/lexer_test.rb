@@ -81,6 +81,8 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [['!', "!"]], Lexer.new.tokenize("!")
     assert_equal [['[', "["]], Lexer.new.tokenize("[")
     assert_equal [[']', "]"]], Lexer.new.tokenize("]")
+    assert_equal [['{', "{"]], Lexer.new.tokenize("{")
+    assert_equal [['}', "}"]], Lexer.new.tokenize("}")
   end
 
   def test_recognizes_multichar_operators
@@ -90,6 +92,7 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [['!=', "!="]], Lexer.new.tokenize("!=")
     assert_equal [['>=', ">="]], Lexer.new.tokenize(">=")
     assert_equal [['<=', "<="]], Lexer.new.tokenize("<=")
+    assert_equal [['=>', "=>"]], Lexer.new.tokenize("=>")
   end
 
   def test_finds_multiple_tokens_on_a_line
