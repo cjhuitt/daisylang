@@ -1,0 +1,20 @@
+foo = { 1 => none, 2 => true, 3 => false }
+squares = { 
+    1 => 1 ^ 2, 
+    2 => 2 ^ 2,
+    3 => 3 ^ 2,
+    4 => 4 ^ 2
+}
+
+print( foo )
+
+for entry in squares
+    print( entry )
+for key, value in squares
+    print( key.toString() + ": " + value.toString() )
+
+more = squares + { 5 => 5 ^ 2 }
+more.append!( { 6 => 6 ^ 2, 7 => 7 ^ 2 } )
+print( more.keys() )
+print( more.values() )
+

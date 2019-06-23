@@ -457,16 +457,72 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
-  def test_for_loop
+  def test_define_empty_hash
+    expected = Nodes.new([
+      HashNode.new([
+      ])
+    ])
+    assert_equal expected, Parser.new.parse("{}")
+  end
+
+  def test_define_hash
+    code = <<-CODE
+{ 1 => true, 2 => false }
+CODE
+    expected = Nodes.new([
+      HashNode.new([
+        HashEntryNode.new(IntegerNode.new(1), TrueNode.new),
+        HashEntryNode.new(IntegerNode.new(2), FalseNode.new)
+      ])
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_define_hash_in_block
+    code = <<-CODE
+{
+    1 => true,
+    2 => false
+}
+
+CODE
+    expected = Nodes.new([
+      HashNode.new([
+        HashEntryNode.new(IntegerNode.new(1), TrueNode.new),
+        HashEntryNode.new(IntegerNode.new(2), FalseNode.new)
+      ])
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_for_array_loop
     code = <<-CODE
 for a in b
     break
 
 CODE
     expected = Nodes.new([
-      ForNode.new(
+      StandardForNode.new(
         GetSymbolNode.new("b"),
         "a",
+        Nodes.new([
+          BreakNode.new
+        ])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_for_hash_loop
+    code = <<-CODE
+for a, b in c
+    break
+
+CODE
+    expected = Nodes.new([
+      KeyValueForNode.new(
+        GetSymbolNode.new("c"),
+        "a", "b",
         Nodes.new([
           BreakNode.new
         ])
@@ -710,7 +766,7 @@ for a in b // Check everything
 
 CODE
     expected = Nodes.new([
-      ForNode.new(
+      StandardForNode.new(
         GetSymbolNode.new("b"),
         "a",
         Nodes.new([

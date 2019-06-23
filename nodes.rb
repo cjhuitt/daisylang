@@ -55,13 +55,12 @@ class ReturnNode < Struct.new(:expression)
   include Visitable
 end
 
-class ArgumentNode < Struct.new(:label, :value)
+class LabeledValueNode < Struct.new(:label, :value)
   include Visitable
 end
-
-class ParameterNode < Struct.new(:label, :value)
-  include Visitable
-end
+class ArgumentNode < LabeledValueNode; end
+class ParameterNode < LabeledValueNode; end
+class HashEntryNode < LabeledValueNode; end
 
 class ConditionBlockNode < Struct.new(:condition, :body, :comment); end
 
@@ -77,7 +76,11 @@ class WhileNode < Struct.new(:condition_block)
   include Visitable
 end
 
-class ForNode < Struct.new(:container, :variable, :body, :comment)
+class StandardForNode < Struct.new(:container, :variable, :body, :comment)
+  include Visitable
+end
+
+class KeyValueForNode < Struct.new(:container, :key_symbol, :value_symbol, :body, :comment)
   include Visitable
 end
 
@@ -122,5 +125,9 @@ class EnumerateNode < Struct.new(:name, :symbols)
 end
 
 class ArrayNode < Struct.new(:members)
+  include Visitable
+end
+
+class HashNode < Struct.new(:members)
   include Visitable
 end

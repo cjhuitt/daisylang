@@ -158,12 +158,30 @@ class Interpreter
       end
     end
 
-    def visit_ForNode(node)
+    def visit_StandardForNode(node)
       @should_break = false
-      debug_print("For node on #{node.container}")
+      debug_print("For array #{node.container}")
       container = node.container.accept(self)
       container.ruby_value.each do |item|
-        context.assign_symbol(node.variable, nil, item)
+        if item.class == Array
+          value = Constants["Array"].new(item)
+        else
+          value = item
+        end
+        context.assign_symbol(node.variable, nil, value)
+        @should_continue = false
+        retval = execute_flow_control_body(node.body, true)
+        return retval if @should_break
+      end
+    end
+
+    def visit_KeyValueForNode(node)
+      @should_break = false
+      debug_print("For hash #{node.container}")
+      container = node.container.accept(self)
+      container.ruby_value.each do |key, val|
+        context.assign_symbol(node.key_symbol, nil, key)
+        context.assign_symbol(node.value_symbol, nil, val)
         @should_continue = false
         retval = execute_flow_control_body(node.body, true)
         return retval if @should_break
@@ -271,6 +289,15 @@ class Interpreter
       debug_print("ArrayNode #{node.members.size}")
       evaluated_members = node.members.map { |member| member.accept(self) }
       Constants["Array"].new(evaluated_members)
+    end
+
+    def visit_HashNode(node)
+      debug_print("HashNode #{node.members.size}")
+      hash = {}
+      node.members.each do |member|
+        hash[member.label.accept(self)] = member.value.accept(self)
+      end
+      Constants["Hash"].new(hash)
     end
 end
 

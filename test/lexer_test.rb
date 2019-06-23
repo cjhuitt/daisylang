@@ -82,6 +82,8 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [['!', "!"]], Lexer.new.tokenize("!")
     assert_equal [['[', "["]], Lexer.new.tokenize("[")
     assert_equal [[']', "]"]], Lexer.new.tokenize("]")
+    assert_equal [['{', "{"]], Lexer.new.tokenize("{")
+    assert_equal [['}', "}"]], Lexer.new.tokenize("}")
   end
 
   def test_recognizes_multichar_operators
@@ -91,6 +93,7 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [['!=', "!="]], Lexer.new.tokenize("!=")
     assert_equal [['>=', ">="]], Lexer.new.tokenize(">=")
     assert_equal [['<=', "<="]], Lexer.new.tokenize("<=")
+    assert_equal [['=>', "=>"]], Lexer.new.tokenize("=>")
   end
 
   def test_finds_multiple_tokens_on_a_line
@@ -236,6 +239,12 @@ CODE
                   [:IDENTIFIER, "a"],
                   [:IN, "in"],
                   [:IDENTIFIER, "b"]], Lexer.new.tokenize("for a in b")
+    assert_equal [[:FOR, "for"],
+                  [:IDENTIFIER, "a"],
+                  [',', ", "],
+                  [:IDENTIFIER, "b"],
+                  [:IN, "in"],
+                  [:IDENTIFIER, "c"]], Lexer.new.tokenize("for a, b in c")
     assert_equal [[:IDENTIFIER, "from"], ['( ', "( "],
                   [:IDENTIFIER, "in"], [':', ": "],
                   [:INTEGER, 0],

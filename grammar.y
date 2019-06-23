@@ -51,6 +51,7 @@ rule
   | Define                              { result = val[0] }
   | Return                              { result = val[0] }
   | Array                               { result = val[0] }
+  | Hash                                { result = val[0] }
   | GetSymbol                           { result = val[0] }
   | SetSymbol                           { result = val[0] }
   | "(" Expression ")"                  { result = val[1] }
@@ -175,6 +176,21 @@ rule
   | ExpressionList ',' Expression       { result = val[0] << val[2] }
   ;
 
+  Hash:
+    '{' '}'                             { result = HashNode.new([]) }
+  | '{' HashEntryList '}'               { result = HashNode.new(val[1]) }
+  | '{' BLOCKSTART HashEntryList BLOCKEND '}' { result = HashNode.new(val[2]) }
+  ;
+
+  HashEntryList:
+    HashEntry                           { result = [] << val[0] }
+  | HashEntryList ',' HashEntry         { result = val[0] << val[2] }
+  ;
+
+  HashEntry:
+    Expression '=>' Expression          { result = HashEntryNode.new(val[0], val[2]) }
+  ;
+
   ConditionalSet:
     IF ConditionBlock                   { result = IfNode.new([val[1]], nil) }
   | IF ConditionBlock ElseBlock         { result = IfNode.new([val[1]], val[2]) }
@@ -206,8 +222,10 @@ rule
   ;
 
   Loop:
-    FOR IDENTIFIER IN Expression Block  { result = ForNode.new(val[3], val[1], val[4]) }
-  | FOR IDENTIFIER IN Expression Comment Block { result = ForNode.new(val[3], val[1], val[5], val[4]) }
+    FOR IDENTIFIER IN Expression Block  { result = StandardForNode.new(val[3], val[1], val[4]) }
+  | FOR IDENTIFIER IN Expression Comment Block { result = StandardForNode.new(val[3], val[1], val[5], val[4]) }
+  | FOR IDENTIFIER ',' IDENTIFIER IN Expression Block  { result = KeyValueForNode.new(val[5], val[1], val[3], val[6]) }
+  | FOR IDENTIFIER ',' IDENTIFIER IN Expression Comment Block { result = KeyValueForNode.new(val[5], val[1], val[3], val[7], val[6]) }
   | WHILE ConditionBlock                { result = WhileNode.new(val[1]) }
   | LOOP Block                          { result = LoopNode.new(val[1]) }
   | LOOP Comment Block                  { result = LoopNode.new(val[2], val[1]) }

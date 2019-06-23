@@ -704,4 +704,47 @@ CODE
     end
   end
 
+  def test_hash_definition
+    code = <<-CODE
+a = { 1 => true, 2 => false }
+CODE
+    @interpreter.eval(code)
+    a = @interpreter.context.symbol("a", nil)
+    assert_equal Constants["Hash"], a.runtime_class
+    assert_equal 2, a.ruby_value.count
+    a.ruby_value.each do |key, val|
+      assert_equal Constants["Integer"], key.runtime_class
+      assert_equal Constants["Boolean"], val.runtime_class
+    end
+  end
+
+  def test_for_over_hash
+    code = <<-CODE
+sum = 0
+for name, age in { "Alice" => 32, "Bob" => 45 }
+    sum = sum + age
+
+CODE
+    @interpreter.eval(code)
+    sum = @interpreter.context.symbol("sum", nil)
+    assert_equal Constants["Integer"], sum.runtime_class
+    assert_equal 77, sum.ruby_value
+  end
+
+  def test_for_over_hash_by_entries
+    code = <<-CODE
+last = none
+for entry in { "Alice" => 32, "Bob" => 45 }
+    last = entry
+
+CODE
+    @interpreter.eval(code)
+    last = @interpreter.context.symbol("last", nil)
+    assert_equal Constants["Array"], last.runtime_class
+    assert_equal Constants["String"], last.ruby_value[0].runtime_class
+    assert_equal "Bob", last.ruby_value[0].ruby_value
+    assert_equal Constants["Integer"], last.ruby_value[1].runtime_class
+    assert_equal 45, last.ruby_value[1].ruby_value
+  end
+
 end

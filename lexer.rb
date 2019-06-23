@@ -117,6 +117,26 @@ class Lexer
           tokens << [:IN, "in"]
           debug_out("Extracted in (Keyword)")
           i += 3 # "in "
+        elsif identifiers = sub[/\Afor (\w+, \w+) in/, 1]
+          tokens << [:FOR, "for"]
+          debug_out("Extracted for (Keyword)")
+          i += 4 # "for "
+
+          key = identifiers.split(", ").first
+          tokens << [:IDENTIFIER, key]
+          debug_out("Extracted #{key} (Identifier)")
+
+          tokens << [',', ", "]
+          debug_out("Extracted , (Operator)")
+
+          val = identifiers.split(", ").last
+          tokens << [:IDENTIFIER, val]
+          debug_out("Extracted #{val} (Identifier)")
+          i += identifiers.size
+
+          tokens << [:IN, "in"]
+          debug_out("Extracted in (Keyword)")
+          i += 3 # "in "
         elsif identifier = sub[/\A(\w+[\?!])\(/, 1]
           tokens << [:IDENTIFIER, identifier]
           debug_out("Extracted #{identifier} (Identifier)")
@@ -160,11 +180,11 @@ class Lexer
           tokens << [op, op]
           i += 2
           debug_out("Extracted #{op} (Operator)")
-        elsif op = sub[/\A(==|!=|<=|>=)/, 1]
+        elsif op = sub[/\A(==|!=|<=|>=|=>)/, 1]
           tokens << [op, op]
           i += 2
           debug_out("Extracted #{op} (Operator)")
-        elsif op = sub[/\A([().?!\[\]])/, 1]
+        elsif op = sub[/\A([().?!\[\]{}])/, 1]
           tokens << [op, op]
           i += op.size
           debug_out("Extracted #{op} (Operator)")
