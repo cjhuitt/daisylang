@@ -177,6 +177,16 @@ rule
 
   Hash:
     '{' '}'                             { result = HashNode.new([]) }
+  | '{' HashEntryList '}'               { result = HashNode.new(val[1]) }
+  ;
+
+  HashEntryList:
+    HashEntry                           { result = [] << val[0] }
+  | HashEntryList ',' HashEntry         { result = val[0] << val[2] }
+  ;
+
+  HashEntry:
+    Expression '=>' Expression          { result = HashEntryNode.new(val[0], val[2]) }
   ;
 
   ConditionalSet:
