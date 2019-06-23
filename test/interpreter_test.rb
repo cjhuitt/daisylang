@@ -718,4 +718,17 @@ CODE
     end
   end
 
+  def test_for_over_hash
+    code = <<-CODE
+sum = 0
+for name, age in { "Alice" => 32, "Bob" => 45 }
+    sum = sum + age
+
+CODE
+    @interpreter.eval(code)
+    sum = @interpreter.context.symbol("sum", nil)
+    assert_equal Constants["Integer"], sum.runtime_class
+    assert_equal 77, sum.ruby_value
+  end
+
 end
