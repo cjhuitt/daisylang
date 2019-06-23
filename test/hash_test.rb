@@ -11,5 +11,28 @@ class DaisyHashTest < Test::Unit::TestCase
     assert_not_nil Constants["Hash"].lookup("toString")
   end
 
+  def test_concatable
+    assert_not_nil Constants["Hash"].lookup("+")
+  end
+
+  def test_verifiable
+    assert_true Constants["Hash"].has_contract(Constants["Verifiable"].ruby_value)
+    assert_not_nil Constants["Hash"].lookup("?")
+  end
+
+  def test_countable
+    assert_true Constants["Hash"].has_contract(Constants["Countable"].ruby_value)
+    assert_not_nil Constants["Hash"].lookup("empty?")
+    assert_not_nil Constants["Hash"].lookup("count")
+  end
+
+  def test_append_multiple_values
+    append = Constants["Hash"].lookup("append!")
+    assert_not_nil append
+    hash = Constants["Hash"].new({1 => 2})
+    append.call(nil, hash, [[nil, Constants["Hash"].new({3 => 4})]])
+    assert_equal({ 1 => 2, 3 => 4 }, hash.ruby_value)
+  end
+
 end
 
