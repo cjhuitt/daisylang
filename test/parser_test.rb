@@ -569,8 +569,7 @@ else if b?
     none
 else if c?
     none
-else if d?
-    none
+else if d?: none
 else
     none
 
@@ -607,7 +606,7 @@ CODE
             "?",
             []
           ),
-          Nodes.new([ NoneNode.new ])
+          NoneNode.new
         )
       ],
       ConditionBlockNode.new(

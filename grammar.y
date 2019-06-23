@@ -234,6 +234,7 @@ rule
     Expression Block                    { result = ConditionBlockNode.new(val[0], val[1]) }
   | Expression Comment Block            { result = ConditionBlockNode.new(val[0], val[2], val[1]) }
   | Expression ":" Expression           { result = ConditionBlockNode.new(val[0], val[2]) }
+  | Expression ":" Expression NEWLINE   { result = ConditionBlockNode.new(val[0], val[2]) }
   | Expression ":" Expression Comment   { result = ConditionBlockNode.new(val[0], val[2], val[3]) }
   ;
 
