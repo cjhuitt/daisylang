@@ -26,26 +26,16 @@ Class: IndividualLight is Stringifiable
             string = string + "(on)"
         return string
 
-// TODO: This is how it should look
-//Class: TrafficLight is Stringifiable
-//    lights = { 
-//        RED => IndividualLight.create( c: RED, l: true ),
-//        YELLOW => IndividualLight.create( YELLOW ),
-//        GREEN => IndividualLight.create( GREEN )
-//    }
-//    
-//    Method: toString()
-//        return lights[RED].toString() + ":" + lights[YELLOW].toString() + ":" + lights[GREEN].toString()
-
 Class: TrafficLight is Stringifiable
-    lights = [ 
-        red = IndividualLight.create( c: RED, l: true ),
-        yellow = IndividualLight.create( YELLOW ),
-        green = IndividualLight.create( GREEN ) 
-    ]
+    lights = { 
+        RED => IndividualLight.create( c: RED, l: true ),
+        YELLOW => IndividualLight.create( YELLOW ),
+        GREEN => IndividualLight.create( GREEN )
+    }
     
     Method: toString()
-        return red.toString() + ":" + yellow.toString() + ":" + green.toString()
+        return (lights#RED).toString() + ":" + 
+                (lights#YELLOW).toString() + ":" + (lights#GREEN).toString()
 
 light = TrafficLight.create()
 print( light )
