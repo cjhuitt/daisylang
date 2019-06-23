@@ -19,7 +19,7 @@ class DaisyEnumValue < DaisyObject
   end
 
   def eql?(o)
-    self.class == o.class && @name == o.name
+    self.category == o.category && @name == o.name
   end
 end
 
