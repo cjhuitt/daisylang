@@ -440,6 +440,27 @@ CODE
     assert_equal expected, Parser.new.parse("[1, b]")
   end
 
+  def test_define_empty_hash
+    expected = Nodes.new([
+      HashNode.new([
+      ])
+    ])
+    assert_equal expected, Parser.new.parse("{}")
+  end
+
+  def test_define_hash
+    code = <<-CODE
+{ 1 => true, 2 => false }
+CODE
+    expected = Nodes.new([
+      HashNode.new([
+        HashEntryNode.new(IntegerNode.new(1), TrueNode.new),
+        HashEntryNode.new(IntegerNode.new(2), FalseNode.new)
+      ])
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
   def test_for_loop
     code = <<-CODE
 for a in b
@@ -744,27 +765,6 @@ CODE
         Nodes.new([ NoneNode.new ]),
         CommentNode.new("// Something odd happened\n")
       ))
-    ])
-    assert_equal expected, Parser.new.parse(code)
-  end
-
-  def test_define_empty_hash
-    expected = Nodes.new([
-      HashNode.new([
-      ])
-    ])
-    assert_equal expected, Parser.new.parse("{}")
-  end
-
-  def test_define_hash
-    code = <<-CODE
-{ 1 => true, 2 => false }
-CODE
-    expected = Nodes.new([
-      HashNode.new([
-        HashEntryNode.new(IntegerNode.new(1), TrueNode.new),
-        HashEntryNode.new(IntegerNode.new(2), FalseNode.new)
-      ])
     ])
     assert_equal expected, Parser.new.parse(code)
   end
