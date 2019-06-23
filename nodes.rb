@@ -60,6 +60,7 @@ class LabeledValueNode < Struct.new(:label, :value)
 end
 class ArgumentNode < LabeledValueNode; end
 class ParameterNode < LabeledValueNode; end
+class HashEntryNode < LabeledValueNode; end
 
 class ConditionBlockNode < Struct.new(:condition, :body, :comment); end
 
