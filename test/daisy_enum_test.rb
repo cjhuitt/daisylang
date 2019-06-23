@@ -79,4 +79,22 @@ class DaisyEnumTest < Test::Unit::TestCase
     assert_not_nil Constants["EnumValue"].lookup("category")
   end
 
+  def test_enum_value_equality
+    enum = DaisyEnumCategory.new("Test")
+    enum.add("A")
+    enum.add("B")
+    a = enum.values["A"]
+    b = enum.values["B"]
+    assert_true a.== a
+    assert_true a.eql? a
+    assert_false a.== b
+    assert_false a.eql? b
+
+    enum2 = DaisyEnumCategory.new("Test2")
+    enum2.add("A")
+    a2 = enum2.values["A"]
+    assert_true a.== a2
+    assert_false a.eql? a2
+  end
+
 end
