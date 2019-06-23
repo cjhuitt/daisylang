@@ -173,7 +173,7 @@ class Lexer
           debug_out("Extracted #{tok} (Operator)")
         elsif op = sub[/\A([:,])[ \n]/, 1]
           tok = op.strip
-          tokens << [tok, op + ' ']
+          tokens << [tok, op + " "]
           i += op.size + 1
           debug_out("Extracted #{tok} (Operator)")
         elsif op = sub[/\A(&&|\|\|)/, 1]
@@ -184,7 +184,7 @@ class Lexer
           tokens << [op, op]
           i += 2
           debug_out("Extracted #{op} (Operator)")
-        elsif op = sub[/\A([().?!\[\]{}])/, 1]
+        elsif op = sub[/\A([().?!\[\]{}#])/, 1]
           tokens << [op, op]
           i += op.size
           debug_out("Extracted #{op} (Operator)")

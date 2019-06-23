@@ -73,6 +73,7 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [['^', " ^ "]], Lexer.new.tokenize(" ^ ")
     assert_equal [[':', ": "]], Lexer.new.tokenize(": ")
     assert_equal [[',', ", "]], Lexer.new.tokenize(", ")
+    assert_equal [[',', ", "]], Lexer.new.tokenize(",\n")
     assert_equal [['( ', "( "]], Lexer.new.tokenize("( ")
     assert_equal [[' )', " )"]], Lexer.new.tokenize(" )")
     assert_equal [['(', "("]], Lexer.new.tokenize("(")
@@ -83,6 +84,7 @@ class LexerTest < Test::Unit::TestCase
     assert_equal [[']', "]"]], Lexer.new.tokenize("]")
     assert_equal [['{', "{"]], Lexer.new.tokenize("{")
     assert_equal [['}', "}"]], Lexer.new.tokenize("}")
+    assert_equal [['#', "#"]], Lexer.new.tokenize("#")
   end
 
   def test_recognizes_multichar_operators

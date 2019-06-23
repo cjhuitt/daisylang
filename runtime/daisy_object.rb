@@ -28,4 +28,16 @@ class DaisyObject
     # Todo: This should error-handle via Daisy code paths, not Ruby
     raise "Received unknown message '#{message}' for '#{@runtime_class.name}'"
   end
+
+  def hash
+    @ruby_value.hash
+  end
+
+  def ==(o)
+    @ruby_value == o.ruby_value
+  end
+
+  def eql?(o)
+    @runtime_class == o.runtime_class && @ruby_value == o.ruby_value
+  end
 end

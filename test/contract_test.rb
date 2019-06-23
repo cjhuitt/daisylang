@@ -35,4 +35,9 @@ class ContractTest < Test::Unit::TestCase
     assert_not_nil Constants["Countable"].runtime_class.lookup("empty?")
     assert_not_nil Constants["Countable"].runtime_class.lookup("count")
   end
+
+  def test_indexable
+    assert_not_nil RootContext.symbol("Indexable", nil)
+    assert_not_nil Constants["Indexable"].runtime_class.lookup("#")
+  end
 end

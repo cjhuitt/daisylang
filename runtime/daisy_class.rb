@@ -95,4 +95,16 @@ class DaisyClass < DaisyObject
     @runtime_superclass.add_fields_to(instance) if !@runtime_superclass.nil?
     instance
   end
+
+  def hash
+    @name.hash
+  end
+
+  def ==(o)
+    @name == o.name
+  end
+
+  def eql?(o)
+    self.class == o.class && @name == o.name
+  end
 end

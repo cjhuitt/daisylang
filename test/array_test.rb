@@ -26,6 +26,28 @@ class DaisyArrayTest < Test::Unit::TestCase
     assert_not_nil Constants["Array"].lookup("count")
   end
 
+  def test_indexable
+    assert_true Constants["Array"].has_contract(Constants["Indexable"].ruby_value)
+    assert_not_nil Constants["Array"].lookup("#")
+  end
+
+  def test_indexing_out_of_range_returns_none
+    index = Constants["Array"].lookup("#")
+    assert_not_nil index
+    array = Constants["Array"].new([Constants["Integer"].new(1), Constants["Integer"].new(2)])
+    returned = index.call(nil, array, [[nil, Constants["Integer"].new(3)]])
+    assert_equal Constants["none"], returned
+  end
+
+  def test_indexing_with_non_integer_errors
+    index = Constants["Array"].lookup("#")
+    assert_not_nil index
+    array = Constants["Array"].new([Constants["Integer"].new(1), Constants["Integer"].new(2)])
+    assert_raises do
+      returned = index.call(nil, array, [[nil, Constants["true"]]])
+    end
+  end
+
   def test_append_single_value
     append = Constants["Array"].lookup("append!")
     assert_not_nil append

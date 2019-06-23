@@ -33,6 +33,12 @@ Constants["Hash"].def :count do |interpreter, receiver, args|
   Constants["Integer"].new(receiver.ruby_value.count)
 end
 
+Constants["Hash"].add_contract(Constants["Indexable"].ruby_value)
+Constants["Hash"].def :'#' do |interpreter, receiver, args|
+  index = args.first[1]
+  receiver.ruby_value[index] || Constants["none"]
+end
+
 Constants["Hash"].def :append! do |interpreter, receiver, args|
   args.each do |arg|
     receiver.ruby_value.update(arg[1].ruby_value)
