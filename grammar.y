@@ -178,6 +178,7 @@ rule
   Hash:
     '{' '}'                             { result = HashNode.new([]) }
   | '{' HashEntryList '}'               { result = HashNode.new(val[1]) }
+  | '{' BLOCKSTART HashEntryList BLOCKEND '}' { result = HashNode.new(val[2]) }
   ;
 
   HashEntryList:

@@ -461,6 +461,23 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_define_hash_in_block
+    code = <<-CODE
+{
+    1 => true,
+    2 => false
+}
+
+CODE
+    expected = Nodes.new([
+      HashNode.new([
+        HashEntryNode.new(IntegerNode.new(1), TrueNode.new),
+        HashEntryNode.new(IntegerNode.new(2), FalseNode.new)
+      ])
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
   def test_for_loop
     code = <<-CODE
 for a in b
