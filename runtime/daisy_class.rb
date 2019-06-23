@@ -96,6 +96,10 @@ class DaisyClass < DaisyObject
     instance
   end
 
+  def hash
+    @name.hash
+  end
+
   def ==(o)
     @name == o.name
   end
