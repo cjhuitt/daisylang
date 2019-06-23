@@ -13,8 +13,7 @@ token COMMENT
 # Based on the C and C++ Operator Precedence Table:
 # http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Operator_precedence
 prechigh
-  left  '.'
-  left  '#'
+  left  '.' '#'
   left  '?'
   right '!'
   left  '^'

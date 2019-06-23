@@ -40,8 +40,8 @@ Class: TrafficLight is Stringifiable
     current = RED
     
     Method: String toString()
-        return (lights#RED).toString() + ":" + 
-                (lights#YELLOW).toString() + ":" + (lights#GREEN).toString()
+        return lights#RED.toString() + ":" + 
+                lights#YELLOW.toString() + ":" + lights#GREEN.toString()
     
     Method: cycle!()
         old = current
@@ -49,8 +49,8 @@ Class: TrafficLight is Stringifiable
             case GREEN: current = YELLOW
             case YELLOW: current = RED
             case RED: current = GREEN
-        (lights#old).toggle()
-        (lights#current).toggle()
+        lights#old.toggle()
+        lights#current.toggle()
 
 light = TrafficLight.create()
 print( light )
