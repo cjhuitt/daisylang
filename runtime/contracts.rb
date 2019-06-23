@@ -52,3 +52,8 @@ Constants["Countable"] = DaisyContract.new("Countable")
 RootContext.symbols["Countable"] = Constants["Countable"]
 Constants["Countable"].runtime_class.def :empty? do end
 Constants["Countable"].runtime_class.def :count do end
+
+Constants["Indexable"] = DaisyContract.new("Indexable")
+RootContext.symbols["Indexable"] = Constants["Indexable"]
+Constants["Indexable"].runtime_class.def :'#' do end
+

@@ -26,6 +26,11 @@ class DaisyHashTest < Test::Unit::TestCase
     assert_not_nil Constants["Hash"].lookup("count")
   end
 
+  def test_indexable
+    assert_true Constants["Hash"].has_contract(Constants["Indexable"].ruby_value)
+    assert_not_nil Constants["Hash"].lookup("#")
+  end
+
   def test_append_multiple_values
     append = Constants["Hash"].lookup("append!")
     assert_not_nil append
