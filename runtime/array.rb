@@ -36,8 +36,7 @@ Constants["Array"].add_contract(Constants["Indexable"].ruby_value)
 Constants["Array"].def :'#' do |interpreter, receiver, args|
   index = args.first[1]
   raise "Array index must be an integer" if index.runtime_class != Constants["Integer"]
-  raise "Array index must be positive" if index.ruby_value < 0
-  receiver.ruby_value[index.ruby_value]
+  receiver.ruby_value[index.ruby_value] || Constants["none"]
 end
 
 Constants["Array"].def :append! do |interpreter, receiver, args|
