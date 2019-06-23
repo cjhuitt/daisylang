@@ -21,17 +21,16 @@ end
 class IntegerNode < LiteralNode; end
 class StringNode < LiteralNode; end
 
-class NoneNode < LiteralNode
+class NilNode < LiteralNode
   def initialize
     super(nil)
   end
 end
+class NoneNode < NilNode; end
+class PassNode < NilNode; end
+class BreakNode < NilNode; end
+class ContinueNode < NilNode; end
 
-class PassNode < LiteralNode
-  def initialize
-    super(nil)
-  end
-end
 class TrueNode < LiteralNode
   def initialize
     super(true)
@@ -87,19 +86,6 @@ end
 class LoopNode < Struct.new(:body, :comment)
   include Visitable
 end
-
-class BreakNode < LiteralNode
-  def initialize
-    super(nil)
-  end
-end
-
-class ContinueNode < LiteralNode
-  def initialize
-    super(nil)
-  end
-end
-
 
 class GetSymbolNode < Struct.new(:id, :instance)
   include Visitable
