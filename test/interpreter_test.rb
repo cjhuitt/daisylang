@@ -517,15 +517,15 @@ CODE
     @interpreter.eval(code)
     lights = @interpreter.context.symbol("TrafficLights", nil)
     assert_equal Constants["EnumCategory"], lights.runtime_class
-    assert_equal 3, lights.ruby_value.entries.count
+    assert_equal 3, lights.ruby_value.values.count
     red = @interpreter.context.symbol("RED", nil)
-    assert_equal Constants["EnumEntry"], red.runtime_class
+    assert_equal Constants["EnumValue"], red.runtime_class
     assert_equal 0, red.ruby_value.value.ruby_value
     yellow = @interpreter.context.symbol("YELLOW", nil)
-    assert_equal Constants["EnumEntry"], yellow.runtime_class
+    assert_equal Constants["EnumValue"], yellow.runtime_class
     assert_equal 1, yellow.ruby_value.value.ruby_value
     green = @interpreter.context.symbol("GREEN", nil)
-    assert_equal Constants["EnumEntry"], green.runtime_class
+    assert_equal Constants["EnumValue"], green.runtime_class
     assert_equal 2, green.ruby_value.value.ruby_value
   end
 
@@ -731,7 +731,7 @@ CODE
     assert_equal 77, sum.ruby_value
   end
 
-  def test_for_over_hash_by_entries
+  def test_for_over_hash_by_pairs
     code = <<-CODE
 last = none
 for entry in { "Alice" => 32, "Bob" => 45 }
