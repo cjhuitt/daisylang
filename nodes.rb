@@ -76,7 +76,7 @@ class WhileNode < Struct.new(:condition_block)
   include Visitable
 end
 
-class ForNode < Struct.new(:container, :variable, :body, :comment)
+class ForArrayNode < Struct.new(:container, :variable, :body, :comment)
   include Visitable
 end
 

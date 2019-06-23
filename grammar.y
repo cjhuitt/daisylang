@@ -221,8 +221,8 @@ rule
   ;
 
   Loop:
-    FOR IDENTIFIER IN Expression Block  { result = ForNode.new(val[3], val[1], val[4]) }
-  | FOR IDENTIFIER IN Expression Comment Block { result = ForNode.new(val[3], val[1], val[5], val[4]) }
+    FOR IDENTIFIER IN Expression Block  { result = ForArrayNode.new(val[3], val[1], val[4]) }
+  | FOR IDENTIFIER IN Expression Comment Block { result = ForArrayNode.new(val[3], val[1], val[5], val[4]) }
   | WHILE ConditionBlock                { result = WhileNode.new(val[1]) }
   | LOOP Block                          { result = LoopNode.new(val[1]) }
   | LOOP Comment Block                  { result = LoopNode.new(val[2], val[1]) }

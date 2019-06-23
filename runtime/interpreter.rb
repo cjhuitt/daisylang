@@ -158,9 +158,9 @@ class Interpreter
       end
     end
 
-    def visit_ForNode(node)
+    def visit_ForArrayNode(node)
       @should_break = false
-      debug_print("For node on #{node.container}")
+      debug_print("For array #{node.container}")
       container = node.container.accept(self)
       container.ruby_value.each do |item|
         context.assign_symbol(node.variable, nil, item)
