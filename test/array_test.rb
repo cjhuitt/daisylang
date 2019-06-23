@@ -26,6 +26,11 @@ class DaisyArrayTest < Test::Unit::TestCase
     assert_not_nil Constants["Array"].lookup("count")
   end
 
+  def test_indexable
+    assert_true Constants["Array"].has_contract(Constants["Indexable"].ruby_value)
+    assert_not_nil Constants["Array"].lookup("#")
+  end
+
   def test_append_single_value
     append = Constants["Array"].lookup("append!")
     assert_not_nil append
