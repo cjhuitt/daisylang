@@ -8,7 +8,7 @@ Constants["Hash"].def :toString do |interpreter, receiver, args|
   else
     stringify = Constants["Object"].lookup("to_str")
     strings = receiver.ruby_value.map { |key, value|
-      stringify.call(interpreter, item, []) + " => " +
+      stringify.call(interpreter, key, []) + " => " +
         stringify.call(interpreter, value, [])
     }
     Constants["String"].new( "{#{strings.join(", ")}}" )
@@ -16,7 +16,7 @@ Constants["Hash"].def :toString do |interpreter, receiver, args|
 end
 
 Constants["Hash"].def :+ do |interpreter, receiver, args|
-  result = receiver.ruby_value + args.first[1].ruby_value
+  result = receiver.ruby_value.update(args.first[1].ruby_value)
   Constants["Hash"].new(result)
 end
 
