@@ -40,7 +40,6 @@ A whole lot remains to make this go, but the highlights are
 + More contracts for built-in types
 + Contract checking, delegation
 + More reflection
-+ switch/case
 + Exception handling
 + Most error handling during parsing, interpretation (type safety, etc)
 + Mutability and constness checks
