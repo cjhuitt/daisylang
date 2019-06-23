@@ -832,4 +832,46 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_switch_case_with_comments
+    code = <<-CODE
+switch a
+    case 2
+        continue
+    case 3 ^ 2 // Trigger on squares
+        do_something()
+    // Something odd happened
+    else
+        pass
+
+CODE
+    expected = Nodes.new([
+      SwitchNode.new(
+        GetSymbolNode.new("a"),
+        [
+          ConditionBlockNode.new(
+            IntegerNode.new(2),
+            Nodes.new([ ContinueNode.new ])
+          ),
+          ConditionBlockNode.new(
+            SendMessageNode.new(
+              IntegerNode.new(3),
+              "^",
+              [ArgumentNode.new(nil, IntegerNode.new(2))]
+            ),
+            Nodes.new([
+              SendMessageNode.new(nil, "do_something", [])
+            ]),
+            CommentNode.new("// Trigger on squares\n")
+          )
+        ],
+        ConditionBlockNode.new(
+          nil,
+          Nodes.new([ PassNode.new ]),
+          CommentNode.new("// Something odd happened\n")
+        )
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end

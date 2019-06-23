@@ -66,22 +66,22 @@ class ConditionBlockNode < Struct.new(:condition, :body, :comment); end
 class IfNode < Struct.new(:condition_blocks, :else_block)
   include Visitable
 end
-
 class UnlessNode < Struct.new(:condition_block, :else_block)
   include Visitable
 end
-
 class WhileNode < Struct.new(:condition_block)
   include Visitable
 end
-
 class StandardForNode < Struct.new(:container, :variable, :body, :comment)
   include Visitable
 end
-
 class KeyValueForNode < Struct.new(:container, :key_symbol, :value_symbol, :body, :comment)
   include Visitable
 end
+class SwitchNode < Struct.new(:value, :condition_blocks, :else_block)
+  include Visitable
+end
+
 
 class LoopNode < Struct.new(:body, :comment)
   include Visitable

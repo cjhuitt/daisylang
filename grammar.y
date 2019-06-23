@@ -3,7 +3,7 @@ class Parser
 token BLOCKSTART BLOCKEND
 token METHOD CLASS CONTRACT IS ENUM
 token IDENTIFIER FIELD
-token IF ELSE UNLESS WHILE LOOP FOR IN
+token IF ELSE UNLESS WHILE LOOP FOR IN SWITCH CASE
 token BREAK CONTINUE PASS RETURN
 token NEWLINE
 token INTEGER STRING NONETYPE
@@ -200,6 +200,8 @@ rule
   | IF ConditionBlock ElseIfBlocks ElseBlock { result = IfNode.new(val[2].unshift(val[1]), val[3]) }
   | UNLESS ConditionBlock               { result = UnlessNode.new(val[1], nil) }
   | UNLESS ConditionBlock ElseBlock     { result = UnlessNode.new(val[1], val[2]) }
+  | SWITCH Expression BLOCKSTART CaseBlocks BLOCKEND { result = SwitchNode.new(val[1], val[3]) }
+  | SWITCH Expression BLOCKSTART CaseBlocks ElseBlock BLOCKEND { result = SwitchNode.new(val[1], val[3], val[4]) }
   ;
 
   ElseIfBlocks:
@@ -216,6 +218,16 @@ rule
     ELSE Block                          { result = ConditionBlockNode.new( nil, val[1]) }
   | ELSE Comment Block                  { result = ConditionBlockNode.new( nil, val[2], val[1]) }
   | Comment ELSE Block                  { result = ConditionBlockNode.new( nil, val[2], val[0]) }
+  ;
+
+  CaseBlocks:
+    CaseBlock                           { result = [val[0]] }
+  | CaseBlocks CaseBlock                { result = val[0] << val[1] }
+  ;
+
+  CaseBlock:
+    CASE ConditionBlock                 { result = val[1] }
+  | Comment CASE ConditionBlock         { val[2].comment = val[0]; result = val[2] }
   ;
 
   ConditionBlock:
