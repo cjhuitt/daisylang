@@ -38,17 +38,19 @@ class LexerTest < Test::Unit::TestCase
   end
 
   def test_recognizes_keywords
-    assert_equal [[:RETURN, "return"]], Lexer.new.tokenize("return")
-    assert_equal [[:PASS, "pass"]], Lexer.new.tokenize("pass")
     assert_equal [[:IF, "if"]], Lexer.new.tokenize("if")
     assert_equal [[:ELSE, "else"]], Lexer.new.tokenize("else")
     assert_equal [[:UNLESS, "unless"]], Lexer.new.tokenize("unless")
     assert_equal [[:WHILE, "while"]], Lexer.new.tokenize("while")
     assert_equal [[:LOOP, "loop"]], Lexer.new.tokenize("loop")
-    assert_equal [[:TRUE, "true"]], Lexer.new.tokenize("true")
-    assert_equal [[:FALSE, "false"]], Lexer.new.tokenize("false")
+
     assert_equal [[:BREAK, "break"]], Lexer.new.tokenize("break")
     assert_equal [[:CONTINUE, "continue"]], Lexer.new.tokenize("continue")
+    assert_equal [[:PASS, "pass"]], Lexer.new.tokenize("pass")
+    assert_equal [[:RETURN, "return"]], Lexer.new.tokenize("return")
+
+    assert_equal [[:TRUE, "true"]], Lexer.new.tokenize("true")
+    assert_equal [[:FALSE, "false"]], Lexer.new.tokenize("false")
     assert_equal [[:NONE, "none"]], Lexer.new.tokenize("none")
   end
 
