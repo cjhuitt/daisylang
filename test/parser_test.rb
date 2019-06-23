@@ -563,8 +563,7 @@ CODE
 
   def test_if_else_blocks
     code = <<-CODE
-if a?
-    none
+if a?: none
 else if b?
     none
 else if c?
@@ -582,7 +581,7 @@ CODE
             "?",
             []
           ),
-          Nodes.new([ NoneNode.new ])
+          NoneNode.new
         ),
         ConditionBlockNode.new(
           SendMessageNode.new(
