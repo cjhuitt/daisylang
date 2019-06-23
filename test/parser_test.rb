@@ -835,8 +835,10 @@ CODE
   def test_switch_case_with_comments
     code = <<-CODE
 switch a
+    case 1: break
     case 2
         continue
+    case 5: break // Prime
     case 3 ^ 2 // Trigger on squares
         do_something()
     // Something odd happened
@@ -849,8 +851,17 @@ CODE
         GetSymbolNode.new("a"),
         [
           ConditionBlockNode.new(
+            IntegerNode.new(1),
+            BreakNode.new
+          ),
+          ConditionBlockNode.new(
             IntegerNode.new(2),
             Nodes.new([ ContinueNode.new ])
+          ),
+          ConditionBlockNode.new(
+            IntegerNode.new(5),
+            BreakNode.new,
+            CommentNode.new("// Prime\n")
           ),
           ConditionBlockNode.new(
             SendMessageNode.new(
