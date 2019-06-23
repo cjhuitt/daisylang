@@ -80,6 +80,10 @@ class ForArrayNode < Struct.new(:container, :variable, :body, :comment)
   include Visitable
 end
 
+class ForHashNode < Struct.new(:container, :key_symbol, :value_symbol, :body, :comment)
+  include Visitable
+end
+
 class LoopNode < Struct.new(:body, :comment)
   include Visitable
 end

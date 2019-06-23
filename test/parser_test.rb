@@ -478,7 +478,7 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
-  def test_for_loop
+  def test_for_array_loop
     code = <<-CODE
 for a in b
     break
@@ -488,6 +488,24 @@ CODE
       ForArrayNode.new(
         GetSymbolNode.new("b"),
         "a",
+        Nodes.new([
+          BreakNode.new
+        ])
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_for_hash_loop
+    code = <<-CODE
+for a, b in c
+    break
+
+CODE
+    expected = Nodes.new([
+      ForHashNode.new(
+        GetSymbolNode.new("c"),
+        "a", "b",
         Nodes.new([
           BreakNode.new
         ])
