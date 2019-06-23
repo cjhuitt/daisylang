@@ -485,7 +485,7 @@ for a in b
 
 CODE
     expected = Nodes.new([
-      ForArrayNode.new(
+      StandardForNode.new(
         GetSymbolNode.new("b"),
         "a",
         Nodes.new([
@@ -503,7 +503,7 @@ for a, b in c
 
 CODE
     expected = Nodes.new([
-      ForHashNode.new(
+      KeyValueForNode.new(
         GetSymbolNode.new("c"),
         "a", "b",
         Nodes.new([
@@ -749,7 +749,7 @@ for a in b // Check everything
 
 CODE
     expected = Nodes.new([
-      ForArrayNode.new(
+      StandardForNode.new(
         GetSymbolNode.new("b"),
         "a",
         Nodes.new([

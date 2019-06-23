@@ -76,11 +76,11 @@ class WhileNode < Struct.new(:condition_block)
   include Visitable
 end
 
-class ForArrayNode < Struct.new(:container, :variable, :body, :comment)
+class StandardForNode < Struct.new(:container, :variable, :body, :comment)
   include Visitable
 end
 
-class ForHashNode < Struct.new(:container, :key_symbol, :value_symbol, :body, :comment)
+class KeyValueForNode < Struct.new(:container, :key_symbol, :value_symbol, :body, :comment)
   include Visitable
 end
 
