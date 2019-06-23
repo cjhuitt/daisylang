@@ -747,4 +747,19 @@ CODE
     assert_equal 45, last.ruby_value[1].ruby_value
   end
 
+  def test_indexing
+    code = <<-CODE
+array = [1, 2, 3, 4, 5]#3
+hash = { "a" => true, "b" => false, "c" => 42 }#"c"
+
+CODE
+    @interpreter.eval(code)
+    array = @interpreter.context.symbol("array", nil)
+    assert_equal Constants["Integer"], array.runtime_class
+    assert_equal 4, array.ruby_value
+    hash = @interpreter.context.symbol("hash", nil)
+    assert_equal Constants["Integer"], hash.runtime_class
+    assert_equal 42, hash.ruby_value
+  end
+
 end
