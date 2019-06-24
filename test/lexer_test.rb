@@ -7,7 +7,7 @@ class LexerTest < Test::Unit::TestCase
   end
 
   def test_int
-    expected = [[:INTEGER, 1]]
+    expected = [[:INTEGER, LexedChunk.new(1)]]
     assert_equal expected, Lexer.new.tokenize("1")
   end
 
@@ -29,7 +29,7 @@ class LexerTest < Test::Unit::TestCase
 
   def test_int_with_newline
     expected = [
-      [:INTEGER, 5], [:NEWLINE, LexedChunk.new("\n")]
+      [:INTEGER, LexedChunk.new(5)], [:NEWLINE, LexedChunk.new("\n")]
     ]
     assert_equal expected, Lexer.new.tokenize("5\n")
   end
@@ -207,8 +207,8 @@ CODE
         [:BLOCKSTART, LexedChunk.new(1)],
         [:RETURN, "return"], [:IDENTIFIER, "n"],
           ['*', " * "], ['(', "("], [:IDENTIFIER, "n"],
-          ['-', " - "], [:INTEGER, 1], [')', ")"],
-          ['/', " / "], [:INTEGER, 2],
+          ['-', " - "], [:INTEGER, LexedChunk.new(1)], [')', ")"],
+          ['/', " / "], [:INTEGER, LexedChunk.new(2)],
           [:NEWLINE, LexedChunk.new("\n")],
         [:BLOCKEND, LexedChunk.new(1)], [:NEWLINE, LexedChunk.new("\n")]
     ]
@@ -316,7 +316,7 @@ CODE
     assert_equal expected, Lexer.new.tokenize("for a, b in c")
     expected = [[:IDENTIFIER, "from"], ['( ', "( "],
                 [:IDENTIFIER, "in"], [':', ": "],
-                [:INTEGER, 0],
+                [:INTEGER, LexedChunk.new(0)],
                 [' )', " )"]]
     assert_equal expected, Lexer.new.tokenize("from( in: 0 )")
   end

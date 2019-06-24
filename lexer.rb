@@ -72,7 +72,7 @@ class Lexer
           tokens << [:COMMENT, sub]
           break
         elsif integer = sub[/\A(\d+)/, 1]
-          tokens << [:INTEGER, integer.to_i]
+          tokens << [:INTEGER, LexedChunk.new(integer.to_i)]
           i += integer.size
           debug_out("Extracted #{integer} (Integer)")
         elsif str = sub[/\A"([^"]*)"/, 1]
