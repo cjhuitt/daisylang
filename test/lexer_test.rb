@@ -20,19 +20,19 @@ class LexerTest < Test::Unit::TestCase
   end
 
   def test_empty_line
-    assert_equal [[:NEWLINE, "\n"]], Lexer.new.tokenize("\n")
+    assert_equal [[:NEWLINE, LexedChunk.new("\n")]], Lexer.new.tokenize("\n")
   end
 
   def test_int_with_newline
     expected = [
-      [:INTEGER, 5], [:NEWLINE, "\n"]
+      [:INTEGER, 5], [:NEWLINE, LexedChunk.new("\n")]
     ]
     assert_equal expected, Lexer.new.tokenize("5\n")
   end
 
   def test_ignores_whitespace_before_newlines
     expected = [
-      [:IDENTIFIER, "a"], [:NEWLINE, "\n"]
+      [:IDENTIFIER, "a"], [:NEWLINE, LexedChunk.new("\n")]
     ]
     assert_equal expected, Lexer.new.tokenize("a    \t \n")
   end
@@ -149,14 +149,14 @@ CODE
       [:METHOD, "Method:"], [:IDENTIFIER, "Integer"],
           [:IDENTIFIER, "Summation"], ['( ', "( "],
           [:IDENTIFIER, "n"], [':', ": "],
-          [:IDENTIFIER, "Integer"], [' )', " )"], [:NEWLINE, "\n"],
+          [:IDENTIFIER, "Integer"], [' )', " )"], [:NEWLINE, LexedChunk.new("\n")],
       [:BLOCKSTART, 1],
         [:RETURN, "return"], [:IDENTIFIER, "n"],
           ['*', " * "], ['(', "("], [:IDENTIFIER, "n"],
           ['-', " - "], [:INTEGER, 1], [')', ")"],
           ['/', " / "], [:INTEGER, 2],
-          [:NEWLINE, "\n"],
-      [:BLOCKEND, 1], [:NEWLINE, "\n"]
+          [:NEWLINE, LexedChunk.new("\n")],
+        [:BLOCKEND, 1], [:NEWLINE, LexedChunk.new("\n")]
     ]
   end
 
@@ -167,7 +167,7 @@ CODE
     expected = [
       [:IDENTIFIER, "print"], ['( ', "( "],
       [:STRING, "Hello World"], [' )', " )"],
-      [:NEWLINE, "\n"]
+      [:NEWLINE, LexedChunk.new("\n")]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
   end
@@ -206,7 +206,7 @@ CODE
       [:IDENTIFIER, "Greet"], ['( ', "( "],
       [:IDENTIFIER, "name"], [':', ": "], [:STRING, "Caleb"], [',', ", "],
       [:IDENTIFIER, "greeting"], [':', ": "], [:STRING, "Hey"],
-      [' )', " )"], [:NEWLINE, "\n"]
+      [' )', " )"], [:NEWLINE, LexedChunk.new("\n")]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
   end
@@ -279,7 +279,7 @@ CODE
       [:IDENTIFIER, "b"],
       [:BLOCKSTART, 1],
         [:NONE, "none"],
-      [:BLOCKEND, 1], [:NEWLINE, "\n"]
+      [:BLOCKEND, 1], [:NEWLINE, LexedChunk.new("\n")]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
   end

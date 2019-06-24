@@ -1,3 +1,9 @@
+class LexedChunk < Struct.new(:text)
+  def initialize(text)
+    super(text)
+  end
+end
+
 class Lexer
   def initialize(debug=false)
     @string_accumulator = nil
@@ -192,7 +198,7 @@ class Lexer
           i += op.size
           debug_out("Extracted #{op} (Operator)")
         elsif space = sub[/\A(\s*\n)/m, 1]
-          tokens << [:NEWLINE, "\n"]
+          tokens << [:NEWLINE, LexedChunk.new("\n")]
           i += space.size
           debug_out("Extracted newline")
         elsif space = sub[/\A(\s+)/, 1]
