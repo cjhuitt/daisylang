@@ -69,7 +69,7 @@ class Lexer
         sub = line[i..-1]
         debug_out("Checking partial >>#{sub}<<")
         if "//" == sub[0..1]
-          tokens << [:COMMENT, sub]
+          tokens << [:COMMENT, LexedChunk.new(sub)]
           break
         elsif integer = sub[/\A(\d+)/, 1]
           tokens << [:INTEGER, LexedChunk.new(integer.to_i)]
@@ -99,7 +99,7 @@ class Lexer
           debug_out("Extracted Enumerate: (Definition)")
           i += "Enumerate: ".size
         elsif sub.start_with? "is "
-          tokens << [:IS, "is"]
+          tokens << [:IS, LexedChunk.new("is")]
           debug_out("Extracted is (Keyword)")
           i += "is ".size
         elsif identifier = sub[/\A(\w+\.\w+)(\)|\s|$)/, 1]
@@ -111,11 +111,11 @@ class Lexer
           i += 1 # period
 
           id = sub[/\A(\w+)\.(\w+)/, 2]
-          tokens << [:FIELD, id]
+          tokens << [:FIELD, LexedChunk.new(id)]
           debug_out("Extracted #{id} (Field)")
           i += id.size
         elsif identifier = sub[/\Afor (\w+) in/, 1]
-          tokens << [:FOR, "for"]
+          tokens << [:FOR, LexedChunk.new("for")]
           debug_out("Extracted for (Keyword)")
           i += 4 # "for "
 
@@ -123,11 +123,11 @@ class Lexer
           debug_out("Extracted #{identifier} (Identifier)")
           i += identifier.size
 
-          tokens << [:IN, "in"]
+          tokens << [:IN, LexedChunk.new("in")]
           debug_out("Extracted in (Keyword)")
           i += 3 # "in "
         elsif identifiers = sub[/\Afor (\w+, \w+) in/, 1]
-          tokens << [:FOR, "for"]
+          tokens << [:FOR, LexedChunk.new("for")]
           debug_out("Extracted for (Keyword)")
           i += 4 # "for "
 
@@ -143,7 +143,7 @@ class Lexer
           debug_out("Extracted #{val} (Identifier)")
           i += identifiers.size
 
-          tokens << [:IN, "in"]
+          tokens << [:IN, LexedChunk.new("in")]
           debug_out("Extracted in (Keyword)")
           i += 3 # "in "
         elsif identifier = sub[/\A(\w+[\?!])\(/, 1]

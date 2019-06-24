@@ -236,7 +236,7 @@ CODE
 
   def test_member_variable
     expected = [
-      [:IDENTIFIER, LexedChunk.new("a")], [:FIELD, "b"]
+      [:IDENTIFIER, LexedChunk.new("a")], [:FIELD, LexedChunk.new("b")]
     ]
     assert_equal expected, Lexer.new.tokenize("a.b")
   end
@@ -244,9 +244,9 @@ CODE
   def test_member_variable_in_subexpression
     expected = [
       ['(', "("],
-      [:IDENTIFIER, LexedChunk.new("a")], [:FIELD, "b"],
+      [:IDENTIFIER, LexedChunk.new("a")], [:FIELD, LexedChunk.new("b")],
       ['+', " + "],
-      [:IDENTIFIER, LexedChunk.new("a")], [:FIELD, "b"],
+      [:IDENTIFIER, LexedChunk.new("a")], [:FIELD, LexedChunk.new("b")],
       [')', ")"]
     ]
     assert_equal expected, Lexer.new.tokenize("(a.b + a.b)")
@@ -267,7 +267,7 @@ CODE
 
   def test_comment
     expected = [
-      [:COMMENT, "// true"]
+      [:COMMENT, LexedChunk.new("// true")]
     ]
     assert_equal expected, Lexer.new.tokenize("// true")
   end
@@ -289,7 +289,7 @@ CODE
                 [:IDENTIFIER, LexedChunk.new("b")],
                 [' )', " )"]]
     assert_equal expected, Lexer.new.tokenize("a?( b )")
-    expected = [[:IS, "is"]]
+    expected = [[:IS, LexedChunk.new("is")]]
     assert_equal expected, Lexer.new.tokenize("is ")
     expected = [[:IDENTIFIER, LexedChunk.new("is")],
                 ["?", "?"]]
@@ -302,16 +302,16 @@ CODE
                 [:IDENTIFIER, LexedChunk.new("a!")],
                 ['()', "()"]]
     assert_equal expected, Lexer.new.tokenize("b.a!()")
-    expected = [[:FOR, "for"],
+    expected = [[:FOR, LexedChunk.new("for")],
                 [:IDENTIFIER, LexedChunk.new("a")],
-                [:IN, "in"],
+                [:IN, LexedChunk.new("in")],
                 [:IDENTIFIER, LexedChunk.new("b")]]
     assert_equal expected, Lexer.new.tokenize("for a in b")
-    expected = [[:FOR, "for"],
+    expected = [[:FOR, LexedChunk.new("for")],
                 [:IDENTIFIER, LexedChunk.new("a")],
                 [',', ", "],
                 [:IDENTIFIER, LexedChunk.new("b")],
-                [:IN, "in"],
+                [:IN, LexedChunk.new("in")],
                 [:IDENTIFIER, LexedChunk.new("c")]]
     assert_equal expected, Lexer.new.tokenize("for a, b in c")
     expected = [[:IDENTIFIER, LexedChunk.new("from")], ['( ', "( "],
@@ -328,8 +328,8 @@ for a in b
 
 CODE
     expected = [
-      [:FOR, "for"],
-      [:IDENTIFIER, LexedChunk.new("a")], [:IN, "in"],
+      [:FOR, LexedChunk.new("for")],
+      [:IDENTIFIER, LexedChunk.new("a")], [:IN, LexedChunk.new("in")],
       [:IDENTIFIER, LexedChunk.new("b")],
       [:BLOCKSTART, LexedChunk.new(1)],
         [:NONE, LexedChunk.new("none")],
