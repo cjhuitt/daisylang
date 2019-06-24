@@ -59,7 +59,7 @@ rule
   ;
 
   Typename:
-    IDENTIFIER                          { result = val[0] }
+    IDENTIFIER                          { result = val[0].value }
   | NONETYPE                            { result = NoneNode.new }
   ;
 
@@ -73,8 +73,8 @@ rule
   ;
 
   Message:
-    Expression "." IDENTIFIER ArgumentList { result = SendMessageNode.new(val[0], val[2], val[3]) }
-  | IDENTIFIER ArgumentList             { result = SendMessageNode.new(nil, val[0], val[1]) }
+    Expression "." IDENTIFIER ArgumentList { result = SendMessageNode.new(val[0], val[2].value, val[3]) }
+  | IDENTIFIER ArgumentList             { result = SendMessageNode.new(nil, val[0].value, val[1]) }
   ;
 
   ArgumentList:
@@ -89,7 +89,7 @@ rule
 
   Argument:
     Expression                          { result = ArgumentNode.new(nil, val[0]) }
-  | IDENTIFIER ":" Expression           { result = ArgumentNode.new(val[0], val[2]) }
+  | IDENTIFIER ":" Expression           { result = ArgumentNode.new(val[0].value, val[2]) }
   ;
 
   # Need to be defined individually for the precedence table to take effect:
@@ -113,13 +113,13 @@ rule
   ;
 
   Define:
-    METHOD Typename IDENTIFIER ParameterList Block { result = DefineMethodNode.new(val[2], val[1], val[3], val[4]) }
-  | METHOD IDENTIFIER ParameterList Block { result = DefineMethodNode.new(val[1], NoneNode.new, val[2], val[3]) }
-  | CLASS IDENTIFIER Block              { result = DefineClassNode.new(val[1], [], val[2]) }
-  | CLASS IDENTIFIER IS Contracts Block { result = DefineClassNode.new(val[1], val[3], val[4]) }
-  | CONTRACT IDENTIFIER Block           { result = DefineContractNode.new(val[1], val[2]) }
-  | METHOD Typename IDENTIFIER ParameterList { result = DefineMethodNode.new(val[2], val[1], val[3], NoneNode.new) }
-  | ENUM IDENTIFIER EnumBlock           { result = EnumerateNode.new(val[1], val[2]) }
+    METHOD Typename IDENTIFIER ParameterList Block { result = DefineMethodNode.new(val[2].value, val[1], val[3], val[4]) }
+  | METHOD IDENTIFIER ParameterList Block { result = DefineMethodNode.new(val[1].value, NoneNode.new, val[2], val[3]) }
+  | CLASS IDENTIFIER Block              { result = DefineClassNode.new(val[1].value, [], val[2]) }
+  | CLASS IDENTIFIER IS Contracts Block { result = DefineClassNode.new(val[1].value, val[3], val[4]) }
+  | CONTRACT IDENTIFIER Block           { result = DefineContractNode.new(val[1].value, val[2]) }
+  | METHOD Typename IDENTIFIER ParameterList { result = DefineMethodNode.new(val[2].value, val[1], val[3], NoneNode.new) }
+  | ENUM IDENTIFIER EnumBlock           { result = EnumerateNode.new(val[1].value, val[2]) }
   ;
 
   ParameterList:
@@ -133,7 +133,7 @@ rule
   ;
 
   Parameter:
-    IDENTIFIER ":" Expression           { result = ParameterNode.new(val[0], val[2]) }
+    IDENTIFIER ":" Expression           { result = ParameterNode.new(val[0].value, val[2]) }
   ;
 
   Contracts:
@@ -142,7 +142,7 @@ rule
   ;
 
   Contract:
-    IDENTIFIER                          { result = val[0] }
+    IDENTIFIER                          { result = val[0].value }
   ;
 
   Block:
@@ -159,7 +159,7 @@ rule
   ;
 
   EnumDefinition:
-    IDENTIFIER                          { result = SetSymbolNode.new(val[0], nil, nil) }
+    IDENTIFIER                          { result = SetSymbolNode.new(val[0].value, nil, nil) }
   ;
 
   Return:
@@ -241,10 +241,10 @@ rule
   ;
 
   Loop:
-    FOR IDENTIFIER IN Expression Block  { result = StandardForNode.new(val[3], val[1], val[4]) }
-  | FOR IDENTIFIER IN Expression Comment Block { result = StandardForNode.new(val[3], val[1], val[5], val[4]) }
-  | FOR IDENTIFIER ',' IDENTIFIER IN Expression Block  { result = KeyValueForNode.new(val[5], val[1], val[3], val[6]) }
-  | FOR IDENTIFIER ',' IDENTIFIER IN Expression Comment Block { result = KeyValueForNode.new(val[5], val[1], val[3], val[7], val[6]) }
+    FOR IDENTIFIER IN Expression Block  { result = StandardForNode.new(val[3], val[1].value, val[4]) }
+  | FOR IDENTIFIER IN Expression Comment Block { result = StandardForNode.new(val[3], val[1].value, val[5], val[4]) }
+  | FOR IDENTIFIER ',' IDENTIFIER IN Expression Block  { result = KeyValueForNode.new(val[5], val[1].value, val[3].value, val[6]) }
+  | FOR IDENTIFIER ',' IDENTIFIER IN Expression Comment Block { result = KeyValueForNode.new(val[5], val[1].value, val[3].value, val[7], val[6]) }
   | WHILE ConditionBlock                { result = WhileNode.new(val[1]) }
   | LOOP Block                          { result = LoopNode.new(val[1]) }
   | LOOP Comment Block                  { result = LoopNode.new(val[2], val[1]) }
@@ -256,13 +256,13 @@ rule
   ;
 
   GetSymbol:
-    IDENTIFIER                          { result = GetSymbolNode.new(val[0], nil) }
-  | IDENTIFIER FIELD                    { result = GetSymbolNode.new(val[1], val[0]) }
+    IDENTIFIER                          { result = GetSymbolNode.new(val[0].value, nil) }
+  | IDENTIFIER FIELD                    { result = GetSymbolNode.new(val[1], val[0].value) }
   ;
 
   SetSymbol:
-    IDENTIFIER "=" Expression           { result = SetSymbolNode.new(val[0], val[2], nil) }
-  | IDENTIFIER FIELD "=" Expression     { result = SetSymbolNode.new(val[1], val[3], val[0]) }
+    IDENTIFIER "=" Expression           { result = SetSymbolNode.new(val[0].value, val[2], nil) }
+  | IDENTIFIER FIELD "=" Expression     { result = SetSymbolNode.new(val[1], val[3], val[0].value) }
   ;
 
   Comment:

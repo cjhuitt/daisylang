@@ -104,7 +104,7 @@ class Lexer
           i += "is ".size
         elsif identifier = sub[/\A(\w+\.\w+)(\)|\s|$)/, 1]
           id = sub[/\A(\w+)/, 1]
-          tokens << [:IDENTIFIER, id]
+          tokens << [:IDENTIFIER, LexedChunk.new(id)]
           debug_out("Extracted #{id} (Identifier)")
           i += id.size
 
@@ -119,7 +119,7 @@ class Lexer
           debug_out("Extracted for (Keyword)")
           i += 4 # "for "
 
-          tokens << [:IDENTIFIER, identifier]
+          tokens << [:IDENTIFIER, LexedChunk.new(identifier)]
           debug_out("Extracted #{identifier} (Identifier)")
           i += identifier.size
 
@@ -132,14 +132,14 @@ class Lexer
           i += 4 # "for "
 
           key = identifiers.split(", ").first
-          tokens << [:IDENTIFIER, key]
+          tokens << [:IDENTIFIER, LexedChunk.new(key)]
           debug_out("Extracted #{key} (Identifier)")
 
           tokens << [',', ", "]
           debug_out("Extracted , (Operator)")
 
           val = identifiers.split(", ").last
-          tokens << [:IDENTIFIER, val]
+          tokens << [:IDENTIFIER, LexedChunk.new(val)]
           debug_out("Extracted #{val} (Identifier)")
           i += identifiers.size
 
@@ -147,7 +147,7 @@ class Lexer
           debug_out("Extracted in (Keyword)")
           i += 3 # "in "
         elsif identifier = sub[/\A(\w+[\?!])\(/, 1]
-          tokens << [:IDENTIFIER, identifier]
+          tokens << [:IDENTIFIER, LexedChunk.new(identifier)]
           debug_out("Extracted #{identifier} (Identifier)")
           i += identifier.size
         elsif identifier = sub[/\A(\w+)/, 1]
@@ -159,7 +159,7 @@ class Lexer
             end
             debug_out("Extracted #{identifier} (Keyword)")
           else
-            tokens << [:IDENTIFIER, identifier]
+            tokens << [:IDENTIFIER, LexedChunk.new(identifier)]
             debug_out("Extracted #{identifier} (Identifier)")
           end
           i += identifier.size
