@@ -42,35 +42,35 @@ class LexerTest < Test::Unit::TestCase
   end
 
   def test_recognizes_keywords
-    expected = [[:IF, "if"]]
+    expected = [[:IF, LexedChunk.new("if")]]
     assert_equal expected, Lexer.new.tokenize("if")
-    expected = [[:ELSE, "else"]]
+    expected = [[:ELSE, LexedChunk.new("else")]]
     assert_equal expected, Lexer.new.tokenize("else")
-    expected = [[:UNLESS, "unless"]]
+    expected = [[:UNLESS, LexedChunk.new("unless")]]
     assert_equal expected, Lexer.new.tokenize("unless")
-    expected = [[:WHILE, "while"]]
+    expected = [[:WHILE, LexedChunk.new("while")]]
     assert_equal expected, Lexer.new.tokenize("while")
-    expected = [[:LOOP, "loop"]]
+    expected = [[:LOOP, LexedChunk.new("loop")]]
     assert_equal expected, Lexer.new.tokenize("loop")
-    expected = [[:SWITCH, "switch"]]
+    expected = [[:SWITCH, LexedChunk.new("switch")]]
     assert_equal expected, Lexer.new.tokenize("switch")
-    expected = [[:CASE, "case"]]
+    expected = [[:CASE, LexedChunk.new("case")]]
     assert_equal expected, Lexer.new.tokenize("case")
 
-    expected = [[:BREAK, "break"]]
+    expected = [[:BREAK, LexedChunk.new("break")]]
     assert_equal expected, Lexer.new.tokenize("break")
-    expected = [[:CONTINUE, "continue"]]
+    expected = [[:CONTINUE, LexedChunk.new("continue")]]
     assert_equal expected, Lexer.new.tokenize("continue")
-    expected = [[:PASS, "pass"]]
+    expected = [[:PASS, LexedChunk.new("pass")]]
     assert_equal expected, Lexer.new.tokenize("pass")
-    expected = [[:RETURN, "return"]]
+    expected = [[:RETURN, LexedChunk.new("return")]]
     assert_equal expected, Lexer.new.tokenize("return")
 
-    expected = [[:TRUE, "true"]]
+    expected = [[:TRUE, LexedChunk.new("true")]]
     assert_equal expected, Lexer.new.tokenize("true")
-    expected = [[:FALSE, "false"]]
+    expected = [[:FALSE, LexedChunk.new("false")]]
     assert_equal expected, Lexer.new.tokenize("false")
-    expected = [[:NONE, "none"]]
+    expected = [[:NONE, LexedChunk.new("none")]]
     assert_equal expected, Lexer.new.tokenize("none")
   end
 
@@ -332,7 +332,7 @@ CODE
       [:IDENTIFIER, LexedChunk.new("a")], [:IN, "in"],
       [:IDENTIFIER, LexedChunk.new("b")],
       [:BLOCKSTART, LexedChunk.new(1)],
-        [:NONE, "none"],
+        [:NONE, LexedChunk.new("none")],
       [:BLOCKEND, LexedChunk.new(1)], [:NEWLINE, LexedChunk.new("\n")]
     ]
     assert_equal expected, Lexer.new.tokenize(code)

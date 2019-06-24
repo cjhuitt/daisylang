@@ -155,7 +155,7 @@ class Lexer
             if identifier == "None"
               tokens << [:NONETYPE, identifier]
             else
-              tokens << [identifier.upcase.to_sym, identifier]
+              tokens << [identifier.upcase.to_sym, LexedChunk.new(identifier)]
             end
             debug_out("Extracted #{identifier} (Keyword)")
           else
