@@ -12,11 +12,11 @@ class Lexer
       if indent = line[/\A( +)/, 1]
         blocks = indent.size / 4
         if blocks == blocklevel + 1
-          tokens.pop if tokens.last == [:NEWLINE, "\n"]
+          tokens.pop if tokens.last && tokens.last.first == :NEWLINE
           tokens << [:BLOCKSTART, blocks]
           blocklevel = blocks
         else blocks < blocklevel
-          tokens.pop if tokens.last == [:NEWLINE, "\n"]
+          tokens.pop if tokens.last && tokens.last.first == :NEWLINE
           while blocks < blocklevel
             tokens << [:BLOCKEND, blocklevel]
             blocklevel -= 1
@@ -24,11 +24,11 @@ class Lexer
         end
         line.delete_prefix!("    " * blocklevel)
       elsif 0 < blocklevel
-          tokens.pop if tokens.last == [:NEWLINE, "\n"]
-          while 0 < blocklevel
-            tokens << [:BLOCKEND, blocklevel]
-            blocklevel -= 1
-          end
+        tokens.pop if tokens.last && tokens.last.first == :NEWLINE
+        while 0 < blocklevel
+          tokens << [:BLOCKEND, blocklevel]
+          blocklevel -= 1
+        end
       end if @string_accumulator.nil?
       tokens += tokenize_line(line)
     end
