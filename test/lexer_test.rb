@@ -7,20 +7,24 @@ class LexerTest < Test::Unit::TestCase
   end
 
   def test_int
-    assert_equal [[:INTEGER, 1]], Lexer.new.tokenize("1")
+    expected = [[:INTEGER, 1]]
+    assert_equal expected, Lexer.new.tokenize("1")
   end
 
   def test_string
-    assert_equal [[:STRING, "Greetings  fools"]], Lexer.new.tokenize('"Greetings  fools"')
+    expected = [[:STRING, "Greetings  fools"]]
+    assert_equal expected, Lexer.new.tokenize('"Greetings  fools"')
   end
 
   def test_string_with_linewraps
     code = "\"Greetings\n\n    fools\""
-    assert_equal [[:STRING, "Greetings\n\n    fools"]], Lexer.new.tokenize(code)
+    expected = [[:STRING, "Greetings\n\n    fools"]]
+    assert_equal expected, Lexer.new.tokenize(code)
   end
 
   def test_empty_line
-    assert_equal [[:NEWLINE, "\n"]], Lexer.new.tokenize("\n")
+    expected = [[:NEWLINE, "\n"]]
+    assert_equal expected, Lexer.new.tokenize("\n")
   end
 
   def test_int_with_newline
@@ -38,67 +42,117 @@ class LexerTest < Test::Unit::TestCase
   end
 
   def test_recognizes_keywords
-    assert_equal [[:IF, "if"]], Lexer.new.tokenize("if")
-    assert_equal [[:ELSE, "else"]], Lexer.new.tokenize("else")
-    assert_equal [[:UNLESS, "unless"]], Lexer.new.tokenize("unless")
-    assert_equal [[:WHILE, "while"]], Lexer.new.tokenize("while")
-    assert_equal [[:LOOP, "loop"]], Lexer.new.tokenize("loop")
-    assert_equal [[:SWITCH, "switch"]], Lexer.new.tokenize("switch")
-    assert_equal [[:CASE, "case"]], Lexer.new.tokenize("case")
+    expected = [[:IF, "if"]]
+    assert_equal expected, Lexer.new.tokenize("if")
+    expected = [[:ELSE, "else"]]
+    assert_equal expected, Lexer.new.tokenize("else")
+    expected = [[:UNLESS, "unless"]]
+    assert_equal expected, Lexer.new.tokenize("unless")
+    expected = [[:WHILE, "while"]]
+    assert_equal expected, Lexer.new.tokenize("while")
+    expected = [[:LOOP, "loop"]]
+    assert_equal expected, Lexer.new.tokenize("loop")
+    expected = [[:SWITCH, "switch"]]
+    assert_equal expected, Lexer.new.tokenize("switch")
+    expected = [[:CASE, "case"]]
+    assert_equal expected, Lexer.new.tokenize("case")
 
-    assert_equal [[:BREAK, "break"]], Lexer.new.tokenize("break")
-    assert_equal [[:CONTINUE, "continue"]], Lexer.new.tokenize("continue")
-    assert_equal [[:PASS, "pass"]], Lexer.new.tokenize("pass")
-    assert_equal [[:RETURN, "return"]], Lexer.new.tokenize("return")
+    expected = [[:BREAK, "break"]]
+    assert_equal expected, Lexer.new.tokenize("break")
+    expected = [[:CONTINUE, "continue"]]
+    assert_equal expected, Lexer.new.tokenize("continue")
+    expected = [[:PASS, "pass"]]
+    assert_equal expected, Lexer.new.tokenize("pass")
+    expected = [[:RETURN, "return"]]
+    assert_equal expected, Lexer.new.tokenize("return")
 
-    assert_equal [[:TRUE, "true"]], Lexer.new.tokenize("true")
-    assert_equal [[:FALSE, "false"]], Lexer.new.tokenize("false")
-    assert_equal [[:NONE, "none"]], Lexer.new.tokenize("none")
+    expected = [[:TRUE, "true"]]
+    assert_equal expected, Lexer.new.tokenize("true")
+    expected = [[:FALSE, "false"]]
+    assert_equal expected, Lexer.new.tokenize("false")
+    expected = [[:NONE, "none"]]
+    assert_equal expected, Lexer.new.tokenize("none")
   end
 
   def test_recognizes_identifiers
-    assert_equal [[:IDENTIFIER, "Integer"]], Lexer.new.tokenize("Integer")
-    assert_equal [[:IDENTIFIER, "None"]], Lexer.new.tokenize("None")
-    assert_equal [[:IDENTIFIER, "Method"]], Lexer.new.tokenize("Method")
-    assert_equal [[:METHOD, "Method:"]], Lexer.new.tokenize("Method: ")
-    assert_equal [[:IDENTIFIER, "Class"]], Lexer.new.tokenize("Class")
-    assert_equal [[:CONTRACT, "Contract:"]], Lexer.new.tokenize("Contract: ")
-    assert_equal [[:IDENTIFIER, "Contract"]], Lexer.new.tokenize("Contract")
-    assert_equal [[:CLASS, "Class:"]], Lexer.new.tokenize("Class: ")
-    assert_equal [[:ENUM, "Enumerate:"]], Lexer.new.tokenize("Enumerate: ")
+    expected = [[:IDENTIFIER, "Integer"]]
+    assert_equal expected, Lexer.new.tokenize("Integer")
+    expected = [[:IDENTIFIER, "None"]]
+    assert_equal expected, Lexer.new.tokenize("None")
+    expected = [[:IDENTIFIER, "Method"]]
+    assert_equal expected, Lexer.new.tokenize("Method")
+    expected = [[:METHOD, "Method:"]]
+    assert_equal expected, Lexer.new.tokenize("Method: ")
+    expected = [[:IDENTIFIER, "Class"]]
+    assert_equal expected, Lexer.new.tokenize("Class")
+    expected = [[:CONTRACT, "Contract:"]]
+    assert_equal expected, Lexer.new.tokenize("Contract: ")
+    expected = [[:IDENTIFIER, "Contract"]]
+    assert_equal expected, Lexer.new.tokenize("Contract")
+    expected = [[:CLASS, "Class:"]]
+    assert_equal expected, Lexer.new.tokenize("Class: ")
+    expected = [[:ENUM, "Enumerate:"]]
+    assert_equal expected, Lexer.new.tokenize("Enumerate: ")
   end
 
   def test_recognizes_simple_operators
-    assert_equal [['=', " = "]], Lexer.new.tokenize(" = ")
-    assert_equal [['+', " + "]], Lexer.new.tokenize(" + ")
-    assert_equal [['-', " - "]], Lexer.new.tokenize(" - ")
-    assert_equal [['*', " * "]], Lexer.new.tokenize(" * ")
-    assert_equal [['/', " / "]], Lexer.new.tokenize(" / ")
-    assert_equal [['^', " ^ "]], Lexer.new.tokenize(" ^ ")
-    assert_equal [[':', ": "]], Lexer.new.tokenize(": ")
-    assert_equal [[',', ", "]], Lexer.new.tokenize(", ")
-    assert_equal [[',', ", "]], Lexer.new.tokenize(",\n")
-    assert_equal [['( ', "( "]], Lexer.new.tokenize("( ")
-    assert_equal [[' )', " )"]], Lexer.new.tokenize(" )")
-    assert_equal [['(', "("]], Lexer.new.tokenize("(")
-    assert_equal [[')', ")"]], Lexer.new.tokenize(")")
-    assert_equal [['?', "?"]], Lexer.new.tokenize("?")
-    assert_equal [['!', "!"]], Lexer.new.tokenize("!")
-    assert_equal [['[', "["]], Lexer.new.tokenize("[")
-    assert_equal [[']', "]"]], Lexer.new.tokenize("]")
-    assert_equal [['{', "{"]], Lexer.new.tokenize("{")
-    assert_equal [['}', "}"]], Lexer.new.tokenize("}")
-    assert_equal [['#', "#"]], Lexer.new.tokenize("#")
+    expected = [['=', " = "]]
+    assert_equal expected, Lexer.new.tokenize(" = ")
+    expected = [['+', " + "]]
+    assert_equal expected, Lexer.new.tokenize(" + ")
+    expected = [['-', " - "]]
+    assert_equal expected, Lexer.new.tokenize(" - ")
+    expected = [['*', " * "]]
+    assert_equal expected, Lexer.new.tokenize(" * ")
+    expected = [['/', " / "]]
+    assert_equal expected, Lexer.new.tokenize(" / ")
+    expected = [['^', " ^ "]]
+    assert_equal expected, Lexer.new.tokenize(" ^ ")
+    expected = [[':', ": "]]
+    assert_equal expected, Lexer.new.tokenize(": ")
+    expected = [[',', ", "]]
+    assert_equal expected, Lexer.new.tokenize(", ")
+    expected = [[',', ", "]]
+    assert_equal expected, Lexer.new.tokenize(",\n")
+    expected = [['( ', "( "]]
+    assert_equal expected, Lexer.new.tokenize("( ")
+    expected = [[' )', " )"]]
+    assert_equal expected, Lexer.new.tokenize(" )")
+    expected = [['(', "("]]
+    assert_equal expected, Lexer.new.tokenize("(")
+    expected = [[')', ")"]]
+    assert_equal expected, Lexer.new.tokenize(")")
+    expected = [['?', "?"]]
+    assert_equal expected, Lexer.new.tokenize("?")
+    expected = [['!', "!"]]
+    assert_equal expected, Lexer.new.tokenize("!")
+    expected = [['[', "["]]
+    assert_equal expected, Lexer.new.tokenize("[")
+    expected = [[']', "]"]]
+    assert_equal expected, Lexer.new.tokenize("]")
+    expected = [['{', "{"]]
+    assert_equal expected, Lexer.new.tokenize("{")
+    expected = [['}', "}"]]
+    assert_equal expected, Lexer.new.tokenize("}")
+    expected = [['#', "#"]]
+    assert_equal expected, Lexer.new.tokenize("#")
   end
 
   def test_recognizes_multichar_operators
-    assert_equal [['&&', "&&"]], Lexer.new.tokenize("&&")
-    assert_equal [['||', "||"]], Lexer.new.tokenize("||")
-    assert_equal [['==', "=="]], Lexer.new.tokenize("==")
-    assert_equal [['!=', "!="]], Lexer.new.tokenize("!=")
-    assert_equal [['>=', ">="]], Lexer.new.tokenize(">=")
-    assert_equal [['<=', "<="]], Lexer.new.tokenize("<=")
-    assert_equal [['=>', "=>"]], Lexer.new.tokenize("=>")
+    expected = [['&&', "&&"]]
+    assert_equal expected, Lexer.new.tokenize("&&")
+    expected = [['||', "||"]]
+    assert_equal expected, Lexer.new.tokenize("||")
+    expected = [['==', "=="]]
+    assert_equal expected, Lexer.new.tokenize("==")
+    expected = [['!=', "!="]]
+    assert_equal expected, Lexer.new.tokenize("!=")
+    expected = [['>=', ">="]]
+    assert_equal expected, Lexer.new.tokenize(">=")
+    expected = [['<=', "<="]]
+    assert_equal expected, Lexer.new.tokenize("<=")
+    expected = [['=>', "=>"]]
+    assert_equal expected, Lexer.new.tokenize("=>")
   end
 
   def test_finds_multiple_tokens_on_a_line
@@ -219,41 +273,69 @@ CODE
   end
 
   def test_distinguishes_potentially_ambiguous_portions
-    assert_equal [[:IDENTIFIER, "a"],
-                  ["?", "?"]], Lexer.new.tokenize("a?")
-    assert_equal [[:IDENTIFIER, "b"],
-                  ['.', "."],
-                  [:IDENTIFIER, "a?"],
-                  ['()', "()"]], Lexer.new.tokenize("b.a?()")
-    assert_equal [[:IDENTIFIER, "a?"],
-                  ['()', "()"]], Lexer.new.tokenize("a?()")
-    assert_equal [[:IDENTIFIER, "a?"],
-                  ['( ', "( "],
-                  [:IDENTIFIER, "b"],
-                  [' )', " )"]], Lexer.new.tokenize("a?( b )")
-    assert_equal [[:IS, "is"]], Lexer.new.tokenize("is ")
-    assert_equal [[:IDENTIFIER, "is"],
-                  ["?", "?"]], Lexer.new.tokenize("is?")
-    assert_equal [["!", "!"],
-                  [:IDENTIFIER, "a"]], Lexer.new.tokenize("!a")
-    assert_equal [[:IDENTIFIER, "b"],
-                  ['.', "."],
-                  [:IDENTIFIER, "a!"],
-                  ['()', "()"]], Lexer.new.tokenize("b.a!()")
-    assert_equal [[:FOR, "for"],
-                  [:IDENTIFIER, "a"],
-                  [:IN, "in"],
-                  [:IDENTIFIER, "b"]], Lexer.new.tokenize("for a in b")
-    assert_equal [[:FOR, "for"],
-                  [:IDENTIFIER, "a"],
-                  [',', ", "],
-                  [:IDENTIFIER, "b"],
-                  [:IN, "in"],
-                  [:IDENTIFIER, "c"]], Lexer.new.tokenize("for a, b in c")
-    assert_equal [[:IDENTIFIER, "from"], ['( ', "( "],
-                  [:IDENTIFIER, "in"], [':', ": "],
-                  [:INTEGER, 0],
-                  [' )', " )"]], Lexer.new.tokenize("from( in: 0 )")
+    expected = [[:IDENTIFIER, "a"],
+                ["?", "?"]]
+    assert_equal expected, Lexer.new.tokenize("a?")
+    expected = [[:IDENTIFIER, "b"],
+                ['.', "."],
+                [:IDENTIFIER, "a?"],
+                ['()', "()"]]
+    assert_equal expected, Lexer.new.tokenize("b.a?()")
+    expected = [[:IDENTIFIER, "a?"],
+                ['()', "()"]]
+    assert_equal expected, Lexer.new.tokenize("a?()")
+    expected = [[:IDENTIFIER, "a?"],
+                ['( ', "( "],
+                [:IDENTIFIER, "b"],
+                [' )', " )"]]
+    assert_equal expected, Lexer.new.tokenize("a?( b )")
+    expected = [[:IS, "is"]]
+    assert_equal expected, Lexer.new.tokenize("is ")
+    expected = [[:IDENTIFIER, "is"],
+                ["?", "?"]]
+    assert_equal expected, Lexer.new.tokenize("is?")
+    expected = [["!", "!"],
+                [:IDENTIFIER, "a"]]
+    assert_equal expected, Lexer.new.tokenize("!a")
+    expected = [[:IDENTIFIER, "b"],
+                ['.', "."],
+                [:IDENTIFIER, "a!"],
+                ['()', "()"]]
+    assert_equal expected, Lexer.new.tokenize("b.a!()")
+    expected = [[:FOR, "for"],
+                [:IDENTIFIER, "a"],
+                [:IN, "in"],
+                [:IDENTIFIER, "b"]]
+    assert_equal expected, Lexer.new.tokenize("for a in b")
+    expected = [[:FOR, "for"],
+                [:IDENTIFIER, "a"],
+                [',', ", "],
+                [:IDENTIFIER, "b"],
+                [:IN, "in"],
+                [:IDENTIFIER, "c"]]
+    assert_equal expected, Lexer.new.tokenize("for a, b in c")
+    expected = [[:IDENTIFIER, "from"], ['( ', "( "],
+                [:IDENTIFIER, "in"], [':', ": "],
+                [:INTEGER, 0],
+                [' )', " )"]]
+    assert_equal expected, Lexer.new.tokenize("from( in: 0 )")
+  end
+
+  def test_for_construct
+    code = <<-CODE
+for a in b
+    none
+
+CODE
+    expected = [
+      [:FOR, "for"],
+      [:IDENTIFIER, "a"], [:IN, "in"],
+      [:IDENTIFIER, "b"],
+      [:BLOCKSTART, 1],
+        [:NONE, "none"],
+      [:BLOCKEND, 1], [:NEWLINE, "\n"]
+    ]
+    assert_equal expected, Lexer.new.tokenize(code)
   end
 
   def x_test_print_tokens
@@ -265,23 +347,6 @@ Method: Integer fibonacci( n: Integer )
 
 CODE
     puts "#{Lexer.new.tokenize(code)}"
-  end
-
-  def test_for_construct
-    code = <<-CODE
-for a in b
-    none
-
-CODE
-    expected = [
-      [:FOR, "for"],
-      [:IDENTIFIER, "a"], [:IN, "in"], 
-      [:IDENTIFIER, "b"],
-      [:BLOCKSTART, 1],
-        [:NONE, "none"],
-      [:BLOCKEND, 1], [:NEWLINE, "\n"]
-    ]
-    assert_equal expected, Lexer.new.tokenize(code)
   end
 
   # To Test
