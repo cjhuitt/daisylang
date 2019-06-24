@@ -12,13 +12,13 @@ class LexerTest < Test::Unit::TestCase
   end
 
   def test_string
-    expected = [[:STRING, "Greetings  fools"]]
+    expected = [[:STRING, LexedChunk.new("Greetings  fools")]]
     assert_equal expected, Lexer.new.tokenize('"Greetings  fools"')
   end
 
   def test_string_with_linewraps
     code = "\"Greetings\n\n    fools\""
-    expected = [[:STRING, "Greetings\n\n    fools"]]
+    expected = [[:STRING, LexedChunk.new("Greetings\n\n    fools")]]
     assert_equal expected, Lexer.new.tokenize(code)
   end
 
@@ -165,7 +165,7 @@ class LexerTest < Test::Unit::TestCase
 
   def test_finds_multiple_strings_on_a_line
     expected = [
-      [:STRING, "a"], ['+', " + "], [:STRING, "b"]
+      [:STRING, LexedChunk.new("a")], ['+', " + "], [:STRING, LexedChunk.new("b")]
     ]
     assert_equal expected, Lexer.new.tokenize('"a" + "b"')
   end
@@ -220,7 +220,7 @@ print( "Hello World" )
 CODE
     expected = [
       [:IDENTIFIER, "print"], ['( ', "( "],
-      [:STRING, "Hello World"], [' )', " )"],
+      [:STRING, LexedChunk.new("Hello World")], [' )', " )"],
       [:NEWLINE, LexedChunk.new("\n")]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
@@ -258,8 +258,8 @@ Greet( name: "Caleb", greeting: "Hey" )
 CODE
     expected = [
       [:IDENTIFIER, "Greet"], ['( ', "( "],
-      [:IDENTIFIER, "name"], [':', ": "], [:STRING, "Caleb"], [',', ", "],
-      [:IDENTIFIER, "greeting"], [':', ": "], [:STRING, "Hey"],
+      [:IDENTIFIER, "name"], [':', ": "], [:STRING, LexedChunk.new("Caleb")], [',', ", "],
+      [:IDENTIFIER, "greeting"], [':', ": "], [:STRING, LexedChunk.new("Hey")],
       [' )', " )"], [:NEWLINE, LexedChunk.new("\n")]
     ]
     assert_equal expected, Lexer.new.tokenize(code)

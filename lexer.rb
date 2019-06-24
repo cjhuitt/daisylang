@@ -57,7 +57,7 @@ class Lexer
           i += str.size + 1
           @string_accumulator += str;
           debug_out("Extracted \"#{@string_accumulator}\" (String)")
-          tokens << [:STRING, @string_accumulator]
+          tokens << [:STRING, LexedChunk.new(@string_accumulator)]
           @string_accumulator = nil
         else
           @string_accumulator += line
@@ -76,7 +76,7 @@ class Lexer
           i += integer.size
           debug_out("Extracted #{integer} (Integer)")
         elsif str = sub[/\A"([^"]*)"/, 1]
-          tokens << [:STRING, str]
+          tokens << [:STRING, LexedChunk.new(str)]
           i += str.size + 2
           debug_out("Extracted \"#{str}\" (String)")
         elsif str = sub[/\A"([^"]*)/, 1]
