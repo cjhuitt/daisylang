@@ -81,17 +81,17 @@ class LexerTest < Test::Unit::TestCase
     assert_equal expected, Lexer.new.tokenize("None")
     expected = [[:IDENTIFIER, LexedChunk.new("Method")]]
     assert_equal expected, Lexer.new.tokenize("Method")
-    expected = [[:METHOD, "Method:"]]
+    expected = [[:METHOD, LexedChunk.new("Method:")]]
     assert_equal expected, Lexer.new.tokenize("Method: ")
     expected = [[:IDENTIFIER, LexedChunk.new("Class")]]
     assert_equal expected, Lexer.new.tokenize("Class")
-    expected = [[:CONTRACT, "Contract:"]]
+    expected = [[:CONTRACT, LexedChunk.new("Contract:")]]
     assert_equal expected, Lexer.new.tokenize("Contract: ")
     expected = [[:IDENTIFIER, LexedChunk.new("Contract")]]
     assert_equal expected, Lexer.new.tokenize("Contract")
-    expected = [[:CLASS, "Class:"]]
+    expected = [[:CLASS, LexedChunk.new("Class:")]]
     assert_equal expected, Lexer.new.tokenize("Class: ")
-    expected = [[:ENUM, "Enumerate:"]]
+    expected = [[:ENUM, LexedChunk.new("Enumerate:")]]
     assert_equal expected, Lexer.new.tokenize("Enumerate: ")
   end
 

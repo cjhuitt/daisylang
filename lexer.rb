@@ -83,19 +83,19 @@ class Lexer
           @string_accumulator = str
           i += str.size + 2
         elsif sub.start_with? "Method: "
-          tokens << [:METHOD, "Method:"]
+          tokens << [:METHOD, LexedChunk.new("Method:")]
           debug_out("Extracted Method: (Definition)")
           i += "Method: ".size
         elsif sub.start_with? "Class: "
-          tokens << [:CLASS, "Class:"]
+          tokens << [:CLASS, LexedChunk.new("Class:")]
           debug_out("Extracted Class: (Definition)")
           i += "Class: ".size
         elsif sub.start_with? "Contract: "
-          tokens << [:CONTRACT, "Contract:"]
+          tokens << [:CONTRACT, LexedChunk.new("Contract:")]
           debug_out("Extracted Contract: (Definition)")
           i += "Contract: ".size
         elsif sub.start_with? "Enumerate: "
-          tokens << [:ENUM, "Enumerate:"]
+          tokens << [:ENUM, LexedChunk.new("Enumerate:")]
           debug_out("Extracted Enumerate: (Definition)")
           i += "Enumerate: ".size
         elsif sub.start_with? "is "
