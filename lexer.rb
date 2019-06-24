@@ -19,12 +19,12 @@ class Lexer
         blocks = indent.size / 4
         if blocks == blocklevel + 1
           tokens.pop if tokens.last && tokens.last.first == :NEWLINE
-          tokens << [:BLOCKSTART, blocks]
+          tokens << [:BLOCKSTART, LexedChunk.new(blocks)]
           blocklevel = blocks
         else blocks < blocklevel
           tokens.pop if tokens.last && tokens.last.first == :NEWLINE
           while blocks < blocklevel
-            tokens << [:BLOCKEND, blocklevel]
+            tokens << [:BLOCKEND, LexedChunk.new(blocklevel)]
             blocklevel -= 1
           end
         end
@@ -32,7 +32,7 @@ class Lexer
       elsif 0 < blocklevel
         tokens.pop if tokens.last && tokens.last.first == :NEWLINE
         while 0 < blocklevel
-          tokens << [:BLOCKEND, blocklevel]
+          tokens << [:BLOCKEND, LexedChunk.new(blocklevel)]
           blocklevel -= 1
         end
       end if @string_accumulator.nil?

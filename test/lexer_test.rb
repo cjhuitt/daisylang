@@ -126,15 +126,15 @@ class LexerTest < Test::Unit::TestCase
   def test_lexes_block_opening
     expected = [
       [:IDENTIFIER, "a"],
-      [:BLOCKSTART, 1]
+      [:BLOCKSTART, LexedChunk.new(1)]
     ]
     assert_equal expected, Lexer.new.tokenize("a\n    ")
   end
 
   def test_lexes_block_closing
     expected = [
-      [:BLOCKSTART, 1],
-      [:BLOCKEND, 1], ['(', "("]
+      [:BLOCKSTART, LexedChunk.new(1)],
+      [:BLOCKEND, LexedChunk.new(1)], ['(', "("]
     ]
     assert_equal expected, Lexer.new.tokenize("    \n(")
   end
@@ -150,13 +150,13 @@ CODE
           [:IDENTIFIER, "Summation"], ['( ', "( "],
           [:IDENTIFIER, "n"], [':', ": "],
           [:IDENTIFIER, "Integer"], [' )', " )"], [:NEWLINE, LexedChunk.new("\n")],
-      [:BLOCKSTART, 1],
+        [:BLOCKSTART, LexedChunk.new(1)],
         [:RETURN, "return"], [:IDENTIFIER, "n"],
           ['*', " * "], ['(', "("], [:IDENTIFIER, "n"],
           ['-', " - "], [:INTEGER, 1], [')', ")"],
           ['/', " / "], [:INTEGER, 2],
           [:NEWLINE, LexedChunk.new("\n")],
-        [:BLOCKEND, 1], [:NEWLINE, LexedChunk.new("\n")]
+        [:BLOCKEND, LexedChunk.new(1)], [:NEWLINE, LexedChunk.new("\n")]
     ]
   end
 
@@ -277,9 +277,9 @@ CODE
       [:FOR, "for"],
       [:IDENTIFIER, "a"], [:IN, "in"], 
       [:IDENTIFIER, "b"],
-      [:BLOCKSTART, 1],
+      [:BLOCKSTART, LexedChunk.new(1)],
         [:NONE, "none"],
-      [:BLOCKEND, 1], [:NEWLINE, LexedChunk.new("\n")]
+      [:BLOCKEND, LexedChunk.new(1)], [:NEWLINE, LexedChunk.new("\n")]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
   end
