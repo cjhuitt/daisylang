@@ -64,8 +64,8 @@ rule
   ;
 
   Literal:
-    INTEGER                             { result = IntegerNode.new(val[0]) }
-  | STRING                              { result = StringNode.new(val[0]) }
+    INTEGER                             { result = IntegerNode.new(val[0].value) }
+  | STRING                              { result = StringNode.new(val[0].value) }
   | PASS                                { result = PassNode.new }
   | TRUE                                { result = TrueNode.new }
   | FALSE                               { result = FalseNode.new }
