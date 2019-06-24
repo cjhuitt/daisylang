@@ -200,18 +200,18 @@ Method: Integer Summation( n: Integer )
 
 CODE
     expected = [
-      [:METHOD, "Method:"], [:IDENTIFIER, LexedChunk.new("Integer")],
+      [:METHOD, LexedChunk.new("Method:")], [:IDENTIFIER, LexedChunk.new("Integer")],
           [:IDENTIFIER, LexedChunk.new("Summation")], ['( ', "( "],
           [:IDENTIFIER, LexedChunk.new("n")], [':', ": "],
-          [:IDENTIFIER, LexedChunk.new("Integer")], [' )', " )"], [:NEWLINE, LexedChunk.new("\n")],
+          [:IDENTIFIER, LexedChunk.new("Integer")], [' )', " )"],
         [:BLOCKSTART, LexedChunk.new(1)],
-        [:RETURN, "return"], [:IDENTIFIER, LexedChunk.new("n")],
+        [:RETURN, LexedChunk.new("return")], [:IDENTIFIER, LexedChunk.new("n")],
           ['*', " * "], ['(', "("], [:IDENTIFIER, LexedChunk.new("n")],
           ['-', " - "], [:INTEGER, LexedChunk.new(1)], [')', ")"],
           ['/', " / "], [:INTEGER, LexedChunk.new(2)],
-          [:NEWLINE, LexedChunk.new("\n")],
         [:BLOCKEND, LexedChunk.new(1)], [:NEWLINE, LexedChunk.new("\n")]
     ]
+    assert_equal expected, Lexer.new.tokenize(code)
   end
 
   def test_call_print_of_string
