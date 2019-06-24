@@ -1,6 +1,6 @@
-class LexedChunk < Struct.new(:text)
-  def initialize(text)
-    super(text)
+class LexedChunk < Struct.new(:value)
+  def initialize(value)
+    super(value)
   end
 end
 
