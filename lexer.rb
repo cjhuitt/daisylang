@@ -135,7 +135,7 @@ class Lexer
           tokens << [:IDENTIFIER, LexedChunk.new(key)]
           debug_out("Extracted #{key} (Identifier)")
 
-          tokens << [',', ", "]
+          tokens << [',', LexedChunk.new(", ")]
           debug_out("Extracted , (Operator)")
 
           val = identifiers.split(", ").last
@@ -164,37 +164,37 @@ class Lexer
           end
           i += identifier.size
         elsif "()" == sub[0..1]
-          tokens << ["()", "()"]
+          tokens << ["()", LexedChunk.new("()")]
           i += 2
           debug_out("Extracted () (Operator)")
         elsif "( " == sub[0..1]
-          tokens << ["( ", "( "]
+          tokens << ["( ", LexedChunk.new("( ")]
           i += 2
           debug_out("Extracted ( (Operator)")
         elsif " )" == sub[0..1]
-          tokens << [" )", " )"]
+          tokens << [" )", LexedChunk.new(" )")]
           i += 2
           debug_out("Extracted ) (Operator)")
         elsif op = sub[/\A( [=+-\/^*<>] )/, 1]
           tok = op.strip
-          tokens << [tok, op]
+          tokens << [tok, LexedChunk.new(op)]
           i += op.size
           debug_out("Extracted #{tok} (Operator)")
         elsif op = sub[/\A([:,])[ \n]/, 1]
           tok = op.strip
-          tokens << [tok, op + " "]
+          tokens << [tok, LexedChunk.new(op + " ")]
           i += op.size + 1
           debug_out("Extracted #{tok} (Operator)")
         elsif op = sub[/\A(&&|\|\|)/, 1]
-          tokens << [op, op]
+          tokens << [op, LexedChunk.new(op)]
           i += 2
           debug_out("Extracted #{op} (Operator)")
         elsif op = sub[/\A(==|!=|<=|>=|=>)/, 1]
-          tokens << [op, op]
+          tokens << [op, LexedChunk.new(op)]
           i += 2
           debug_out("Extracted #{op} (Operator)")
         elsif op = sub[/\A([().?!\[\]{}#])/, 1]
-          tokens << [op, op]
+          tokens << [op, LexedChunk.new(op)]
           i += op.size
           debug_out("Extracted #{op} (Operator)")
         elsif space = sub[/\A(\s*\n)/m, 1]
