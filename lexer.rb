@@ -59,7 +59,7 @@ class Lexer
           i += str.size + 1
           @string_accumulator += str;
           debug_out("Extracted \"#{@string_accumulator}\" (String)")
-          tokens << [:STRING, LexedChunk.new(@string_accumulator)]
+          tokens << [:STRING, LexedChunk.new(@string_accumulator, @string_start_line_no)]
           @string_accumulator = nil
         else
           @string_accumulator += line
@@ -71,132 +71,133 @@ class Lexer
         sub = line[i..-1]
         debug_out("Checking partial >>#{sub}<<")
         if "//" == sub[0..1]
-          tokens << [:COMMENT, LexedChunk.new(sub)]
+          tokens << [:COMMENT, LexedChunk.new(sub, @line_no)]
           break
         elsif integer = sub[/\A(\d+)/, 1]
-          tokens << [:INTEGER, LexedChunk.new(integer.to_i)]
+          tokens << [:INTEGER, LexedChunk.new(integer.to_i, @line_no)]
           i += integer.size
           debug_out("Extracted #{integer} (Integer)")
         elsif str = sub[/\A"([^"]*)"/, 1]
-          tokens << [:STRING, LexedChunk.new(str)]
+          tokens << [:STRING, LexedChunk.new(str, @line_no)]
           i += str.size + 2
           debug_out("Extracted \"#{str}\" (String)")
         elsif str = sub[/\A"([^"]*)/, 1]
+          @string_start_line_no = @line_no
           @string_accumulator = str
           i += str.size + 2
         elsif sub.start_with? "Method: "
-          tokens << [:METHOD, LexedChunk.new("Method:")]
+          tokens << [:METHOD, LexedChunk.new("Method:", @line_no)]
           debug_out("Extracted Method: (Definition)")
           i += "Method: ".size
         elsif sub.start_with? "Class: "
-          tokens << [:CLASS, LexedChunk.new("Class:")]
+          tokens << [:CLASS, LexedChunk.new("Class:", @line_no)]
           debug_out("Extracted Class: (Definition)")
           i += "Class: ".size
         elsif sub.start_with? "Contract: "
-          tokens << [:CONTRACT, LexedChunk.new("Contract:")]
+          tokens << [:CONTRACT, LexedChunk.new("Contract:", @line_no)]
           debug_out("Extracted Contract: (Definition)")
           i += "Contract: ".size
         elsif sub.start_with? "Enumerate: "
-          tokens << [:ENUM, LexedChunk.new("Enumerate:")]
+          tokens << [:ENUM, LexedChunk.new("Enumerate:", @line_no)]
           debug_out("Extracted Enumerate: (Definition)")
           i += "Enumerate: ".size
         elsif sub.start_with? "is "
-          tokens << [:IS, LexedChunk.new("is")]
+          tokens << [:IS, LexedChunk.new("is", @line_no)]
           debug_out("Extracted is (Keyword)")
           i += "is ".size
         elsif identifier = sub[/\A(\w+\.\w+)(\)|\s|$)/, 1]
           id = sub[/\A(\w+)/, 1]
-          tokens << [:IDENTIFIER, LexedChunk.new(id)]
+          tokens << [:IDENTIFIER, LexedChunk.new(id, @line_no)]
           debug_out("Extracted #{id} (Identifier)")
           i += id.size
 
           i += 1 # period
 
           id = sub[/\A(\w+)\.(\w+)/, 2]
-          tokens << [:FIELD, LexedChunk.new(id)]
+          tokens << [:FIELD, LexedChunk.new(id, @line_no)]
           debug_out("Extracted #{id} (Field)")
           i += id.size
         elsif identifier = sub[/\Afor (\w+) in/, 1]
-          tokens << [:FOR, LexedChunk.new("for")]
+          tokens << [:FOR, LexedChunk.new("for", @line_no)]
           debug_out("Extracted for (Keyword)")
           i += 4 # "for "
 
-          tokens << [:IDENTIFIER, LexedChunk.new(identifier)]
+          tokens << [:IDENTIFIER, LexedChunk.new(identifier, @line_no)]
           debug_out("Extracted #{identifier} (Identifier)")
           i += identifier.size
 
-          tokens << [:IN, LexedChunk.new("in")]
+          tokens << [:IN, LexedChunk.new("in", @line_no)]
           debug_out("Extracted in (Keyword)")
           i += 3 # "in "
         elsif identifiers = sub[/\Afor (\w+, \w+) in/, 1]
-          tokens << [:FOR, LexedChunk.new("for")]
+          tokens << [:FOR, LexedChunk.new("for", @line_no)]
           debug_out("Extracted for (Keyword)")
           i += 4 # "for "
 
           key = identifiers.split(", ").first
-          tokens << [:IDENTIFIER, LexedChunk.new(key)]
+          tokens << [:IDENTIFIER, LexedChunk.new(key, @line_no)]
           debug_out("Extracted #{key} (Identifier)")
 
-          tokens << [',', LexedChunk.new(", ")]
+          tokens << [',', LexedChunk.new(", ", @line_no)]
           debug_out("Extracted , (Operator)")
 
           val = identifiers.split(", ").last
-          tokens << [:IDENTIFIER, LexedChunk.new(val)]
+          tokens << [:IDENTIFIER, LexedChunk.new(val, @line_no)]
           debug_out("Extracted #{val} (Identifier)")
           i += identifiers.size
 
-          tokens << [:IN, LexedChunk.new("in")]
+          tokens << [:IN, LexedChunk.new("in", @line_no)]
           debug_out("Extracted in (Keyword)")
           i += 3 # "in "
         elsif identifier = sub[/\A(\w+[\?!])\(/, 1]
-          tokens << [:IDENTIFIER, LexedChunk.new(identifier)]
+          tokens << [:IDENTIFIER, LexedChunk.new(identifier, @line_no)]
           debug_out("Extracted #{identifier} (Identifier)")
           i += identifier.size
         elsif identifier = sub[/\A(\w+)/, 1]
           if KEYWORDS.include? identifier
-            tokens << [identifier.upcase.to_sym, LexedChunk.new(identifier)]
+            tokens << [identifier.upcase.to_sym, LexedChunk.new(identifier, @line_no)]
             debug_out("Extracted #{identifier} (Keyword)")
           else
-            tokens << [:IDENTIFIER, LexedChunk.new(identifier)]
+            tokens << [:IDENTIFIER, LexedChunk.new(identifier, @line_no)]
             debug_out("Extracted #{identifier} (Identifier)")
           end
           i += identifier.size
         elsif "()" == sub[0..1]
-          tokens << ["()", LexedChunk.new("()")]
+          tokens << ["()", LexedChunk.new("()", @line_no)]
           i += 2
           debug_out("Extracted () (Operator)")
         elsif "( " == sub[0..1]
-          tokens << ["( ", LexedChunk.new("( ")]
+          tokens << ["( ", LexedChunk.new("( ", @line_no)]
           i += 2
           debug_out("Extracted ( (Operator)")
         elsif " )" == sub[0..1]
-          tokens << [" )", LexedChunk.new(" )")]
+          tokens << [" )", LexedChunk.new(" )", @line_no)]
           i += 2
           debug_out("Extracted ) (Operator)")
         elsif op = sub[/\A( [=+-\/^*<>] )/, 1]
           tok = op.strip
-          tokens << [tok, LexedChunk.new(op)]
+          tokens << [tok, LexedChunk.new(op, @line_no)]
           i += op.size
           debug_out("Extracted #{tok} (Operator)")
         elsif op = sub[/\A([:,])[ \n]/, 1]
           tok = op.strip
-          tokens << [tok, LexedChunk.new(op + " ")]
+          tokens << [tok, LexedChunk.new(op + " ", @line_no)]
           i += op.size + 1
           debug_out("Extracted #{tok} (Operator)")
         elsif op = sub[/\A(&&|\|\|)/, 1]
-          tokens << [op, LexedChunk.new(op)]
+          tokens << [op, LexedChunk.new(op, @line_no)]
           i += 2
           debug_out("Extracted #{op} (Operator)")
         elsif op = sub[/\A(==|!=|<=|>=|=>)/, 1]
-          tokens << [op, LexedChunk.new(op)]
+          tokens << [op, LexedChunk.new(op, @line_no)]
           i += 2
           debug_out("Extracted #{op} (Operator)")
         elsif op = sub[/\A([().?!\[\]{}#])/, 1]
-          tokens << [op, LexedChunk.new(op)]
+          tokens << [op, LexedChunk.new(op, @line_no)]
           i += op.size
           debug_out("Extracted #{op} (Operator)")
         elsif space = sub[/\A(\s*\n)/m, 1]
-          tokens << [:NEWLINE, LexedChunk.new("\n")]
+          tokens << [:NEWLINE, LexedChunk.new("\n", @line_no)]
           i += space.size
           debug_out("Extracted newline")
         elsif space = sub[/\A(\s+)/, 1]
