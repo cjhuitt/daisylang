@@ -152,11 +152,7 @@ class Lexer
           i += identifier.size
         elsif identifier = sub[/\A(\w+)/, 1]
           if KEYWORDS.include? identifier
-            if identifier == "None"
-              tokens << [:NONETYPE, identifier]
-            else
-              tokens << [identifier.upcase.to_sym, LexedChunk.new(identifier)]
-            end
+            tokens << [identifier.upcase.to_sym, LexedChunk.new(identifier)]
             debug_out("Extracted #{identifier} (Keyword)")
           else
             tokens << [:IDENTIFIER, LexedChunk.new(identifier)]
