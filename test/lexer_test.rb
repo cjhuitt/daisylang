@@ -29,7 +29,7 @@ class LexerTest < Test::Unit::TestCase
 
   def test_int_with_newline
     expected = [
-      [:INTEGER, LexedChunk.new(5, 1, 1)], [:NEWLINE, LexedChunk.new("\n", 1)]
+      [:INTEGER, LexedChunk.new(5, 1)], [:NEWLINE, LexedChunk.new("\n", 1)]
     ]
     assert_equal expected, Lexer.new.tokenize("5\n")
   end
