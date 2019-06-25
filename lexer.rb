@@ -204,7 +204,7 @@ class Lexer
           i += space.size
           debug_out("Extracted whitespace")
         else
-          raise "Unlexable chunk: >>#{sub}<<"
+          raise ["Unlexable chunk: >>#{sub}<<", @line_no]
         end
       end
 

@@ -338,6 +338,12 @@ CODE
     assert_equal expected, Lexer.new.tokenize(code)
   end
 
+  def test_raises_on_unknown
+    assert_raises do
+      Lexer.new.tokenize("|")
+    end
+  end
+
   def x_test_print_tokens
     code = <<-CODE
 Method: Integer fibonacci( n: Integer )
