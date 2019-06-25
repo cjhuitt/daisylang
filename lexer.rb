@@ -1,5 +1,5 @@
 class LexedChunk < Struct.new(:value, :line, :col)
-  def initialize(value)
+  def initialize(value, line=1, col=1)
     super(value)
   end
 end
