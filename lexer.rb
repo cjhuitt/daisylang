@@ -8,23 +8,25 @@ class Lexer
   def initialize(debug=false)
     @string_accumulator = nil
     @debug = debug
+    @line_no = 0
   end
 
   def tokenize(code)
     blocklevel = 0
     tokens = []
     code.lines.each do |line|
-      debug_out("Tokenizing line >>#{line}<<")
+      @line_no += 1
+      debug_out("Tokenizing line ##{@line_no} >>#{line}<<")
       if indent = line[/\A( +)/, 1]
         blocks = indent.size / 4
         if blocks == blocklevel + 1
           tokens.pop if tokens.last && tokens.last.first == :NEWLINE
-          tokens << [:BLOCKSTART, LexedChunk.new(blocks)]
+          tokens << [:BLOCKSTART, LexedChunk.new(blocks, @line_no)]
           blocklevel = blocks
         else blocks < blocklevel
           tokens.pop if tokens.last && tokens.last.first == :NEWLINE
           while blocks < blocklevel
-            tokens << [:BLOCKEND, LexedChunk.new(blocklevel)]
+            tokens << [:BLOCKEND, LexedChunk.new(blocklevel, @line_no)]
             blocklevel -= 1
           end
         end
@@ -32,7 +34,7 @@ class Lexer
       elsif 0 < blocklevel
         tokens.pop if tokens.last && tokens.last.first == :NEWLINE
         while 0 < blocklevel
-          tokens << [:BLOCKEND, LexedChunk.new(blocklevel)]
+          tokens << [:BLOCKEND, LexedChunk.new(blocklevel, @line_no)]
           blocklevel -= 1
         end
       end if @string_accumulator.nil?
