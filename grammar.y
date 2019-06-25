@@ -257,16 +257,16 @@ rule
 
   GetSymbol:
     IDENTIFIER                          { result = GetSymbolNode.new(val[0].value, nil) }
-  | IDENTIFIER FIELD                    { result = GetSymbolNode.new(val[1], val[0].value) }
+  | IDENTIFIER FIELD                    { result = GetSymbolNode.new(val[1].value, val[0].value) }
   ;
 
   SetSymbol:
     IDENTIFIER "=" Expression           { result = SetSymbolNode.new(val[0].value, val[2], nil) }
-  | IDENTIFIER FIELD "=" Expression     { result = SetSymbolNode.new(val[1], val[3], val[0].value) }
+  | IDENTIFIER FIELD "=" Expression     { result = SetSymbolNode.new(val[1].value, val[3], val[0].value) }
   ;
 
   Comment:
-    COMMENT                             { result = CommentNode.new(val[0]) }
+    COMMENT                             { result = CommentNode.new(val[0].value) }
   ;
 
   Terminator:
