@@ -339,9 +339,12 @@ CODE
   end
 
   def test_raises_on_unknown
-    assert_raises do
+    err = assert_raises Lexer::LexingError do
       Lexer.new.tokenize("|")
     end
+    assert_true err.message.include?("|")
+    assert_equal 1, err.line
+    assert_equal 1, err.col
   end
 
   def x_test_print_tokens
