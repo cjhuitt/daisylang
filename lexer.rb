@@ -48,11 +48,7 @@ class Lexer
           blocklevel -= 1
         end
       end if @string_accumulator.nil?
-      begin
-        tokens += tokenize_line(line, (blocklevel * 4) + 1)
-      rescue InternalError => err
-        raise LexingError.new(line, err.part, @line_no, err.col)
-      end
+      tokens += tokenize_line(line, (blocklevel * 4) + 1)
     end
     tokens
   end
@@ -63,14 +59,6 @@ class Lexer
       "break", "continue", "pass", "return",
       "true", "false", "none"
     ]
-
-    class InternalError < StandardError
-      attr_reader :part, :col
-      def initialize(part, col)
-        @part = part
-        @col = col
-      end
-    end
 
     def tokenize_line(line, initial_col)
       tokens = []
@@ -229,7 +217,7 @@ class Lexer
           i += space.size
           debug_out("Extracted whitespace")
         else
-          raise InternalError.new(sub, i + initial_col)
+          raise LexingError.new(line, sub, @line_no, i + initial_col)
         end
       end
 
