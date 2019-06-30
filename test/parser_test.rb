@@ -882,4 +882,10 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_raises_on_parse_error
+    err = assert_raises Racc::ParseError do
+      Parser.new.parse("for a, b, c")
+    end
+  end
+
 end
