@@ -29,14 +29,14 @@ class LexerTest < Test::Unit::TestCase
 
   def test_int_with_newline
     expected = [
-      [:INTEGER, LexedChunk.new(5, 1, 1)], [:NEWLINE, LexedChunk.new("\n", 1)]
+      [:INTEGER, LexedChunk.new(5, 1, 1)], [:NEWLINE, LexedChunk.new("\n", 1, 2)]
     ]
     assert_equal expected, Lexer.new.tokenize("5\n")
   end
 
   def test_ignores_whitespace_before_newlines
     expected = [
-      [:IDENTIFIER, LexedChunk.new("a", 1, 1)], [:NEWLINE, LexedChunk.new("\n", 1)]
+      [:IDENTIFIER, LexedChunk.new("a", 1, 1)], [:NEWLINE, LexedChunk.new("\n", 1, 8)]
     ]
     assert_equal expected, Lexer.new.tokenize("a    \t \n")
   end
@@ -157,22 +157,22 @@ class LexerTest < Test::Unit::TestCase
 
   def test_finds_multiple_tokens_on_a_line
     expected = [
-      [:IDENTIFIER, LexedChunk.new("a", 1, 1)], ['+', LexedChunk.new(" + ", 1)],
-      [:IDENTIFIER, LexedChunk.new("b", 1)]
+      [:IDENTIFIER, LexedChunk.new("a", 1, 1)], ['+', LexedChunk.new(" + ", 1, 2)],
+      [:IDENTIFIER, LexedChunk.new("b", 1, 5)]
     ]
     assert_equal expected, Lexer.new.tokenize("a + b ")
   end
 
   def test_finds_multiple_strings_on_a_line
     expected = [
-      [:STRING, LexedChunk.new("a", 1, 1)], ['+', LexedChunk.new(" + ", 1)], [:STRING, LexedChunk.new("b", 1)]
+      [:STRING, LexedChunk.new("a", 1, 1)], ['+', LexedChunk.new(" + ", 1, 4)], [:STRING, LexedChunk.new("b", 1, 7)]
     ]
     assert_equal expected, Lexer.new.tokenize('"a" + "b"')
   end
 
   def test_finds_multiple_tokens_without_whitespace
     expected = [
-      ['(', LexedChunk.new("(", 1, 1)], [:IDENTIFIER, LexedChunk.new("b", 1)], [')', LexedChunk.new(")", 1)]
+      ['(', LexedChunk.new("(", 1, 1)], [:IDENTIFIER, LexedChunk.new("b", 1, 2)], [')', LexedChunk.new(")", 1, 3)]
     ]
     assert_equal expected, Lexer.new.tokenize("(b)")
   end
@@ -180,7 +180,7 @@ class LexerTest < Test::Unit::TestCase
   def test_lexes_block_opening
     expected = [
       [:IDENTIFIER, LexedChunk.new("a", 1, 1)],
-      [:BLOCKSTART, LexedChunk.new(1, 2)]
+      [:BLOCKSTART, LexedChunk.new(1, 2, 1)]
     ]
     assert_equal expected, Lexer.new.tokenize("a\n    ")
   end
@@ -188,7 +188,7 @@ class LexerTest < Test::Unit::TestCase
   def test_lexes_block_closing
     expected = [
       [:BLOCKSTART, LexedChunk.new(1, 1, 1)],
-      [:BLOCKEND, LexedChunk.new(1, 2)], ['(', LexedChunk.new("(", 2)]
+      [:BLOCKEND, LexedChunk.new(1, 2, 1)], ['(', LexedChunk.new("(", 2, 1)]
     ]
     assert_equal expected, Lexer.new.tokenize("    \n(")
   end
@@ -200,16 +200,16 @@ Method: Integer Summation( n: Integer )
 
 CODE
     expected = [
-      [:METHOD, LexedChunk.new("Method:", 1, 1)], [:IDENTIFIER, LexedChunk.new("Integer", 1)],
-          [:IDENTIFIER, LexedChunk.new("Summation", 1)], ['( ', LexedChunk.new("( ", 1)],
-          [:IDENTIFIER, LexedChunk.new("n", 1)], [':', LexedChunk.new(": ", 1)],
-          [:IDENTIFIER, LexedChunk.new("Integer", 1)], [' )', LexedChunk.new(" )", 1)],
+      [:METHOD, LexedChunk.new("Method:", 1, 1)], [:IDENTIFIER, LexedChunk.new("Integer", 1, 9)],
+          [:IDENTIFIER, LexedChunk.new("Summation", 1, 17)], ['( ', LexedChunk.new("( ", 1, 26)],
+          [:IDENTIFIER, LexedChunk.new("n", 1, 28)], [':', LexedChunk.new(": ", 1, 29)],
+          [:IDENTIFIER, LexedChunk.new("Integer", 1, 31)], [' )', LexedChunk.new(" )", 1, 38)],
         [:BLOCKSTART, LexedChunk.new(1, 2, 1)],
-        [:RETURN, LexedChunk.new("return", 2)], [:IDENTIFIER, LexedChunk.new("n", 2)],
-          ['*', LexedChunk.new(" * ", 2)], ['(', LexedChunk.new("(", 2)], [:IDENTIFIER, LexedChunk.new("n", 2)],
-          ['-', LexedChunk.new(" - ", 2)], [:INTEGER, LexedChunk.new(1, 2)], [')', LexedChunk.new(")", 2)],
-          ['/', LexedChunk.new(" / ", 2)], [:INTEGER, LexedChunk.new(2, 2)],
-        [:BLOCKEND, LexedChunk.new(1, 3, 1)], [:NEWLINE, LexedChunk.new("\n", 3)]
+          [:RETURN, LexedChunk.new("return", 2, 5)], [:IDENTIFIER, LexedChunk.new("n", 2, 12)],
+          ['*', LexedChunk.new(" * ", 2, 13)], ['(', LexedChunk.new("(", 2, 16)], [:IDENTIFIER, LexedChunk.new("n", 2, 17)],
+          ['-', LexedChunk.new(" - ", 2, 18)], [:INTEGER, LexedChunk.new(1, 2, 21)], [')', LexedChunk.new(")", 2, 22)],
+          ['/', LexedChunk.new(" / ", 2, 23)], [:INTEGER, LexedChunk.new(2, 2, 26)],
+        [:BLOCKEND, LexedChunk.new(1, 3, 1)], [:NEWLINE, LexedChunk.new("\n", 3, 1)]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
   end
@@ -219,24 +219,24 @@ CODE
 print( "Hello World" )
 CODE
     expected = [
-      [:IDENTIFIER, LexedChunk.new("print", 1, 1)], ['( ', LexedChunk.new("( ", 1)],
-      [:STRING, LexedChunk.new("Hello World", 1)], [' )', LexedChunk.new(" )", 1)],
-      [:NEWLINE, LexedChunk.new("\n", 1)]
+      [:IDENTIFIER, LexedChunk.new("print", 1, 1)], ['( ', LexedChunk.new("( ", 1, 6)],
+      [:STRING, LexedChunk.new("Hello World", 1, 8)], [' )', LexedChunk.new(" )", 1, 21)],
+      [:NEWLINE, LexedChunk.new("\n", 1, 23)]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
   end
 
   def test_call_method_on_variable
     expected = [
-      [:IDENTIFIER, LexedChunk.new("a", 1, 1)], ['.', LexedChunk.new(".", 1)], [:IDENTIFIER, LexedChunk.new("b", 1)],
-      ['()', LexedChunk.new("()", 1)]
+      [:IDENTIFIER, LexedChunk.new("a", 1, 1)], ['.', LexedChunk.new(".", 1, 2)], [:IDENTIFIER, LexedChunk.new("b", 1, 3)],
+      ['()', LexedChunk.new("()", 1, 4)]
     ]
     assert_equal expected, Lexer.new.tokenize("a.b()")
   end
 
   def test_member_variable
     expected = [
-      [:IDENTIFIER, LexedChunk.new("a", 1, 1)], [:FIELD, LexedChunk.new("b", 1)]
+      [:IDENTIFIER, LexedChunk.new("a", 1, 1)], [:FIELD, LexedChunk.new("b", 1, 3)]
     ]
     assert_equal expected, Lexer.new.tokenize("a.b")
   end
@@ -244,10 +244,10 @@ CODE
   def test_member_variable_in_subexpression
     expected = [
       ['(', LexedChunk.new("(", 1, 1)],
-      [:IDENTIFIER, LexedChunk.new("a", 1)], [:FIELD, LexedChunk.new("b", 1)],
-      ['+', LexedChunk.new(" + ", 1)],
-      [:IDENTIFIER, LexedChunk.new("a", 1)], [:FIELD, LexedChunk.new("b", 1)],
-      [')', LexedChunk.new(")", 1)]
+      [:IDENTIFIER, LexedChunk.new("a", 1, 2)], [:FIELD, LexedChunk.new("b", 1, 4)],
+      ['+', LexedChunk.new(" + ", 1, 5)],
+      [:IDENTIFIER, LexedChunk.new("a", 1, 8)], [:FIELD, LexedChunk.new("b", 1, 10)],
+      [')', LexedChunk.new(")", 1, 11)]
     ]
     assert_equal expected, Lexer.new.tokenize("(a.b + a.b)")
   end
@@ -257,10 +257,10 @@ CODE
 Greet( name: "Caleb", greeting: "Hey" )
 CODE
     expected = [
-      [:IDENTIFIER, LexedChunk.new("Greet", 1, 1)], ['( ', LexedChunk.new("( ", 1)],
-      [:IDENTIFIER, LexedChunk.new("name", 1)], [':', LexedChunk.new(": ", 1)], [:STRING, LexedChunk.new("Caleb", 1)], [',', LexedChunk.new(", ", 1)],
-      [:IDENTIFIER, LexedChunk.new("greeting", 1)], [':', LexedChunk.new(": ", 1)], [:STRING, LexedChunk.new("Hey", 1)],
-      [' )', LexedChunk.new(" )", 1)], [:NEWLINE, LexedChunk.new("\n", 1)]
+      [:IDENTIFIER, LexedChunk.new("Greet", 1, 1)], ['( ', LexedChunk.new("( ", 1, 6)],
+      [:IDENTIFIER, LexedChunk.new("name", 1, 8)], [':', LexedChunk.new(": ", 1, 12)], [:STRING, LexedChunk.new("Caleb", 1, 14)], [',', LexedChunk.new(", ", 1, 21)],
+      [:IDENTIFIER, LexedChunk.new("greeting", 1, 23)], [':', LexedChunk.new(": ", 1, 31)], [:STRING, LexedChunk.new("Hey", 1, 33)],
+      [' )', LexedChunk.new(" )", 1, 38)], [:NEWLINE, LexedChunk.new("\n", 1, 40)]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
   end
@@ -274,50 +274,50 @@ CODE
 
   def test_distinguishes_potentially_ambiguous_portions
     expected = [[:IDENTIFIER, LexedChunk.new("a", 1, 1)],
-                ["?", LexedChunk.new("?", 1)]]
+                ["?", LexedChunk.new("?", 1, 2)]]
     assert_equal expected, Lexer.new.tokenize("a?")
     expected = [[:IDENTIFIER, LexedChunk.new("b", 1, 1)],
-                ['.', LexedChunk.new(".", 1)],
-                [:IDENTIFIER, LexedChunk.new("a?", 1, 1)],
-                ['()', LexedChunk.new("()", 1)]]
+                ['.', LexedChunk.new(".", 1, 2)],
+                [:IDENTIFIER, LexedChunk.new("a?", 1, 3)],
+                ['()', LexedChunk.new("()", 1, 5)]]
     assert_equal expected, Lexer.new.tokenize("b.a?()")
     expected = [[:IDENTIFIER, LexedChunk.new("a?", 1, 1)],
-                ['()', LexedChunk.new("()", 1)]]
+                ['()', LexedChunk.new("()", 1, 3)]]
     assert_equal expected, Lexer.new.tokenize("a?()")
     expected = [[:IDENTIFIER, LexedChunk.new("a?", 1, 1)],
-                ['( ', LexedChunk.new("( ", 1)],
-                [:IDENTIFIER, LexedChunk.new("b", 1)],
-                [' )', LexedChunk.new(" )", 1)]]
+                ['( ', LexedChunk.new("( ", 1, 3)],
+                [:IDENTIFIER, LexedChunk.new("b", 1, 5)],
+                [' )', LexedChunk.new(" )", 1, 6)]]
     assert_equal expected, Lexer.new.tokenize("a?( b )")
     expected = [[:IS, LexedChunk.new("is", 1, 1)]]
     assert_equal expected, Lexer.new.tokenize("is ")
     expected = [[:IDENTIFIER, LexedChunk.new("is", 1, 1)],
-                ["?", LexedChunk.new("?", 1)]]
+                ["?", LexedChunk.new("?", 1, 3)]]
     assert_equal expected, Lexer.new.tokenize("is?")
     expected = [["!", LexedChunk.new("!", 1, 1)],
-                [:IDENTIFIER, LexedChunk.new("a", 1)]]
+                [:IDENTIFIER, LexedChunk.new("a", 1, 2)]]
     assert_equal expected, Lexer.new.tokenize("!a")
     expected = [[:IDENTIFIER, LexedChunk.new("b", 1, 1)],
-                ['.', LexedChunk.new(".", 1)],
-                [:IDENTIFIER, LexedChunk.new("a!", 1)],
-                ['()', LexedChunk.new("()", 1)]]
+                ['.', LexedChunk.new(".", 1, 2)],
+                [:IDENTIFIER, LexedChunk.new("a!", 1, 3)],
+                ['()', LexedChunk.new("()", 1, 5)]]
     assert_equal expected, Lexer.new.tokenize("b.a!()")
     expected = [[:FOR, LexedChunk.new("for", 1, 1)],
-                [:IDENTIFIER, LexedChunk.new("a", 1)],
-                [:IN, LexedChunk.new("in", 1)],
-                [:IDENTIFIER, LexedChunk.new("b", 1)]]
+                [:IDENTIFIER, LexedChunk.new("a", 1, 5)],
+                [:IN, LexedChunk.new("in", 1, 7)],
+                [:IDENTIFIER, LexedChunk.new("b", 1, 10)]]
     assert_equal expected, Lexer.new.tokenize("for a in b")
     expected = [[:FOR, LexedChunk.new("for", 1, 1)],
-                [:IDENTIFIER, LexedChunk.new("a", 1)],
-                [',', LexedChunk.new(", ", 1)],
-                [:IDENTIFIER, LexedChunk.new("b", 1)],
-                [:IN, LexedChunk.new("in", 1)],
-                [:IDENTIFIER, LexedChunk.new("c", 1)]]
+                [:IDENTIFIER, LexedChunk.new("a", 1, 5)],
+                [',', LexedChunk.new(", ", 1, 6)],
+                [:IDENTIFIER, LexedChunk.new("b", 1, 8)],
+                [:IN, LexedChunk.new("in", 1, 10)],
+                [:IDENTIFIER, LexedChunk.new("c", 1, 13)]]
     assert_equal expected, Lexer.new.tokenize("for a, b in c")
-    expected = [[:IDENTIFIER, LexedChunk.new("from", 1, 1)], ['( ', LexedChunk.new("( ", 1)],
-                [:IDENTIFIER, LexedChunk.new("in", 1)], [':', LexedChunk.new(": ", 1)],
-                [:INTEGER, LexedChunk.new(0, 1)],
-                [' )', LexedChunk.new(" )", 1)]]
+    expected = [[:IDENTIFIER, LexedChunk.new("from", 1, 1)], ['( ', LexedChunk.new("( ", 1, 5)],
+                [:IDENTIFIER, LexedChunk.new("in", 1, 7)], [':', LexedChunk.new(": ", 1, 9)],
+                [:INTEGER, LexedChunk.new(0, 1, 11)],
+                [' )', LexedChunk.new(" )", 1, 12)]]
     assert_equal expected, Lexer.new.tokenize("from( in: 0 )")
   end
 
@@ -329,11 +329,11 @@ for a in b
 CODE
     expected = [
       [:FOR, LexedChunk.new("for", 1, 1)],
-      [:IDENTIFIER, LexedChunk.new("a", 1)], [:IN, LexedChunk.new("in", 1)],
-      [:IDENTIFIER, LexedChunk.new("b", 1)],
+      [:IDENTIFIER, LexedChunk.new("a", 1, 5)], [:IN, LexedChunk.new("in", 1, 7)],
+      [:IDENTIFIER, LexedChunk.new("b", 1, 10)],
       [:BLOCKSTART, LexedChunk.new(1, 2, 1)],
-        [:NONE, LexedChunk.new("none", 2)],
-      [:BLOCKEND, LexedChunk.new(1, 3, 1)], [:NEWLINE, LexedChunk.new("\n", 3)]
+        [:NONE, LexedChunk.new("none", 2, 5)],
+      [:BLOCKEND, LexedChunk.new(1, 3, 1)], [:NEWLINE, LexedChunk.new("\n", 3, 1)]
     ]
     assert_equal expected, Lexer.new.tokenize(code)
   end
