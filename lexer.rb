@@ -7,8 +7,8 @@ end
 class Lexer
   class LexingError < StandardError
     attr_reader :line, :col
-    def initialize(msg, line=nil, col=nil)
-      super(msg)
+    def initialize(part, line, col)
+      super("Unlexable chunk: >>#{part}<<")
       @col = col
       @line = line
     end
@@ -47,7 +47,11 @@ class Lexer
           blocklevel -= 1
         end
       end if @string_accumulator.nil?
-      tokens += tokenize_line(line, (blocklevel * 4) + 1)
+      begin
+        tokens += tokenize_line(line, (blocklevel * 4) + 1)
+      rescue InternalError => err
+        raise LexingError.new(err.part, @line_no, err.col)
+      end
     end
     tokens
   end
@@ -58,6 +62,14 @@ class Lexer
       "break", "continue", "pass", "return",
       "true", "false", "none"
     ]
+
+    class InternalError < StandardError
+      attr_reader :part, :col
+      def initialize(part, col)
+        @part = part
+        @col = col
+      end
+    end
 
     def tokenize_line(line, initial_col)
       tokens = []
@@ -216,7 +228,7 @@ class Lexer
           i += space.size
           debug_out("Extracted whitespace")
         else
-          raise LexingError.new("Unlexable chunk: >>#{sub}<<", @line_no, i + initial_col)
+          raise InternalError.new(sub, i + initial_col)
         end
       end
 
