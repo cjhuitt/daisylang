@@ -884,8 +884,11 @@ CODE
 
   def test_raises_on_parse_error
     err = assert_raises Parser::ParseError do
-      Parser.new.parse("for a, b, c")
+      Parser.new.parse("for a in ()")
     end
+    assert_equal "()", err.token
+    assert_equal 1, err.line
+    assert_equal 10, err.col
   end
 
 end

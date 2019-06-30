@@ -281,6 +281,13 @@ end
 
 ---- inner
   class ParseError < StandardError
+    attr_reader :token, :line, :col
+    def initialize(val, t)
+      super("\nparse error on value #{val.inspect} (#{t})")
+      @token = val.value
+      @line = val.line
+      @col = val.col
+    end
   end
 
   def parse(code, debug=false)
@@ -294,7 +301,6 @@ end
   end
 
   def on_error(t, val, vstack)
-      raise ParseError, sprintf("\nparse error on value %s (%s)",
-                                val.inspect, token_to_str(t) || '?')
+    raise ParseError.new(val, token_to_str(t))
   end
 
