@@ -200,7 +200,7 @@ class Lexer
           i += op.size
           debug_out("Extracted #{op} (Operator)")
         elsif space = sub[/\A(\s*\n)/m, 1]
-          tokens << [:NEWLINE, LexedChunk.new("\n", @line_no, i + space.size)]
+          tokens << [:NEWLINE, LexedChunk.new("\n", @line_no, i + initial_col + space.size - 1)]
           i += space.size
           debug_out("Extracted newline")
         elsif space = sub[/\A(\s+)/, 1]
