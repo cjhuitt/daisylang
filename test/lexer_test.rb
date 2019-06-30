@@ -343,6 +343,7 @@ CODE
       Lexer.new.tokenize("|")
     end
     assert_true err.message.include?("|")
+    assert_equal "|", err.text
     assert_equal 1, err.line
     assert_equal 1, err.col
   end

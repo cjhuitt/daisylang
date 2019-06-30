@@ -6,9 +6,10 @@ end
 
 class Lexer
   class LexingError < StandardError
-    attr_reader :line, :col
-    def initialize(part, line, col)
+    attr_reader :text, :line, :col
+    def initialize(text, part, line, col)
       super("Unlexable chunk: >>#{part}<<")
+      @text = text
       @col = col
       @line = line
     end
@@ -50,7 +51,7 @@ class Lexer
       begin
         tokens += tokenize_line(line, (blocklevel * 4) + 1)
       rescue InternalError => err
-        raise LexingError.new(err.part, @line_no, err.col)
+        raise LexingError.new(line, err.part, @line_no, err.col)
       end
     end
     tokens
