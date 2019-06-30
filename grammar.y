@@ -280,6 +280,9 @@ end
   require "nodes"
 
 ---- inner
+  class ParseError < StandardError
+  end
+
   def parse(code, debug=false)
     @tokens = Lexer.new(debug).tokenize(code)
     @yydebug=debug
