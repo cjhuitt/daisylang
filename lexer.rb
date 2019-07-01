@@ -8,7 +8,7 @@ class Lexer
   class LexError < StandardError
     attr_reader :text, :line, :col
     def initialize(text, part, line, col)
-      super("Unlexable chunk: >>#{part}<<")
+      super("Unlexable chunk \"#{part}\"")
       @text = text
       @col = col
       @line = line
@@ -216,7 +216,7 @@ class Lexer
           i += space.size
           debug_out("Extracted whitespace")
         else
-          raise LexError.new(line, sub, @line_no, i + 1)
+          raise LexError.new(line, sub.rstrip, @line_no, i + 1)
         end
       end
 

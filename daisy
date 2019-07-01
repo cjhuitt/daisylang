@@ -33,7 +33,17 @@ interpreter = Interpreter.new(nil, options["debug"])
 
 # If a file is given we should run it.
 if file = ARGV.first
-  interpreter.eval(File.read(file))
+  begin
+    interpreter.eval(File.read(file))
+  rescue Lexer::LexError => err
+    puts "#{file}:#{err.line}:#{err.col} #{err.message}"
+    puts err.text.rstrip
+    puts ' ' * (err.col - 1) + '^'
+  rescue Parser::ParseError => err
+    puts "#{file}:#{err.line}:#{err.col} #{err.message}"
+    puts err.text.rstrip
+    puts ' ' * (err.col - 1) + '^'
+  end
 else
   puts "Daisy Console (CTRL+D to quit)"
   while line = Readline::readline(">> ", true)
