@@ -5,7 +5,7 @@ class LexedChunk < Struct.new(:value, :text, :line, :col)
 end
 
 class Lexer
-  class LexingError < StandardError
+  class LexError < StandardError
     attr_reader :text, :line, :col
     def initialize(text, part, line, col)
       super("Unlexable chunk: >>#{part}<<")
@@ -216,7 +216,7 @@ class Lexer
           i += space.size
           debug_out("Extracted whitespace")
         else
-          raise LexingError.new(line, sub, @line_no, i + 1)
+          raise LexError.new(line, sub, @line_no, i + 1)
         end
       end
 

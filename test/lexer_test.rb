@@ -365,7 +365,7 @@ CODE
   end
 
   def test_raises_on_unknown
-    err = assert_raises Lexer::LexingError do
+    err = assert_raises Lexer::LexError do
       Lexer.new.tokenize("|")
     end
     assert_true err.message.include?("|")
