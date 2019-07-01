@@ -283,7 +283,7 @@ end
   class ParseError < StandardError
     attr_reader :token, :text, :line, :col
     def initialize(val, t)
-      super("\nparse error on value #{val.inspect} (#{t})")
+      super("parse error on #{t}")
       @token = val.value
       @text = val.text
       @line = val.line
