@@ -882,4 +882,14 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_raises_on_parse_error
+    err = assert_raises Parser::ParseError do
+      Parser.new.parse("for a in ()")
+    end
+    assert_equal "()", err.token
+    assert_equal "for a in ()", err.text
+    assert_equal 1, err.line
+    assert_equal 10, err.col
+  end
+
 end
