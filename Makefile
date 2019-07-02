@@ -21,7 +21,7 @@ check: tests
 parser.rb: grammar.y
 	racc -g -o parser.rb grammar.y
 
-samples: arrays calc classical fibo hash hello lights mirror printing truthy
+samples: arrays calc classical exceptional fibo hash hello lights mirror printing truthy
 
 arrays: daisy samples/arrays.daisy
 	./daisy samples/arrays.daisy
@@ -31,6 +31,9 @@ calc: daisy samples/calc.daisy
 
 classical: daisy samples/classical.daisy
 	./daisy samples/classical.daisy
+
+exceptional: daisy samples/exceptional.daisy
+	./daisy samples/exceptional.daisy
 
 fibo: daisy samples/fibo.daisy
 	./daisy samples/fibo.daisy
