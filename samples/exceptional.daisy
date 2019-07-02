@@ -1,0 +1,18 @@
+Class: SampleError is Throwable
+    pass
+
+Method: Throws()
+    throw SampleError.create()
+
+try
+    Throws()
+handle SampleError as err
+    print( "Sample Error" )
+handle
+    print( "Unknown Error" )
+
+try
+    Throws()
+handle err
+    print( err )
+
