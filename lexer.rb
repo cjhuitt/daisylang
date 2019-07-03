@@ -1,6 +1,8 @@
-class LexedChunk < Struct.new(:value, :text, :line, :col)
+require "source_info"
+
+class LexedChunk < Struct.new(:value, :source_info)
   def initialize(value, text, line=1, col=1)
-    super(value, text, line, col)
+    super(value, SourceInfo.new(text, line, col))
   end
 end
 
