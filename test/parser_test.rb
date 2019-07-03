@@ -412,8 +412,12 @@ Class: Foo is Functional, Capable
 
 CODE
     expected = Nodes.new([
-      DefineClassNode.new("Foo",
-        [ "Functional", "Capable" ],
+      DefineClassNode.new(
+        "Foo",
+        [
+          IsContractNode.new("Functional"),
+          IsContractNode.new("Capable")
+        ],
         Nodes.new([
           PassNode.new
         ])

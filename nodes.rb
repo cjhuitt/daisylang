@@ -108,6 +108,7 @@ class DefineContractNode < Struct.new(:name, :body)
   include Visitable
 end
 
+class IsContractNode < Struct.new(:name); end
 class DefineClassNode < Struct.new(:name, :contracts, :body)
   include Visitable
 end
