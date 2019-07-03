@@ -55,7 +55,7 @@ class Lexer
   private
     KEYWORDS = [
       "if", "else", "unless", "while", "loop", "switch", "case",
-      "break", "continue", "pass", "return",
+      "break", "continue", "pass", "return", "try", "handle",
       "true", "false", "none"
     ]
 
@@ -115,6 +115,10 @@ class Lexer
           tokens << [:IS, LexedChunk.new("is", line, @line_no, i + 1)]
           debug_out("Extracted is (Keyword)")
           i += "is ".size
+        elsif sub.start_with? "as "
+          tokens << [:AS, LexedChunk.new("as", line, @line_no, i + 1)]
+          debug_out("Extracted as (Keyword)")
+          i += "as ".size
         elsif identifier = sub[/\A(\w+\.\w+)(\)|\s|$)/, 1]
           id = sub[/\A(\w+)/, 1]
           tokens << [:IDENTIFIER, LexedChunk.new(id, line, @line_no, i + 1)]

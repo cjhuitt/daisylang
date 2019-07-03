@@ -82,8 +82,14 @@ class SwitchNode < Struct.new(:value, :condition_blocks, :else_block)
   include Visitable
 end
 
-
 class LoopNode < Struct.new(:body, :comment)
+  include Visitable
+end
+
+class TryNode < Struct.new(:body, :handlers)
+  include Visitable
+end
+class HandleNode < Struct.new(:type, :as, :body)
   include Visitable
 end
 
