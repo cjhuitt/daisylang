@@ -13,6 +13,6 @@ handle
 
 try
     Throws()
-handle err
+handle as err
     print( err )
 
