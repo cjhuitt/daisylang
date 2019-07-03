@@ -308,9 +308,9 @@ end
     def initialize(val, t)
       super("parse error on #{t}")
       @token = val.value
-      @text = val.text
-      @line = val.line
-      @col = val.col
+      @text = val.source_info.text
+      @line = val.source_info.line
+      @col = val.source_info.col
     end
   end
 
