@@ -415,8 +415,14 @@ CODE
       DefineClassNode.new(
         "Foo",
         [
-          IsContractNode.new("Functional"),
-          IsContractNode.new("Capable")
+          IsContractNode.new(
+            "Functional",
+            "Class: Foo is Functional, Capable\n",
+            1, 15),
+          IsContractNode.new(
+            "Capable",
+            "Class: Foo is Functional, Capable\n",
+            1, 27)
         ],
         Nodes.new([
           PassNode.new
