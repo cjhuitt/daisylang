@@ -143,7 +143,7 @@ rule
   ;
 
   Contract:
-    IDENTIFIER                          { result = IsContractNode.new(val[0].value) }
+    IDENTIFIER                          { result = CreateIsContractNode(val[0]) }
   ;
 
   Block:
@@ -295,6 +295,12 @@ end
 ---- header
   require "lexer"
   require "nodes"
+
+def CreateIsContractNode
+  def initialize(lexed_chunk)
+    IsContractNode.new(lexed_chunk.value)
+  end
+end
 
 ---- inner
   class ParseError < StandardError
