@@ -143,7 +143,7 @@ rule
   ;
 
   Contract:
-    IDENTIFIER                          { result = val[0].value }
+    IDENTIFIER                          { result = IsContractNode.new(val[0].value) }
   ;
 
   Block:
