@@ -276,9 +276,9 @@ class Interpreter
     def visit_DefineClassNode(node)
       debug_print("Define class #{node.name}")
       daisy_class = DaisyClass.new(node.name, Constants["Object"])
-      node.contracts.each do |contract_name|
-        contract = context.symbol(contract_name, nil)
-        raise "Referenced unknown symbol #{contract_name}" if contract.nil?
+      node.contracts.each do |contract_def|
+        contract = context.symbol(contract_def.name, nil)
+        raise "Referenced unknown symbol #{contract_def.name}" if contract.nil?
         daisy_class.add_contract(contract.ruby_value)
       end
       context.assign_symbol(node.name, nil, daisy_class)
