@@ -4,7 +4,7 @@ token BLOCKSTART BLOCKEND
 token METHOD CLASS CONTRACT IS ENUM
 token IDENTIFIER FIELD
 token IF ELSE UNLESS WHILE LOOP FOR IN SWITCH CASE
-token BREAK CONTINUE PASS RETURN
+token BREAK CONTINUE PASS RETURN TRY HANDLE AS
 token NEWLINE
 token INTEGER STRING NONETYPE
 token TRUE FALSE NONE
@@ -46,6 +46,7 @@ rule
   | ConditionalSet                      { result = val[0] }
   | Loop                                { result = val[0] }
   | FlowControl                         { result = val[0] }
+  | TryHandle                           { result = val[0] }
   | Message                             { result = val[0] }
   | Operation                           { result = val[0] }
   | Define                              { result = val[0] }
@@ -253,6 +254,22 @@ rule
   FlowControl:
     BREAK                               { result = BreakNode.new }
   | CONTINUE                            { result = ContinueNode.new }
+  ;
+
+  TryHandle:
+    TRY Block HandleBlocks              { result = TryNode.new(val[1], val[2]) }
+  ;
+
+  HandleBlocks:
+    HandleBlock                         { result = [val[0]] }
+  | HandleBlocks HandleBlock            { result = val[0] << val[1] }
+  ;
+
+  HandleBlock:
+    HANDLE IDENTIFIER Block             { result = HandleNode.new(val[1].value, nil, val[2]) }
+  | HANDLE IDENTIFIER AS IDENTIFIER Block { result = HandleNode.new(val[1].value, val[3].value, val[4]) }
+  | HANDLE AS IDENTIFIER Block          { result = HandleNode.new(nil, val[2].value, val[3]) }
+  | HANDLE Block                        { result = HandleNode.new(nil, nil, val[1]) }
   ;
 
   GetSymbol:

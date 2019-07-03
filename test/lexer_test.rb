@@ -67,6 +67,12 @@ class LexerTest < Test::Unit::TestCase
     assert_equal expected, Lexer.new.tokenize("pass")
     expected = [[:RETURN, LexedChunk.new("return", "return", 1, 1)]]
     assert_equal expected, Lexer.new.tokenize("return")
+    expected = [[:TRY, LexedChunk.new("try", "try", 1, 1)]]
+    assert_equal expected, Lexer.new.tokenize("try")
+    expected = [[:HANDLE, LexedChunk.new("handle", "handle", 1, 1)]]
+    assert_equal expected, Lexer.new.tokenize("handle")
+    expected = [[:AS, LexedChunk.new("as", "as ", 1, 1)]]
+    assert_equal expected, Lexer.new.tokenize("as ")
 
     expected = [[:TRUE, LexedChunk.new("true", "true", 1, 1)]]
     assert_equal expected, Lexer.new.tokenize("true")

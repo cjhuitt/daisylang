@@ -892,4 +892,50 @@ CODE
     assert_equal 10, err.col
   end
 
+  def test_try_handle
+    code = <<-CODE
+try
+    method()
+handle FooError
+    pass
+handle FooError as err
+    pass
+handle as err
+    pass
+handle
+    pass
+
+CODE
+    expected = Nodes.new([
+      TryNode.new(
+        Nodes.new([
+          SendMessageNode.new(nil, "method", [])
+        ]),
+        [
+          HandleNode.new(
+            "FooError", nil, Nodes.new([
+              PassNode.new
+            ])
+          ),
+          HandleNode.new(
+            "FooError", "err", Nodes.new([
+              PassNode.new
+            ])
+          ),
+          HandleNode.new(
+            nil, "err", Nodes.new([
+              PassNode.new
+            ])
+          ),
+          HandleNode.new(
+            nil, nil, Nodes.new([
+              PassNode.new
+            ])
+          )
+        ]
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end
