@@ -32,6 +32,12 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     @manager.leave_scope(flow_context)
   end
 
+  def test_symbol_defined_in_root_scope_available_in_try_block_scope
+    flow_context = @manager.enter_try_block_scope()
+    assert_equal Constants["None"], @manager.context.symbol("None", nil)
+    @manager.leave_scope(flow_context)
+  end
+
   def test_symbol_defined_in_root_scope_available_in_class_definition_scope
     daisy_class = DaisyClass.new("Foo", Constants["Object"])
     class_context = @manager.enter_class_definition_scope(daisy_class)
@@ -61,6 +67,16 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     file_context = @manager.enter_file_scope(file)
     file_context.assign_symbol("foo", nil, Constants["true"])
     flow_context = @manager.enter_flow_control_block_scope()
+    assert_equal Constants["true"], @manager.context.symbol("foo", nil)
+    @manager.leave_scope(flow_context)
+    @manager.leave_scope(file_context)
+  end
+
+  def test_symbol_defined_in_file_scope_available_in_try_block_scope
+    file = Constants["Object"].new
+    file_context = @manager.enter_file_scope(file)
+    file_context.assign_symbol("foo", nil, Constants["true"])
+    flow_context = @manager.enter_try_block_scope()
     assert_equal Constants["true"], @manager.context.symbol("foo", nil)
     @manager.leave_scope(flow_context)
     @manager.leave_scope(file_context)
@@ -97,6 +113,15 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     @manager.leave_scope(method_context)
   end
 
+  def test_symbol_defined_in_method_scope_available_in_try_block_scope
+    method_context = @manager.enter_method_scope(@test_self)
+    method_context.assign_symbol("foo", nil, Constants["true"])
+    flow_context = @manager.enter_try_block_scope()
+    assert_equal Constants["true"], @manager.context.symbol("foo", nil)
+    @manager.leave_scope(flow_context)
+    @manager.leave_scope(method_context)
+  end
+
   def test_symbol_defined_in_method_scope_available_in_class_definition_scope
     method_context = @manager.enter_method_scope(@test_self)
     method_context.assign_symbol("foo", nil, Constants["true"])
@@ -126,6 +151,15 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     @manager.leave_scope(flow_context1)
   end
 
+  def test_symbol_defined_in_try_block_scope_available_in_subsequent_try_block_scope
+    flow_context1 = @manager.enter_try_block_scope()
+    flow_context1.assign_symbol("foo", nil, Constants["true"])
+    flow_context2 = @manager.enter_try_block_scope()
+    assert_equal Constants["true"], @manager.context.symbol("foo", nil)
+    @manager.leave_scope(flow_context2)
+    @manager.leave_scope(flow_context1)
+  end
+
   # Test symbols after scopes are left:
 
   def test_symbol_defined_in_file_not_available_after_scope_is_left
@@ -145,6 +179,13 @@ class DaisyContextManagerTest < Test::Unit::TestCase
 
   def test_symbol_defined_in_flow_control_block_not_available_after_scope_is_left
     flow_context = @manager.enter_flow_control_block_scope()
+    flow_context.assign_symbol("foo", nil, Constants["true"])
+    @manager.leave_scope(flow_context)
+    assert_nil @manager.context.symbol("foo", nil)
+  end
+
+  def test_symbol_defined_in_try_block_not_available_after_scope_is_left
+    flow_context = @manager.enter_try_block_scope()
     flow_context.assign_symbol("foo", nil, Constants["true"])
     @manager.leave_scope(flow_context)
     assert_nil @manager.context.symbol("foo", nil)
@@ -194,6 +235,18 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     method_context = @manager.enter_method_scope(@test_self)
     method_context.return_type = Constants["Boolean"]
     flow_context = @manager.enter_flow_control_block_scope()
+    flow_context.set_return(Constants["true"])
+    @manager.leave_scope(flow_context)
+    assert_equal Constants["Boolean"], method_context.return_type
+    assert_equal Constants["true"], method_context.return_value
+    assert_true method_context.should_return
+    @manager.leave_scope(method_context)
+  end
+
+  def test_return_value_set_in_try_scope_propogates_to_method_scope
+    method_context = @manager.enter_method_scope(@test_self)
+    method_context.return_type = Constants["Boolean"]
+    flow_context = @manager.enter_try_block_scope()
     flow_context.set_return(Constants["true"])
     @manager.leave_scope(flow_context)
     assert_equal Constants["Boolean"], method_context.return_type
