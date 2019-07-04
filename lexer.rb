@@ -53,7 +53,7 @@ class Lexer
   private
     KEYWORDS = [
       "if", "else", "unless", "while", "loop", "switch", "case",
-      "break", "continue", "pass", "return", "try", "handle",
+      "break", "continue", "pass", "return", "try", "handle", "throw",
       "true", "false", "none"
     ]
 

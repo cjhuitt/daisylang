@@ -73,6 +73,8 @@ class LexerTest < Test::Unit::TestCase
     assert_equal expected, Lexer.new.tokenize("handle")
     expected = [[:AS, LexedChunk.new("as", "as ", 1, 1)]]
     assert_equal expected, Lexer.new.tokenize("as ")
+    expected = [[:THROW, LexedChunk.new("throw", "throw", 1, 1)]]
+    assert_equal expected, Lexer.new.tokenize("throw")
 
     expected = [[:TRUE, LexedChunk.new("true", "true", 1, 1)]]
     assert_equal expected, Lexer.new.tokenize("true")

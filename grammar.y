@@ -4,7 +4,7 @@ token BLOCKSTART BLOCKEND
 token METHOD CLASS CONTRACT IS ENUM
 token IDENTIFIER FIELD
 token IF ELSE UNLESS WHILE LOOP FOR IN SWITCH CASE
-token BREAK CONTINUE PASS RETURN TRY HANDLE AS
+token BREAK CONTINUE PASS RETURN TRY HANDLE AS THROW
 token NEWLINE
 token INTEGER STRING NONETYPE
 token TRUE FALSE NONE
@@ -254,6 +254,7 @@ rule
   FlowControl:
     BREAK                               { result = BreakNode.new }
   | CONTINUE                            { result = ContinueNode.new }
+  | THROW Expression                    { result = ThrowNode.new(val[1]) }
   ;
 
   TryHandle:

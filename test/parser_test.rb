@@ -954,4 +954,18 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_throw
+    code = <<-CODE
+throw Unimplemented.create()
+CODE
+    expected = Nodes.new([
+      ThrowNode.new(
+        SendMessageNode.new(
+          GetSymbolNode.new("Unimplemented"), "create", []
+        )
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end

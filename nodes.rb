@@ -92,6 +92,9 @@ end
 class HandleNode < Struct.new(:type, :as, :body)
   include Visitable
 end
+class ThrowNode < Struct.new(:exception)
+  include Visitable
+end
 
 class GetSymbolNode < Struct.new(:id, :instance)
   include Visitable
