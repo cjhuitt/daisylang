@@ -903,9 +903,9 @@ CODE
       Parser.new.parse("for a in ()")
     end
     assert_equal "()", err.token
-    assert_equal "for a in ()", err.text
-    assert_equal 1, err.line
-    assert_equal 10, err.col
+    assert_equal "for a in ()", err.source_info.text
+    assert_equal 1, err.source_info.line
+    assert_equal 10, err.source_info.col
   end
 
   def test_try_handle
