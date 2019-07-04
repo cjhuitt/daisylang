@@ -35,14 +35,10 @@ interpreter = Interpreter.new(nil, options["debug"])
 if file = ARGV.first
   begin
     interpreter.eval(File.read(file))
-  rescue Lexer::LexError => err
-    puts "#{file}:#{err.line}:#{err.col} #{err.message}"
-    puts err.text.rstrip
-    puts ' ' * (err.col - 1) + '^'
-  rescue Parser::ParseError => err
-    puts "#{file}:#{err.line}:#{err.col} #{err.message}"
-    puts err.text.rstrip
-    puts ' ' * (err.col - 1) + '^'
+  rescue DaisyError => err
+    puts "#{file}:#{err.source_info.line}:#{err.source_info.col} #{err.message}"
+    puts err.source_info.text.rstrip
+    puts ' ' * (err.source_info.col - 1) + '^'
   end
 else
   puts "Daisy Console (CTRL+D to quit)"
