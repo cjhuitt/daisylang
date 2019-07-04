@@ -788,4 +788,24 @@ CODE
     assert_equal red, nxt
   end
 
+  def test_try_handle
+    code = <<-CODE
+Class: SampleError is Throwable
+    pass
+
+Method: Throws()
+    throw SampleError.create()
+
+a = true
+try
+    Throws()
+handle
+    a = false
+
+CODE
+    @interpreter.eval(code)
+    a = @interpreter.context.symbol("a", nil)
+    assert_equal Constants["false"], a
+  end
+
 end
