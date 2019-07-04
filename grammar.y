@@ -295,19 +295,18 @@ end
 ---- header
   require "lexer"
   require "nodes"
-  require "source_info"
+  require "daisy_error"
 
 def CreateIsContractNode(lexed_chunk)
   IsContractNode.new(lexed_chunk.value, lexed_chunk.source_info)
 end
 
 ---- inner
-  class ParseError < StandardError
-    attr_reader :token, :source_info
+  class ParseError < DaisyError
+    attr_reader :token
     def initialize(val, t)
-      super("parse error on #{t}")
+      super("parse error on #{t}", val.source_info)
       @token = val.value
-      @source_info = val.source_info
     end
   end
 

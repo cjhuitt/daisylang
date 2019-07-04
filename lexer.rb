@@ -1,4 +1,4 @@
-require "source_info"
+require "daisy_error"
 
 class LexedChunk < Struct.new(:value, :source_info)
   def initialize(value, text, line=1, col=1)
@@ -7,11 +7,9 @@ class LexedChunk < Struct.new(:value, :source_info)
 end
 
 class Lexer
-  class LexError < StandardError
-    attr_reader :source_info
+  class LexError < DaisyError
     def initialize(text, part, line, col)
-      super("Unlexable chunk \"#{part}\"")
-      @source_info = SourceInfo.new(text, line, col)
+      super("Unlexable chunk \"#{part}\"", SourceInfo.new(text, line, col))
     end
   end
 
