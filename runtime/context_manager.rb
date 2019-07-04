@@ -28,6 +28,14 @@ class ContextManager
     @context
   end
 
+  def enter_try_block_scope()
+    @context_queue.push(@context)
+    @context = Context.new(@context, @context.current_self)
+    @context.current_method_context = @last_method_context
+    @context.current_loop_context = @last_loop_context
+    @context
+  end
+
   def enter_method_scope(receiver)
     @context_queue.push(@context)
     @context = Context.new(base_scope, receiver)
