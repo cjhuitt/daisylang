@@ -17,6 +17,7 @@ class ContextManager
     @context_queue.push(@context)
     @context = Context.new(@root_context, file)
     @context.last_file_context = @last_file_context
+    @context.current_try_context = @last_try_context
     @last_file_context = @context
   end
 
@@ -26,6 +27,7 @@ class ContextManager
     @context.current_method_context = @last_method_context
     @last_loop_context = @context if looping
     @context.current_loop_context = @last_loop_context
+    @context.current_try_context = @last_try_context
     @context
   end
 
@@ -45,18 +47,23 @@ class ContextManager
     @context.last_method_context = @last_method_context
     @last_method_context = @context
     @context.current_method_context = @context
+    @context.current_try_context = @last_try_context
+    @context
   end
 
   def enter_class_definition_scope(daisy_class)
     @context_queue.push(@context)
     @context = Context.new(@context, daisy_class, daisy_class)
     @context.defining_class = daisy_class
+    @context.current_try_context = @last_try_context
     @context
   end
 
   def enter_contract_definition_scope(contract)
     @context_queue.push(@context)
     @context = Context.new(@context, contract, contract)
+    @context.current_try_context = @last_try_context
+    @context
   end
 
   def leave_scope(context)

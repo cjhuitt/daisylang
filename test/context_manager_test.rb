@@ -256,6 +256,21 @@ class DaisyContextManagerTest < Test::Unit::TestCase
   end
 
 
+  # Test exceptions work through nested flow control scopes
+  def test_exceptions_propogage_through_nexted_scopes
+    try_context = @manager.enter_try_block_scope
+    method_context = @manager.enter_method_scope(@test_self)
+    flow_context = @manager.enter_flow_control_block_scope()
+    flow_context.set_exception(Constants["true"])
+    assert_true flow_context.need_early_exit
+    @manager.leave_scope(flow_context)
+    assert_true method_context.need_early_exit
+    @manager.leave_scope(method_context)
+    assert_equal Constants["true"], try_context.exception_value
+    @manager.leave_scope(try_context)
+  end
+
+
   # Test early scope exit scenarios
   def test_early_exit_needed_in_contexts_with_method_return_value_set
     method_context = @manager.enter_method_scope(@test_self)
