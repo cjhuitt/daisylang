@@ -8,12 +8,10 @@ end
 
 class Lexer
   class LexError < StandardError
-    attr_reader :text, :line, :col
+    attr_reader :source_info
     def initialize(text, part, line, col)
       super("Unlexable chunk \"#{part}\"")
-      @text = text
-      @col = col
-      @line = line
+      @source_info = SourceInfo.new(text, line, col)
     end
   end
 

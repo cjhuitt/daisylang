@@ -375,9 +375,9 @@ CODE
       Lexer.new.tokenize("|")
     end
     assert_true err.message.include?("|")
-    assert_equal "|", err.text
-    assert_equal 1, err.line
-    assert_equal 1, err.col
+    assert_equal "|", err.source_info.text
+    assert_equal 1, err.source_info.line
+    assert_equal 1, err.source_info.col
   end
 
   def x_test_print_tokens
