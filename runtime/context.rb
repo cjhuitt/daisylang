@@ -6,6 +6,7 @@ class Context
   attr_accessor :last_file_context
   attr_accessor :last_method_context, :current_method_context
   attr_accessor :current_loop_context, :should_break
+  attr_accessor :current_try_context, :exception_value
 
   def initialize(prev_context, current_self, current_class=current_self.runtime_class)
     @previous_context = prev_context
@@ -22,6 +23,8 @@ class Context
     @current_method_context = nil
     @current_loop_context = nil
     @should_break = false
+    @current_try_context = nil
+    @exception_value = nil
   end
 
   def interpreter()
@@ -80,6 +83,12 @@ class Context
     end
   end
 
+  def set_exception(val)
+    if !@current_try_context.nil?
+      @current_try_context.exception_value = val
+    end
+  end
+
   def set_should_break
     if !@current_loop_context.nil?
       @current_loop_context.should_break = true
@@ -88,6 +97,7 @@ class Context
 
   def need_early_exit
     return (!@current_method_context.nil? && @current_method_context.should_return) ||
-           (!@current_loop_context.nil? && @current_loop_context.should_break)
+           (!@current_loop_context.nil? && @current_loop_context.should_break) ||
+           (!@current_try_context.nil? && !@current_try_context.exception_value.nil?)
   end
 end

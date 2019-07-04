@@ -9,6 +9,7 @@ class ContextManager
     @last_file_context = nil
     @last_method_context = nil
     @last_loop_context = nil
+    @last_try_context = nil
     @context_queue = []
   end
 
@@ -33,6 +34,8 @@ class ContextManager
     @context = Context.new(@context, @context.current_self)
     @context.current_method_context = @last_method_context
     @context.current_loop_context = @last_loop_context
+    @context.current_try_context = @context
+    @last_try_context = @context
     @context
   end
 
@@ -60,6 +63,7 @@ class ContextManager
     raise "Leaving scope with inactive context" if !context.nil? && context != @context
     @last_file_context = @context.last_file_context if !@context.last_file_context.nil?
     @last_method_context = @context.last_method_context if !@context.last_method_context.nil?
+    @last_try_context = @context.current_try_context
     @context = @context_queue.pop()
   end
 
