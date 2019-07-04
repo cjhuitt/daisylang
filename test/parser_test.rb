@@ -419,14 +419,16 @@ CODE
             "Functional",
             SourceInfo.new(
               "Class: Foo is Functional, Capable\n",
-              1, 15)),
+              1, 15
+            )
+          ),
           IsContractNode.new(
             "Capable",
             SourceInfo.new(
               "Class: Foo is Functional, Capable\n",
               1, 27
             )
-              )
+          )
         ],
         Nodes.new([
           PassNode.new
