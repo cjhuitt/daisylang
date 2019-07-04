@@ -296,10 +296,8 @@ end
   require "lexer"
   require "nodes"
 
-def CreateIsContractNode
-  def initialize(lexed_chunk)
-    IsContractNode.new(lexed_chunk.value)
-  end
+def CreateIsContractNode(lexed_chunk)
+  IsContractNode.new(lexed_chunk.value, lexed_chunk.source_info)
 end
 
 ---- inner
