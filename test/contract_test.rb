@@ -40,4 +40,8 @@ class ContractTest < Test::Unit::TestCase
     assert_not_nil RootContext.symbol("Indexable", nil)
     assert_not_nil Constants["Indexable"].runtime_class.lookup("#")
   end
+
+  def test_throwable
+    assert_not_nil RootContext.symbol("Throwable", nil)
+  end
 end
