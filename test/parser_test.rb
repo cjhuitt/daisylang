@@ -924,27 +924,28 @@ handle
 CODE
     expected = Nodes.new([
       TryNode.new(
+        nil,
         Nodes.new([
           SendMessageNode.new(nil, "method", [])
         ]),
         [
           HandleNode.new(
-            "FooError", nil, Nodes.new([
+            "FooError", nil, nil, Nodes.new([
               PassNode.new
             ])
           ),
           HandleNode.new(
-            "FooError", "err", Nodes.new([
+            "FooError", "err", nil, Nodes.new([
               PassNode.new
             ])
           ),
           HandleNode.new(
-            nil, "err", Nodes.new([
+            nil, "err", nil, Nodes.new([
               PassNode.new
             ])
           ),
           HandleNode.new(
-            nil, nil, Nodes.new([
+            nil, nil, nil, Nodes.new([
               PassNode.new
             ])
           )
@@ -963,6 +964,101 @@ CODE
         SendMessageNode.new(
           GetSymbolNode.new("Unimplemented"), "create", []
         )
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
+  def test_try_handle_with_comments
+    code = <<-CODE
+try // With comment
+    method()
+handle FooError // With comment
+    pass
+// Another Comment
+handle FooError
+    pass
+handle FooError as err // With comment
+    pass
+// Another Comment
+handle FooError as err
+    pass
+handle as err // With comment
+    pass
+// Another Comment
+handle as err
+    pass
+handle // With comment
+    pass
+// Another Comment
+handle
+    pass
+
+CODE
+    expected = Nodes.new([
+      TryNode.new(
+        CommentNode.new("// With comment\n"),
+        Nodes.new([
+          SendMessageNode.new(nil, "method", [])
+        ]),
+        [
+          HandleNode.new(
+            "FooError", nil,
+            CommentNode.new("// With comment\n"),
+            Nodes.new([
+              PassNode.new
+            ])
+          ),
+          HandleNode.new(
+            "FooError", nil,
+            CommentNode.new("// Another Comment\n"),
+            Nodes.new([
+              PassNode.new
+            ])
+          ),
+          HandleNode.new(
+            "FooError", "err",
+            CommentNode.new("// With comment\n"),
+            Nodes.new([
+              PassNode.new
+            ])
+          ),
+          HandleNode.new(
+            "FooError", "err",
+            CommentNode.new("// Another Comment\n"),
+            Nodes.new([
+              PassNode.new
+            ])
+          ),
+          HandleNode.new(
+            nil, "err",
+            CommentNode.new("// With comment\n"),
+            Nodes.new([
+              PassNode.new
+            ])
+          ),
+          HandleNode.new(
+            nil, "err",
+            CommentNode.new("// Another Comment\n"),
+            Nodes.new([
+              PassNode.new
+            ])
+          ),
+          HandleNode.new(
+            nil, nil,
+            CommentNode.new("// With comment\n"),
+            Nodes.new([
+              PassNode.new
+            ])
+          ),
+          HandleNode.new(
+            nil, nil,
+            CommentNode.new("// Another Comment\n"),
+            Nodes.new([
+              PassNode.new
+            ])
+          )
+        ]
       )
     ])
     assert_equal expected, Parser.new.parse(code)

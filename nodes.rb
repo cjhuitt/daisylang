@@ -86,10 +86,10 @@ class LoopNode < Struct.new(:body, :comment)
   include Visitable
 end
 
-class TryNode < Struct.new(:body, :handlers)
+class TryNode < Struct.new(:comment, :body, :handlers)
   include Visitable
 end
-class HandleNode < Struct.new(:type, :as, :body)
+class HandleNode < Struct.new(:type, :as, :comment, :body)
   include Visitable
 end
 class ThrowNode < Struct.new(:exception)

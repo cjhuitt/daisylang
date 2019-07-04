@@ -258,7 +258,8 @@ rule
   ;
 
   TryHandle:
-    TRY Block HandleBlocks              { result = TryNode.new(val[1], val[2]) }
+    TRY Block HandleBlocks              { result = TryNode.new(nil, val[1], val[2]) }
+  | TRY Comment Block HandleBlocks      { result = TryNode.new(val[1], val[2], val[3]) }
   ;
 
   HandleBlocks:
@@ -267,10 +268,18 @@ rule
   ;
 
   HandleBlock:
-    HANDLE IDENTIFIER Block             { result = HandleNode.new(val[1].value, nil, val[2]) }
-  | HANDLE IDENTIFIER AS IDENTIFIER Block { result = HandleNode.new(val[1].value, val[3].value, val[4]) }
-  | HANDLE AS IDENTIFIER Block          { result = HandleNode.new(nil, val[2].value, val[3]) }
-  | HANDLE Block                        { result = HandleNode.new(nil, nil, val[1]) }
+    HANDLE IDENTIFIER Block             { result = HandleNode.new(val[1].value, nil, nil, val[2]) }
+  | HANDLE IDENTIFIER Comment Block     { result = HandleNode.new(val[1].value, nil, val[2], val[3]) }
+  | Comment HANDLE IDENTIFIER Block     { result = HandleNode.new(val[2].value, nil, val[0], val[3]) }
+  | HANDLE IDENTIFIER AS IDENTIFIER Block { result = HandleNode.new(val[1].value, val[3].value, nil, val[4]) }
+  | HANDLE IDENTIFIER AS IDENTIFIER Comment Block { result = HandleNode.new(val[1].value, val[3].value, val[4], val[5]) }
+  | Comment HANDLE IDENTIFIER AS IDENTIFIER Block { result = HandleNode.new(val[2].value, val[4].value, val[0], val[5]) }
+  | HANDLE AS IDENTIFIER Block          { result = HandleNode.new(nil, val[2].value, nil, val[3]) }
+  | HANDLE AS IDENTIFIER Comment Block  { result = HandleNode.new(nil, val[2].value, val[3], val[4]) }
+  | Comment HANDLE AS IDENTIFIER Block  { result = HandleNode.new(nil, val[3].value, val[0], val[4]) }
+  | HANDLE Block                        { result = HandleNode.new(nil, nil, nil, val[1]) }
+  | HANDLE Comment Block                { result = HandleNode.new(nil, nil, val[1], val[2]) }
+  | Comment HANDLE Block                { result = HandleNode.new(nil, nil, val[0], val[2]) }
   ;
 
   GetSymbol:
