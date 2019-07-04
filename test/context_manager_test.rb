@@ -280,4 +280,13 @@ class DaisyContextManagerTest < Test::Unit::TestCase
     @manager.leave_scope(method_context)
   end
 
+  def test_early_exit_needed_in_try_blocks_with_throw_set
+    method_context = @manager.enter_method_scope(@test_self)
+    flow_context = @manager.enter_try_block_scope
+    flow_context.set_exception 1
+    assert_true flow_context.need_early_exit
+    @manager.leave_scope(flow_context)
+    @manager.leave_scope(method_context)
+  end
+
 end
