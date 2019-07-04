@@ -278,7 +278,7 @@ class Interpreter
       daisy_class = DaisyClass.new(node.name, Constants["Object"])
       node.contracts.each do |contract_def|
         contract = context.symbol(contract_def.name, nil)
-        raise "Referenced unknown symbol #{contract_def.name}" if contract.nil?
+        raise DaisyError.new("Referenced unknown symbol #{contract_def.name}", contract_def.source_info) if contract.nil?
         daisy_class.add_contract(contract.ruby_value)
       end
       context.assign_symbol(node.name, nil, daisy_class)
