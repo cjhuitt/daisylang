@@ -229,11 +229,39 @@ class Interpreter
       @should_continue = true
     end
 
+    def visit_ThrowNode(node)
+      debug_print("Throw node")
+      context.set_exception(node.exception.accept(self))
+    end
+
     def visit_ReturnNode(node)
       val = node.expression.accept(self)
       debug_print("Return node #{val}")
       context.set_return(val)
       val
+    end
+
+    def visit_TryNode(node)
+      debug_print("Try node")
+      context = @contexts.enter_try_block_scope
+      returned = node.body.accept(self)
+      @should_break = context.need_early_exit
+      local = context
+      @contexts.leave_scope(context)
+      if !local.exception_value.nil?
+        node.handlers.each do |handler|
+          if handler.type.nil? || context.symbol(handler.type, nil) == local.exception_value.runtime_class
+            debug_print("Found Handler!")
+            context = @contexts.enter_flow_control_block_scope
+            if !handler.as.nil?
+              context.assign_symbol(handler.as, nil, local.exception_value)
+            end
+            returned = handler.body.accept(self)
+            @contexts.leave_scope(context)
+          end
+        end
+      end
+      returned
     end
 
     def visit_GetSymbolNode(node)
@@ -265,8 +293,14 @@ class Interpreter
       Constants["none"]
     end
 
+    def visit_PassNode(node)
+      debug_print("Pass node")
+      Constants["none"]
+    end
+
     def visit_CommentNode(node)
       debug_print("Skipping comment")
+      Constants["none"]
     end
 
     def debug_print(message)
