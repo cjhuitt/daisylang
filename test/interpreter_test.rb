@@ -826,6 +826,7 @@ try
     handle Sample1
         a = 2
 handle Sample2
+    a = 5
     a = 3
 handle
     a = 4
