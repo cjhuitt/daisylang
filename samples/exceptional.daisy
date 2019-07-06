@@ -1,5 +1,9 @@
-Class: SampleError is Throwable
-    pass
+Class: SampleError is Throwable, Stringifiable
+    Method: String message()
+        return "Sample"
+    
+    Method: String toString()
+        return message()
 
 Method: Throws()
     throw SampleError.create()
