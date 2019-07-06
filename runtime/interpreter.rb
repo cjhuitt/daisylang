@@ -249,8 +249,10 @@ class Interpreter
       local = context
       @contexts.leave_scope(context)
       if !local.exception_value.nil?
+        handled = false
         node.handlers.each do |handler|
           if handler.type.nil? || context.symbol(handler.type, nil) == local.exception_value.runtime_class
+            handled = true
             debug_print("Found Handler!")
             context = @contexts.enter_flow_control_block_scope
             if !handler.as.nil?
@@ -258,8 +260,10 @@ class Interpreter
             end
             returned = handler.body.accept(self)
             @contexts.leave_scope(context)
+            break
           end
         end
+        context().set_exception( local.exception_value ) unless handled
       end
       returned
     end

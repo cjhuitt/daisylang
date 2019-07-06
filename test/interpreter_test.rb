@@ -808,4 +808,33 @@ CODE
     assert_equal Constants["false"], a
   end
 
+  def test_nexted_try_handle
+    code = <<-CODE
+Class: Sample1 is Throwable
+    pass
+
+Class: Sample2 is Throwable
+    pass
+
+Method: Throws()
+    throw Sample2.create()
+
+a = 1
+try
+    try
+        Throws()
+    handle Sample1
+        a = 2
+handle Sample2
+    a = 3
+handle
+    a = 4
+
+CODE
+    @interpreter.eval(code)
+    a = @interpreter.context.symbol("a", nil)
+    assert_equal Constants["Integer"], a.runtime_class
+    assert_equal 3, a.ruby_value
+  end
+
 end
