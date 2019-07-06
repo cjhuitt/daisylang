@@ -19,6 +19,7 @@ class ContextManager
     @context.last_file_context = @last_file_context
     @context.current_try_context = @last_try_context
     @last_file_context = @context
+    @context
   end
 
   def enter_flow_control_block_scope(looping=false)
