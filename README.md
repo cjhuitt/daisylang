@@ -40,9 +40,10 @@ A whole lot remains to make this go, but the highlights are
 + More contracts for built-in types
 + Contract checking, delegation
 + More reflection
-+ Exception handling
 + Most error handling during parsing, interpretation (type safety, etc)
 + Mutability and constness checks
 + RAII-style scoping
 + Argument/value validators
++ Contract inheritence? (Example: should Throwable inherit from Stringifiable?)
++ File inclusion & namespacing
 + *and more*
