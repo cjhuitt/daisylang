@@ -7,7 +7,7 @@ class DaisyFloatTest < Test::Unit::TestCase
   end
 
   def test_immutable_math_operations_exist
-#    assert_true Constants["Float"].has_contract(Constants["Numerical"].ruby_value)
+    assert_true Constants["Float"].has_contract(Constants["Numerical"].ruby_value)
     assert_not_nil Constants["Float"].lookup("+")
     assert_not_nil Constants["Float"].lookup("-")
     assert_not_nil Constants["Float"].lookup("*")

@@ -7,7 +7,7 @@ class DaisyIntegerTest < Test::Unit::TestCase
   end
 
   def test_immutable_math_operations_exist
-#    assert_true Constants["Integer"].has_contract(Constants["Numerical"].ruby_value)
+    assert_true Constants["Integer"].has_contract(Constants["Numerical"].ruby_value)
     assert_not_nil Constants["Integer"].lookup("+")
     assert_not_nil Constants["Integer"].lookup("-")
     assert_not_nil Constants["Integer"].lookup("*")

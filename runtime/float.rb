@@ -1,6 +1,7 @@
 Constants["Float"] = DaisyClass.new("Float", Constants["Object"])
 RootContext.symbols["Float"] = Constants["Float"]
 
+Constants["Float"].add_contract(Constants["Numerical"].ruby_value)
 Constants["Float"].def :+ do |interpreter, receiver, args|
   result = receiver.ruby_value + args.first[1].ruby_value
   Constants["Float"].new(result)
