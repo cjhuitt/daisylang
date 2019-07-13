@@ -60,3 +60,11 @@ Constants["Indexable"].runtime_class.def :'#' do end
 Constants["Throwable"] = DaisyContract.new("Throwable")
 RootContext.symbols["Throwable"] = Constants["Throwable"]
 Constants["Throwable"].runtime_class.def :message do end
+
+Constants["Numerical"] = DaisyContract.new("Numerical")
+RootContext.symbols["Numerical"] = Constants["Numerical"]
+Constants["Numerical"].runtime_class.def :+ do end
+Constants["Numerical"].runtime_class.def :- do end
+Constants["Numerical"].runtime_class.def :* do end
+Constants["Numerical"].runtime_class.def :/ do end
+Constants["Numerical"].runtime_class.def :^ do end
