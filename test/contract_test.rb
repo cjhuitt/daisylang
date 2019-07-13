@@ -45,4 +45,13 @@ class ContractTest < Test::Unit::TestCase
     assert_not_nil RootContext.symbol("Throwable", nil)
     assert_not_nil Constants["Indexable"].runtime_class.lookup("message")
   end
+
+  def test_numerical
+    assert_not_nil RootContext.symbol("Numerical", nil)
+    assert_not_nil Constants["Numerical"].runtime_class.lookup("+")
+    assert_not_nil Constants["Numerical"].runtime_class.lookup("-")
+    assert_not_nil Constants["Numerical"].runtime_class.lookup("*")
+    assert_not_nil Constants["Numerical"].runtime_class.lookup("/")
+    assert_not_nil Constants["Numerical"].runtime_class.lookup("^")
+  end
 end
