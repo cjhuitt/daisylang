@@ -19,6 +19,7 @@ class LiteralNode < Struct.new(:value);
 end
 
 class IntegerNode < LiteralNode; end
+class FloatNode < LiteralNode; end
 class StringNode < LiteralNode; end
 
 class NilNode < LiteralNode

@@ -10,6 +10,10 @@ class ParserTest < Test::Unit::TestCase
     assert_equal Nodes.new([IntegerNode.new(7)]), Parser.new.parse("7")
   end
 
+  def test_float
+    assert_equal Nodes.new([FloatNode.new(7.5)]), Parser.new.parse("7.5")
+  end
+
   # Newlines are required for certain parses but don't need to be nodes
   # (yet, at least)
   def test_newline

@@ -80,6 +80,10 @@ class Lexer
         if "//" == sub[0..1]
           tokens << [:COMMENT, LexedChunk.new(sub, line, @line_no, i + 1)]
           break
+        elsif float = sub[/\A(\d+\.\d+)/, 1]
+          tokens << [:FLOAT, LexedChunk.new(float.to_f, line, @line_no, i + 1)]
+          i += float.size
+          debug_out("Extracted #{float} (Float)")
         elsif integer = sub[/\A(\d+)/, 1]
           tokens << [:INTEGER, LexedChunk.new(integer.to_i, line, @line_no, i + 1)]
           i += integer.size
