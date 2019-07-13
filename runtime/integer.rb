@@ -2,7 +2,7 @@ Constants["Integer"] = DaisyClass.new("Integer", Constants["Object"])
 RootContext.symbols["Integer"] = Constants["Integer"]
 
 def promote_if_necessary(value)
-  Constants["Integer"].new(value)
+  (value.is_a?(Float) ? Constants["Float"] : Constants["Integer"]).new(value)
 end
 
 Constants["Integer"].def :+ do |interpreter, receiver, args|
