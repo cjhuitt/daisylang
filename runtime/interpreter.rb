@@ -103,6 +103,11 @@ class Interpreter
       Constants["Integer"].new(node.value)
     end
 
+    def visit_FloatNode(node)
+      debug_print("FloatNode #{node.value}")
+      Constants["Float"].new(node.value)
+    end
+
     def visit_StringNode(node)
       debug_print("StringNode #{node.value}")
       Constants["String"].new(node.value)
