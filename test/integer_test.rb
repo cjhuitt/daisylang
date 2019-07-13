@@ -15,6 +15,31 @@ class DaisyIntegerTest < Test::Unit::TestCase
     assert_not_nil Constants["Integer"].lookup("^")
   end
 
+  def test_immutable_op_promotion
+    int = Constants["Integer"].new(1)
+    float = Constants["Float"].new(2.0)
+
+    add = int.runtime_class.lookup("+")
+    assert_equal Constants["Float"], add.call(nil, int, [[nil, float]]).runtime_class
+    assert_equal Constants["Float"], add.call(nil, float, [[nil, int]]).runtime_class
+
+    sub = int.runtime_class.lookup("+")
+    assert_equal Constants["Float"], sub.call(nil, int, [[nil, float]]).runtime_class
+    assert_equal Constants["Float"], sub.call(nil, float, [[nil, int]]).runtime_class
+
+    mult = int.runtime_class.lookup("+")
+    assert_equal Constants["Float"], mult.call(nil, int, [[nil, float]]).runtime_class
+    assert_equal Constants["Float"], mult.call(nil, float, [[nil, int]]).runtime_class
+
+    div = int.runtime_class.lookup("+")
+    assert_equal Constants["Float"], div.call(nil, int, [[nil, float]]).runtime_class
+    assert_equal Constants["Float"], div.call(nil, float, [[nil, int]]).runtime_class
+
+    exp = int.runtime_class.lookup("+")
+    assert_equal Constants["Float"], exp.call(nil, int, [[nil, float]]).runtime_class
+    assert_equal Constants["Float"], exp.call(nil, float, [[nil, int]]).runtime_class
+  end
+
   def test_comparison_operations_exist
     assert_true Constants["Integer"].has_contract(Constants["Comperable"].ruby_value)
     assert_not_nil Constants["Integer"].lookup("<")
