@@ -7,6 +7,7 @@ class DaisyIntegerTest < Test::Unit::TestCase
   end
 
   def test_immutable_math_operations_exist
+#    assert_true Constants["Integer"].has_contract(Constants["Numerical"].ruby_value)
     assert_not_nil Constants["Integer"].lookup("+")
     assert_not_nil Constants["Integer"].lookup("-")
     assert_not_nil Constants["Integer"].lookup("*")
@@ -15,14 +16,11 @@ class DaisyIntegerTest < Test::Unit::TestCase
   end
 
   def test_comparison_operations_exist
+    assert_true Constants["Integer"].has_contract(Constants["Comperable"].ruby_value)
     assert_not_nil Constants["Integer"].lookup("<")
     assert_not_nil Constants["Integer"].lookup("<=")
     assert_not_nil Constants["Integer"].lookup(">")
     assert_not_nil Constants["Integer"].lookup(">=")
-  end
-
-  def test_logical_operations_exist
-    assert_not_nil Constants["Integer"].lookup("?")
   end
 
   def test_stringifiable
