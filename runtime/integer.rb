@@ -5,6 +5,7 @@ def promote_if_necessary(value)
   (value.is_a?(Float) ? Constants["Float"] : Constants["Integer"]).new(value)
 end
 
+Constants["Integer"].add_contract(Constants["Numerical"].ruby_value)
 Constants["Integer"].def :+ do |interpreter, receiver, args|
   result = receiver.ruby_value + args.first[1].ruby_value
   promote_if_necessary(result)
