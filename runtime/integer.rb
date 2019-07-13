@@ -1,29 +1,34 @@
 Constants["Integer"] = DaisyClass.new("Integer", Constants["Object"])
 RootContext.symbols["Integer"] = Constants["Integer"]
 
+def promote_if_necessary(value)
+  Constants["Integer"].new(value)
+end
+
 Constants["Integer"].def :+ do |interpreter, receiver, args|
   result = receiver.ruby_value + args.first[1].ruby_value
-  Constants["Integer"].new(result)
+  promote_if_necessary(result)
 end
 
 Constants["Integer"].def :- do |interpreter, receiver, args|
   result = receiver.ruby_value - args.first[1].ruby_value
-  Constants["Integer"].new(result)
+  promote_if_necessary(result)
 end
 
 Constants["Integer"].def :* do |interpreter, receiver, args|
   result = receiver.ruby_value * args.first[1].ruby_value
-  Constants["Integer"].new(result)
+  promote_if_necessary(result)
 end
 
 Constants["Integer"].def :/ do |interpreter, receiver, args|
   result = receiver.ruby_value / args.first[1].ruby_value
-  Constants["Integer"].new(result)
+  promote_if_necessary(result)
 end
 
 Constants["Integer"].def :^ do |interpreter, receiver, args|
   result = receiver.ruby_value ** args.first[1].ruby_value
   Constants["Integer"].new(result)
+  promote_if_necessary(result)
 end
 
 Constants["Integer"].add_contract(Constants["Equatable"].ruby_value)
