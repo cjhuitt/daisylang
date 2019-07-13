@@ -23,6 +23,33 @@ class DaisyFloatTest < Test::Unit::TestCase
     assert_not_nil Constants["Float"].lookup(">=")
   end
 
+  def test_comparison_operations
+    one = Constants["Float"].new(1.0)
+    two = Constants["Float"].new(2.0)
+
+    less = one.runtime_class.lookup("<")
+    assert_equal Constants["Boolean"], less.call(nil, one, [[nil, two]]).runtime_class
+    assert_equal Constants["true"], less.call(nil, one, [[nil, two]])
+    assert_equal Constants["false"], less.call(nil, two, [[nil, one]])
+
+    le = one.runtime_class.lookup("<=")
+    assert_equal Constants["Boolean"], le.call(nil, one, [[nil, two]]).runtime_class
+    assert_equal Constants["true"], le.call(nil, one, [[nil, two]])
+    assert_equal Constants["true"], le.call(nil, one, [[nil, one]])
+    assert_equal Constants["false"], le.call(nil, two, [[nil, one]])
+
+    greater = one.runtime_class.lookup(">")
+    assert_equal Constants["Boolean"], greater.call(nil, one, [[nil, two]]).runtime_class
+    assert_equal Constants["false"], greater.call(nil, one, [[nil, two]])
+    assert_equal Constants["true"], greater.call(nil, two, [[nil, one]])
+
+    ge = one.runtime_class.lookup(">=")
+    assert_equal Constants["Boolean"], ge.call(nil, one, [[nil, two]]).runtime_class
+    assert_equal Constants["false"], ge.call(nil, one, [[nil, two]])
+    assert_equal Constants["true"], ge.call(nil, one, [[nil, one]])
+    assert_equal Constants["true"], ge.call(nil, two, [[nil, one]])
+  end
+
   def test_equatable
     assert_true Constants["Float"].has_contract(Constants["Equatable"].ruby_value)
     assert_not_nil Constants["Float"].lookup("==")

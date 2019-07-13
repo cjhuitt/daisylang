@@ -23,6 +23,33 @@ class DaisyIntegerTest < Test::Unit::TestCase
     assert_not_nil Constants["Integer"].lookup(">=")
   end
 
+  def test_comparison_operations
+    one = Constants["Integer"].new(1)
+    two = Constants["Integer"].new(2)
+
+    less = one.runtime_class.lookup("<")
+    assert_equal Constants["Boolean"], less.call(nil, one, [[nil, two]]).runtime_class
+    assert_equal Constants["true"], less.call(nil, one, [[nil, two]])
+    assert_equal Constants["false"], less.call(nil, two, [[nil, one]])
+
+    le = one.runtime_class.lookup("<=")
+    assert_equal Constants["Boolean"], le.call(nil, one, [[nil, two]]).runtime_class
+    assert_equal Constants["true"], le.call(nil, one, [[nil, two]])
+    assert_equal Constants["true"], le.call(nil, one, [[nil, one]])
+    assert_equal Constants["false"], le.call(nil, two, [[nil, one]])
+
+    greater = one.runtime_class.lookup(">")
+    assert_equal Constants["Boolean"], greater.call(nil, one, [[nil, two]]).runtime_class
+    assert_equal Constants["false"], greater.call(nil, one, [[nil, two]])
+    assert_equal Constants["true"], greater.call(nil, two, [[nil, one]])
+
+    ge = one.runtime_class.lookup(">=")
+    assert_equal Constants["Boolean"], ge.call(nil, one, [[nil, two]]).runtime_class
+    assert_equal Constants["false"], ge.call(nil, one, [[nil, two]])
+    assert_equal Constants["true"], ge.call(nil, one, [[nil, one]])
+    assert_equal Constants["true"], ge.call(nil, two, [[nil, one]])
+  end
+
   def test_stringifiable
     assert_true Constants["Integer"].has_contract(Constants["Stringifiable"].ruby_value)
     assert_not_nil Constants["Integer"].lookup("toString")

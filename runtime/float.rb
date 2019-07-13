@@ -28,23 +28,19 @@ end
 
 Constants["Float"].add_contract(Constants["Comperable"].ruby_value)
 Constants["Float"].def :< do |interpreter, receiver, args|
-  result = receiver.ruby_value < args.first[1].ruby_value
-  Constants["Float"].new(result)
+  receiver.ruby_value < args.first[1].ruby_value ? Constants["true"] : Constants["false"]
 end
 
 Constants["Float"].def :<= do |interpreter, receiver, args|
-  result = receiver.ruby_value <= args.first[1].ruby_value
-  Constants["Float"].new(result)
+  receiver.ruby_value <= args.first[1].ruby_value ? Constants["true"] : Constants["false"]
 end
 
 Constants["Float"].def :> do |interpreter, receiver, args|
-  result = receiver.ruby_value > args.first[1].ruby_value
-  Constants["Float"].new(result)
+  receiver.ruby_value > args.first[1].ruby_value ? Constants["true"] : Constants["false"]
 end
 
 Constants["Float"].def :>= do |interpreter, receiver, args|
-  result = receiver.ruby_value >= args.first[1].ruby_value
-  Constants["Float"].new(result)
+  receiver.ruby_value >= args.first[1].ruby_value ? Constants["true"] : Constants["false"]
 end
 
 Constants["Float"].add_contract(Constants["Equatable"].ruby_value)
