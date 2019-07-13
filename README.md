@@ -34,7 +34,6 @@ print( fibonacci( 10 ) )
 ### Todo
 
 A whole lot remains to make this go, but the highlights are
-+ Built-in types: Float
 + A bunch of built-in operators for built-in types
 + Rename some of the keywords
 + More contracts for built-in types
