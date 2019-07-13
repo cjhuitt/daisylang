@@ -122,6 +122,13 @@ CODE
     assert_equal 3, symbol.ruby_value
   end
 
+  def test_floats
+    @interpreter.eval("a = 1.2 + 2.1")
+    symbol = @interpreter.context.symbol("a", nil)
+    assert_equal Constants["Float"], symbol.runtime_class
+    assert_equal 3.3, symbol.ruby_value
+  end
+
   def test_define_contract
     code = <<-CODE
 Contract: Foo
