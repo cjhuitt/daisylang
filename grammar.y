@@ -6,7 +6,7 @@ token IDENTIFIER FIELD
 token IF ELSE UNLESS WHILE LOOP FOR IN SWITCH CASE
 token BREAK CONTINUE PASS RETURN TRY HANDLE AS THROW
 token NEWLINE
-token INTEGER STRING NONETYPE
+token INTEGER FLOAT STRING NONETYPE
 token TRUE FALSE NONE
 token COMMENT
 
@@ -66,6 +66,7 @@ rule
 
   Literal:
     INTEGER                             { result = IntegerNode.new(val[0].value) }
+  | FLOAT                               { result = FloatNode.new(val[0].value) }
   | STRING                              { result = StringNode.new(val[0].value) }
   | PASS                                { result = PassNode.new }
   | TRUE                                { result = TrueNode.new }

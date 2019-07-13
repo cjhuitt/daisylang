@@ -11,6 +11,11 @@ class LexerTest < Test::Unit::TestCase
     assert_equal expected, Lexer.new.tokenize("1")
   end
 
+  def test_float
+    expected = [[:FLOAT, LexedChunk.new(1.0, "1.0", 1, 1)]]
+    assert_equal expected, Lexer.new.tokenize("1.0")
+  end
+
   def test_string
     expected = [[:STRING, LexedChunk.new("Greetings  fools", '"Greetings  fools"', 1, 1)]]
     assert_equal expected, Lexer.new.tokenize('"Greetings  fools"')
@@ -103,6 +108,8 @@ class LexerTest < Test::Unit::TestCase
     assert_equal expected, Lexer.new.tokenize("Contract")
     expected = [[:ENUM, LexedChunk.new("Enumerate:", "Enumerate: ", 1, 1)]]
     assert_equal expected, Lexer.new.tokenize("Enumerate: ")
+    expected = [[:IDENTIFIER, LexedChunk.new("Float", "Float", 1, 1)]]
+    assert_equal expected, Lexer.new.tokenize("Float")
   end
 
   def test_recognizes_simple_operators
