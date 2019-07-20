@@ -1,7 +1,7 @@
 class Parser
 
 token BLOCKSTART BLOCKEND
-token METHOD CLASS CONTRACT IS ENUM
+token METHOD CLASS CONTRACT IS ENUM DELEGATE TO
 token IDENTIFIER FIELD
 token IF ELSE UNLESS WHILE LOOP FOR IN SWITCH CASE
 token BREAK CONTINUE PASS RETURN TRY HANDLE AS THROW
@@ -122,6 +122,7 @@ rule
   | CONTRACT IDENTIFIER Block           { result = DefineContractNode.new(val[1].value, val[2]) }
   | METHOD Typename IDENTIFIER ParameterList { result = DefineMethodNode.new(val[2].value, val[1], val[3], NoneNode.new) }
   | ENUM IDENTIFIER EnumBlock           { result = EnumerateNode.new(val[1].value, val[2]) }
+  | DELEGATE IDENTIFIER TO IDENTIFIER   { result = DelegateNode.new(val[1].value, val[3].value) }
   ;
 
   ParameterList:

@@ -128,3 +128,7 @@ end
 class HashNode < Struct.new(:members)
   include Visitable
 end
+
+class DelegateNode < Struct.new(:contract, :member)
+  include Visitable
+end

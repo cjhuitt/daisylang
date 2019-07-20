@@ -54,7 +54,7 @@ class Lexer
     KEYWORDS = [
       "if", "else", "unless", "while", "loop", "switch", "case",
       "break", "continue", "pass", "return", "try", "handle", "throw",
-      "true", "false", "none"
+      "true", "false", "none", "delegate", "to"
     ]
 
     def tokenize_line(line, initial_col)

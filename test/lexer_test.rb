@@ -389,6 +389,20 @@ CODE
     assert_equal 1, err.source_info.col
   end
 
+  def test_delegate_to
+    code = <<-CODE
+delegate Equatable to distance
+CODE
+    expected = [
+      [:DELEGATE, LexedChunk.new("delegate", "delegate Equatable to distance\n", 1, 1)],
+      [:IDENTIFIER, LexedChunk.new("Equatable", "delegate Equatable to distance\n", 1, 10)],
+      [:TO, LexedChunk.new("to", "delegate Equatable to distance\n", 1, 20)],
+      [:IDENTIFIER, LexedChunk.new("distance", "delegate Equatable to distance\n", 1, 23)],
+      [:NEWLINE, LexedChunk.new("\n", "delegate Equatable to distance\n", 1, 31)]
+    ]
+    assert_equal expected, Lexer.new.tokenize(code)
+  end
+
   def x_test_print_tokens
     code = <<-CODE
 Method: Integer fibonacci( n: Integer )

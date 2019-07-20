@@ -1068,4 +1068,17 @@ CODE
     assert_equal expected, Parser.new.parse(code)
   end
 
+  def test_delegate_to
+    code = <<-CODE
+delegate Equatable to distance
+CODE
+    expected = Nodes.new([
+      DelegateNode.new(
+        "Equatable",
+        "distance"
+      )
+    ])
+    assert_equal expected, Parser.new.parse(code)
+  end
+
 end
