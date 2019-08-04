@@ -30,7 +30,7 @@ class DaisyContextTest < Test::Unit::TestCase
     context = Context.new(nil, daisy_class, daisy_class)
     method = DaisyMethod.new("bar", Constants["None"], {}, NoneNode.new)
     context.add_method(method)
-    assert_true daisy_class.runtime_methods.key?("bar")
+    assert_false daisy_class.lookup("bar").nil?
   end
 
   def test_add_symbol_when_defining_class_adds_field_to_class
