@@ -84,3 +84,28 @@ class DaisyMethod < DaisyObject
     end
 end
 
+class DaisyDelegatedMethod < DaisyObject
+
+  def initialize(object, method)
+    @object = object
+    @method = method
+  end
+
+  def call(interpreter, receiver, args)
+    @method.call(interpreter, @object, args)
+  end
+
+  def hash
+    @method.name.hash
+  end
+
+  def ==(o)
+    @object == o.object && @method.name == o.method.name
+  end
+
+  def eql?(o)
+    self.class == o.class && @name == o.name
+  end
+end
+
+

@@ -102,3 +102,23 @@ class DaisyMethodTest < Test::Unit::TestCase
   end
 
 end
+
+class DaisyDelegatedMethodTest < Test::Unit::TestCase
+  def test_basic_call
+    daisy_class = DaisyClass.new("Test")
+    run = false
+    daisy_class.def :foo do |passed_interpreter, passed_receiver, passed_args|
+      run = true
+    end
+    interp = Interpreter.new
+    method = daisy_class.lookup("foo")
+    delegatee = daisy_class.new
+
+    delegated = DaisyDelegatedMethod.new(delegatee, method)
+
+    assert_false run
+    delegated.call(interp, method, {})
+    assert_true run
+  end
+
+end
